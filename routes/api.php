@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CRUD\Auth\PermissionController;
+use App\Http\Controllers\CRUD\Auth\RolesController;
 use App\Http\Controllers\CRUD\ShelvesController;
 use App\Http\Controllers\CRUD\WarehouseController;
 use Illuminate\Http\Request;
@@ -36,4 +38,20 @@ Route::prefix('admin')->group(function() {
     Route::get('/shelf/show/{id}', [ShelvesController::class, 'edit']);
     Route::put('/shelf/update/{id}', [ShelvesController::class, 'update']);
     Route::delete('/shelf/delete/{id}', [ShelvesController::class, 'destroy']);
+
+    Route::prefix('auth_model')->group(function() {
+        Route::get('/permission', [PermissionController::class, 'index']);
+        Route::get('/permission/add', [PermissionController::class, 'create']);
+        Route::post('/permission/store', [PermissionController::class, 'store']);
+        Route::get('/permission/show/{id}', [PermissionController::class, 'edit']);
+        Route::put('/permission/update/{id}', [PermissionController::class, 'update']);
+        Route::delete('/permission/delete/{id}', [PermissionController::class, 'destroy']);
+
+        Route::get('/roles', [RolesController::class, 'index']);
+        Route::get('/roles/add', [RolesController::class, 'create']);
+        Route::post('/roles/store', [RolesController::class, 'store']);
+        Route::get('/roles/show/{id}', [RolesController::class, 'edit']);
+        Route::put('/roles/update/{id}', [RolesController::class, 'update']);
+        Route::delete('/roles/delete/{id}', [RolesController::class, 'destroy']);
+    });
 });
