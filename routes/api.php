@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CRUD\ShelvesController;
 use App\Http\Controllers\CRUD\WarehouseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,4 +29,11 @@ Route::prefix('admin')->group(function() {
     Route::get('/warehouse/show/{id}', [WarehouseController::class, 'edit']);
     Route::put('/warehouse/update/{id}', [WarehouseController::class, 'update']);
     Route::delete('/warehouse/delete/{id}', [WarehouseController::class, 'destroy']);
+
+    Route::get('/shelf', [ShelvesController::class, 'index']);
+    Route::get('/shelf/add', [ShelvesController::class, 'create']);
+    Route::post('/shelf/store', [ShelvesController::class, 'store']);
+    Route::get('/shelf/show/{id}', [ShelvesController::class, 'edit']);
+    Route::put('/shelf/update/{id}', [ShelvesController::class, 'update']);
+    Route::delete('/shelf/delete/{id}', [ShelvesController::class, 'destroy']);
 });
