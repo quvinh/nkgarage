@@ -15,6 +15,10 @@ class CategoryController extends Controller
     public function index()
     {
         //
+        $data = Category::all();
+        return response()->json([
+            'data' => $data
+        ], 201);
     }
 
     /**
@@ -36,6 +40,20 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|between:2,100',
+        ]);
+
+        if($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        $data = Category::create($request->all());
+
+        return response()->json([
+            'message' => 'Data created successfully',
+            'data' => $data
+        ], 201);
     }
 
     /**
@@ -58,6 +76,12 @@ class CategoryController extends Controller
     public function edit($id)
     {
         //
+        $data = Category::find($id);
+        return response()->json([
+            'status' => 'Show form edit',
+            'message' => 'Show successfully',
+            'data' => $data,
+        ]);
     }
 
     /**
@@ -70,6 +94,20 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|between:2,100',
+        ]);
+
+        if($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        $data = Category::where('id', $id)->update();
+
+        return response()->json([
+            'message' => 'Data Category successfully changed',
+            'data' => $data,
+        ], 201);
     }
 
     /**
@@ -81,5 +119,12 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //
+        $data = Category::find($id);
+        $data->delete();
+
+        return response()->json([
+            'tatus' => 'Delete data Category',
+            'message' => 'Delete sucessfully',
+        ], 201);
     }
 }
