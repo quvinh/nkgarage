@@ -1,43 +1,40 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import isEmpty from 'validator/lib/isEmpty'
+import isEmpty from 'validator/lib/isempty';
 
 function Edit(props) {
     const [name, setName] = useState('');
-    const [position, setPosition] = useState('');
+    const [note, setNote] = useState('');
     const [validationmsg, setValidationMsg] = useState('');
     const history = useHistory();
 
     const handleNameChange = (e) => {
         setName(e.target.value)
     }
-    const handlePositionChange = (e) => {
-        setPosition(e.target.value)
+    const handleNoteChange = (e) => {
+        setNote(e.target.value)
     }
     const handleUpdate = () => {
         const data = {
             name: name,
-            position: position
+            note: note
         }
         console.log(data)
-        axios.get('http://127.0.0.1:8000/api/admin/shelf/update' + props.match.params.id, data)
-        .then(response => {
-            console.log('Updated Successfully', response)
+        axios.get('http://127.0.0.1:8000/api/admin/category/update'+ props.match.params.id, data)
+        .then(res => {
+            console.log('Update Successfully', res)
             history.push('/')
-        }).catch(error => {
+        }).catch(err => {
             const isValid = validatorAll()
-            console.log('Wrong some where',error)
+            console.log(isValid)
         })
     }
 
     const validatorAll = () => {
         const msg = {}
         if(isEmpty(name)) {
-            msg.name = 'Input name shelves'
-        }
-        if(isEmpty(position)) {
-            msg.position = 'Input position shelves'
+            msg.name = 'Input name category'
         }
         setValidationMsg(msg)
         if(Object.keys(msg).length > 0) return false
@@ -45,17 +42,15 @@ function Edit(props) {
     }
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/adim/shelf/update' + props.match.params.id, data)
-        .then(response => {
-            setName(response.data.name),
-            setPosition(response.data.position)
+        axios.get('http://127.0.0.1:8000/api/admin/category/update' +props.match.params.id, data)
+        .then(res => {
+            setName(res.data.name)
+            setNote(res.data.note)
         })
     })
-
     return (
         <div>
             <h1>Update</h1>
-            <h3>{msg}</h3>
             <form>
                 <div className='mb-3'>
                     <label>Name</label>
@@ -63,25 +58,24 @@ function Edit(props) {
                         type='string'
                         className='form-control'
                         id='name'
-                        placeholder='Name Shelves'
+                        placeholder='Name category'
                         value={name}
                         onChange={handleNameChange}
                     />
                 </div>
                 <p className='text-danger'>{validationmsg.name}</p>
                 <div className='mb-3'>
-                    <label>Position</label>
+                    <label>Note</label>
                     <input
-                        type='string'
-                        classPosition='form-control'
-                        id='position'
-                        placeholder='Position Shelves'
-                        value={position}
-                        onChange={handlePositionChange}
+                        type='text'
+                        className='form-control'
+                        id='note'
+                        placeholder=''
+                        value={note}
+                        onChange={handleNoteChange}
                     />
                 </div>
-                <p className='text-danger'>{validationmsg.position}</p>
-                <button type='button' onClick={handleUpdate} className='btn btn-primary'>Save</button>
+                <button type='button' className='btn btn-primary' onClick={handleUpdate}>Save</button>
             </form>
         </div>
     );

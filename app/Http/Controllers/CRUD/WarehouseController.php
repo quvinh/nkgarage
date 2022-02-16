@@ -106,7 +106,11 @@ class WarehouseController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Warehouse::where('id', $id)->update();
+        $data = Warehouse::where('id', $id)->update([
+            'name' => $request->name,
+            'location' => $request->location,
+            'note' => $request->note
+        ]);
 
         return response()->json([
             'message' => 'Data warehouse successfully changed',
@@ -127,7 +131,7 @@ class WarehouseController extends Controller
         $data->delete();
 
         return response()->json([
-            'tatus' => 'Delete data warehouse',
+            'status' => 'Delete data warehouse',
             'message' => 'Delete sucessfully',
         ], 201);
     }

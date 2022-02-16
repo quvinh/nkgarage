@@ -1,43 +1,41 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import isEmpty from 'validator/lib/isEmpty';
+import isEmpty from 'validator/lib/isempty';
 
 function Add(props) {
     const [name, setName] = useState('');
-    const [position, setPosition] = useState('');
+    const [note, setNote] = useState('');
     const [validationmsg, setValidationMsg] = useState('');
     const history = useHistory();
 
     const handleName = (e) => {
         setName(e.target.value)
     }
-    const handlePosition = (e) => {
-        setPosition(e.target.value)
+    const handleNote = (e) => {
+        setNote(e.target.value)
     }
+
     const handleAdd = () => {
         const data = {
             name: name,
-            position: position
+            note: note
         }
-        console.log(data)
-        axios.post('http://127.0.0.1:8000/api/admin/shelf/store', data)
-        .then(response => {
-            console.log('Added Successfully', response);
-            history.push('/');
-        }).catch(error => {
-            const isValid = validatorAll()
-            console.log(isValid)
-        })
     }
+    console.log(data)
+    axios.get('http://127.0.0.1:8000/api/admin/category/store', data)
+    .then(res => {
+        console.log('Add Successfully', res)
+        history.push('/')
+    }).catch(err => {
+        const isValid = validatorAll()
+        console.log('Wrong', err)
+    })
 
     const validatorAll = () => {
         const msg = {}
         if(isEmpty(name)) {
-            msg.name = 'Input name shelves'
-        }
-        if(isEmpty(position)) {
-            msg.position = 'Input position shelves'
+            msg.name = 'Input name category'
         }
         setValidationMsg(msg)
         if(Object.keys(msg).length > 0) return false
@@ -54,24 +52,23 @@ function Add(props) {
                         type='string'
                         className='form-control'
                         id='name'
-                        placeholder='Name Shelves'
+                        placeholder='Name Category'
                         value={name}
                         onChange={handleName}
                     />
                 </div>
                 <p className='text-danger'>{validationmsg.name}</p>
                 <div className='mb-3'>
-                    <label>Position</label>
+                    <label>Note</label>
                     <input
-                        type='string'
-                        classPosition='form-control'
-                        id='position'
-                        placeholder='Position Shelves'
-                        value={position}
-                        onChange={handlePosition}
+                        type='text'
+                        className='form-control'
+                        id='note'
+                        placeholder=''
+                        value={note}
+                        onChange={handleName}
                     />
                 </div>
-                <p className='text-danger'>{validationmsg.position}</p>
                 <button type='button' onClick={handleAdd} className='btn btn-primary'>Save</button>
             </form>
         </div>

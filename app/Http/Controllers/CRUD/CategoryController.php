@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\CRUD;
 
 use App\Http\Controllers\Controller;
+use App\Models\Categories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -15,7 +17,7 @@ class CategoryController extends Controller
     public function index()
     {
         //
-        $data = Category::all();
+        $data = Categories::all();
         return response()->json([
             'data' => $data
         ], 201);
@@ -48,7 +50,7 @@ class CategoryController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Category::create($request->all());
+        $data = Categories::create($request->all());
 
         return response()->json([
             'message' => 'Data created successfully',
@@ -76,7 +78,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         //
-        $data = Category::find($id);
+        $data = Categories::find($id);
         return response()->json([
             'status' => 'Show form edit',
             'message' => 'Show successfully',
@@ -102,10 +104,13 @@ class CategoryController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Category::where('id', $id)->update();
+        $data = Categories::where('id', $id)->update([
+            'name' => $request->name,
+            'note' => $request->note
+        ]);
 
         return response()->json([
-            'message' => 'Data Category successfully changed',
+            'message' => 'Data Categories successfully changed',
             'data' => $data,
         ], 201);
     }
@@ -119,11 +124,11 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //
-        $data = Category::find($id);
+        $data = Categories::find($id);
         $data->delete();
 
         return response()->json([
-            'tatus' => 'Delete data Category',
+            'status' => 'Delete data Category',
             'message' => 'Delete sucessfully',
         ], 201);
     }

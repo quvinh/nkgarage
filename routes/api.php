@@ -39,6 +39,14 @@ Route::group([
 Route::prefix('admin')->group(function() {
     Route::get('/');
 
+    Route::get('/category', [CategoryController::class, 'index']);
+    Route::get('/category/add', [CategoryController::class, 'create']);
+    Route::post('/category/store', [CategoryController::class, 'store']);
+    Route::get('/category/show/{id}', [CategoryController::class, 'edit']);
+    Route::put('/category/update/{id}', [CategoryController::class, 'update']);
+    Route::delete('/category/delete/{id}', [CategoryController::class, 'destroy']);
+
+
     Route::get('/warehouse', [WarehouseController::class, 'index']);
     Route::get('/warehouse/add', [WarehouseController::class, 'create']);
     Route::post('/warehouse/store', [WarehouseController::class, 'store']);

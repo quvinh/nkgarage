@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {useHistory} from 'react-router-dom'
 import axios from 'axios';
+import isEmpty from 'validator/lib/isEmpty';
 
 function Edit(props) {
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');
     const [note, setNote] = useState('');
-    const [msg, setMsg] = useState('');
+    const [validationmsg, setValidationMsg] = useState('');
     const history = useHistory();
 
     const handleNameChange = (e) => {
@@ -20,25 +21,37 @@ function Edit(props) {
     }
     const handleUpdate = () => {
         const data = {
-            id: id,
             name: name,
             location: location,
             note: note
         }
-        axios.put('http://127.0.0.1:8000/api/warehouse/update' + props.match.params.id, data)
+        axios.put('http://127.0.0.1:8000/api/admin/warehouse/update' + props.match.params.id, data)
         .then(response => {
-            setMsg('Updated Successfully')
-            console.log('Edited successfully')
+            console.log('Edited successfully', response)
             history.push('/')
         }).catch((error) => {
+            const valid = validatorAll()
             console.log(error)
-            setMsg('Wrong some where')
+
         })
     }
 
+    const validatorAll = () => {
+        const msg = {}
+        if(isEmpty(name)) {
+            msg.name = 'Input name warehouse'
+        }
+        if(isEmpty(location)) {
+            msg.location = 'Input location warehouse'
+        }
+        setValidationMsg(msg)
+        if(Object.keys(msg).length > 0) return false
+        return true
+    }
+
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/warehouse' + props.match.params.id, data)
-        .then(response => {           
+        axios.get('http://127.0.0.1:8000/api/admin/warehouse' + props.match.params.id, data)
+        .then(response => {
             setName(response.data.name)
             setLocation(response.data.location)
             setNote(response.data.note)
@@ -53,36 +66,38 @@ function Edit(props) {
             <form>
                 <div className='mb-3'>
                     <label>Name</label>
-                    <input 
+                    <input
                         type='string'
                         className='form-control'
                         id='name'
                         placeholder='Name Warehouse'
                         value={name}
                         onChange={handleNameChange}
-                        required />
+                    />
                 </div>
+                <p className='text-danger'>{validationmsg.name}</p>
                 <div className='mb-3'>
                     <label>Location</label>
-                    <input 
+                    <input
                         type='string'
                         classLocation='form-control'
                         id='location'
                         placeholder='Location Warehouse'
                         value={location}
                         onChange={handleLocationChange}
-                        required />
+                    />
                 </div>
+                <p className='text-danger'>{validationmsg.location}</p>
                 <div className='mb-3'>
                     <label>Note</label>
-                    <input 
+                    <input
                         type='text'
                         classNote='form-control'
                         id='note'
                         placeholder='Note Warehouse'
                         value={note}
                         onChange={handleNoteChange}
-                        required />
+                    />
                 </div>
                 <button type='button' onClick={handleUpdate} className='btn btn primary'>Save</button>
             </form>

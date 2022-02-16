@@ -106,7 +106,10 @@ class ShelvesController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Shelves::where('id', $id)->update();
+        $data = Shelves::where('id', $id)->update([
+            'name' => $request->name,
+            'posotion' => $request->position
+        ]);
 
         return response()->json([
             'message' => 'Data Shelves successfully changed',
@@ -127,7 +130,7 @@ class ShelvesController extends Controller
         $data->delete();
 
         return response()->json([
-            'tatus' => 'Delete data Shelves',
+            'status' => 'Delete data Shelves',
             'message' => 'Delete sucessfully',
         ], 201);
     }
