@@ -23,7 +23,7 @@ function Add(props) {
         }
     }
     console.log(data)
-    axios.get('http://127.0.0.1:8000/api/admin/category/store', data)
+    axios.post('http://127.0.0.1:8000/api/admin/category/store', data)
     .then(res => {
         console.log('Add Successfully', res)
         history.push('/')
