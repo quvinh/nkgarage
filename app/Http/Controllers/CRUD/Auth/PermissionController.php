@@ -97,14 +97,17 @@ class PermissionController extends Controller
     {
         //
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
+            'name' => 'required',
         ]);
 
         if($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Permissions::where('id', $id)->update();
+        $data = Permissions::where('id', $id)->update([
+            'name' => $request->name,
+            'note' => $request->note
+        ]);
 
         return response()->json([
             'message' => 'Data Permissions successfully changed',
