@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -16,7 +17,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);//except
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'showFormLogin']]);//except
     }
 
     /**
@@ -24,6 +25,14 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+
+    public function showFormLogin() {
+        return response()->json([
+            'status' => 'Show form login',
+            'message' => '...',
+        ]);
+    }
+
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -85,7 +94,10 @@ class AuthController extends Controller
     {
         auth()->logout();
 
-        return response()->json(['message' => 'User successfully signed out']);
+        return response()->json([
+            'status' => 'logout',
+            'message' => 'User successfully signed out'
+        ]);
     }
 
     /**
@@ -105,7 +117,10 @@ class AuthController extends Controller
      */
     public function userProfile()
     {
-        return response()->json(auth()->user());
+        return response()->json([
+            'status' => 'user profile',
+            'data' => Auth::user(),
+        ]);
     }
 
     /**
