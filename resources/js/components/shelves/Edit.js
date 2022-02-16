@@ -14,7 +14,7 @@ function Edit(props) {
     const handlePositionChange = (e) => {
         setPosition(e.target.value)
     }
-    const handleUpdate () => {
+    const handleUpdate = () => {
         const data = {
             name: name,
             position: position
