@@ -42,6 +42,14 @@ Route::group([
 Route::prefix('admin')->group(function() {
     Route::get('/');
 
+    Route::get('/detail_item', [DetailItemController::class, 'index']);
+    Route::get('/detail_item/add', [DetailItemController::class, 'create']);
+    Route::post('/detail_item/store', [DetailItemController::class, 'store']);
+    Route::get('/detail_item/show/{id}', [DetailItemController::class, 'edit']);
+    Route::put('/detail_item/update/{id}', [DetailItemController::class, 'update']);
+    Route::delete('/detail_item/delete/{id}', [DetailItemController::class, 'destroy']);
+
+
     Route::get('/export', [ExportController::class, 'index']);
     Route::get('/export/add', [ExportController::class, 'create']);
     Route::post('/export/store', [ExportController::class, 'store']);

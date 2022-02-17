@@ -1,5 +1,6 @@
 import axios from 'axios';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 function EditExport(props) {
     const [detail_item_id, setDetail_item_id] = useState('');
@@ -54,19 +55,16 @@ function EditExport(props) {
             msg.detail_item_id = 'Input detail_item_id'
         }
         if(isEmpty(amount)) {
-            msg.amount = 'Input detail_item_id'
+            msg.amount = 'Input amount'
         }
         if(isEmpty(unit)) {
-            msg.unit = 'Input detail_item_id'
+            msg.unit = 'Input unit'
         }
         if(isEmpty(status)) {
-            msg.status = 'Input detail_item_id'
-        }
-        if(isEmpty(note)) {
-            msg.note = 'Input detail_item_id'
+            msg.status = 'Input status'
         }
         if(isEmpty(created_by)) {
-            msg.created_by = 'Input detail_item_id'
+            msg.created_by = 'Input created_by'
         }
         setValidationMsg(msg)
         if(Object.keys(msg).length > 0) return false
@@ -79,6 +77,7 @@ function EditExport(props) {
             setDetail_item_id(res.data.data.detail_item_id)
             setAmount(res.data.data.amount)
             setStatus(res.data.data.status)
+            setUnit(res.data.data.unit)
             setNote(res.data.data.note)
             setCreated_by(res.data.data.created_by)
         })
@@ -169,10 +168,10 @@ function EditExport(props) {
                     />
                 </div>
                 <p className='text-danger'>{validationMsg.created_by}</p>
-
+                <button type='button' className='btn btn-primary' onClick={handleUpdate}>Save</button>
             </form>
         </div>
     );
 }
 
-export default Edit;
+export default EditExport;
