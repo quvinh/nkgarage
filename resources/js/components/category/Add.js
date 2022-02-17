@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import isEmpty from 'validator/lib/isempty';
+import isEmpty from 'validator/lib/isEmpty';
 
-function Add(props) {
+function AddCategory(props) {
     const [name, setName] = useState('');
     const [note, setNote] = useState('');
-    const [validationmsg, setValidationMsg] = useState('');
+    const [validationMsg, setValidationMsg] = useState('');
     const history = useHistory();
 
     const handleName = (e) => {
@@ -21,17 +21,16 @@ function Add(props) {
             name: name,
             note: note
         }
+        console.log(data)
+        axios.post('http://127.0.0.1:8000/api/admin/category/store', data)
+        .then(res => {
+            console.log('Add Successfully', res)
+            history.push('/category')
+        }).catch(err => {
+            const isValid = validatorAll()
+            console.log('Wrong', err)
+        })
     }
-    console.log(data)
-    axios.post('http://127.0.0.1:8000/api/admin/category/store', data)
-    .then(res => {
-        console.log('Add Successfully', res)
-        history.push('/')
-    }).catch(err => {
-        const isValid = validatorAll()
-        console.log('Wrong', err)
-    })
-
     const validatorAll = () => {
         const msg = {}
         if(isEmpty(name)) {
@@ -52,21 +51,23 @@ function Add(props) {
                         type='string'
                         className='form-control'
                         id='name'
+                        name='name'
                         placeholder='Name Category'
                         value={name}
                         onChange={handleName}
                     />
                 </div>
-                <p className='text-danger'>{validationmsg.name}</p>
+                <p className='text-danger'>{validationMsg.name}</p>
                 <div className='mb-3'>
                     <label>Note</label>
                     <input
                         type='text'
                         className='form-control'
                         id='note'
+                        name='note'
                         placeholder=''
                         value={note}
-                        onChange={handleName}
+                        onChange={handleNote}
                     />
                 </div>
                 <button type='button' onClick={handleAdd} className='btn btn-primary'>Save</button>
@@ -75,4 +76,4 @@ function Add(props) {
     );
 }
 
-export default Add;
+export default AddCategory;

@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {useHistory} from 'react-router-dom'
 import axios from 'axios';
 import isEmpty from 'validator/lib/isEmpty';
 
-function Edit(props) {
+function EditWarehouse(props) {
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');
     const [note, setNote] = useState('');
-    const [validationmsg, setValidationMsg] = useState('');
+    const [validationMsg, setValidationMsg] = useState('');
     const history = useHistory();
 
     const handleNameChange = (e) => {
@@ -25,13 +25,14 @@ function Edit(props) {
             location: location,
             note: note
         }
-        axios.put('http://127.0.0.1:8000/api/admin/warehouse/update' + props.match.params.id, data)
+        console.log(data)
+        axios.put('http://127.0.0.1:8000/api/admin/warehouse/update/' + props.match.params.id, data)
         .then(response => {
             console.log('Edited successfully', response)
-            history.push('/')
+            history.push('/warehouse')
         }).catch((error) => {
-            const valid = validatorAll()
-            console.log(error)
+            const isValid = validatorAll()
+            console.log(isValid)
 
         })
     }
@@ -50,18 +51,17 @@ function Edit(props) {
     }
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/admin/warehouse' + props.match.params.id, data)
+        axios.get('http://127.0.0.1:8000/api/admin/warehouse/show/' + props.match.params.id)
         .then(response => {
-            setName(response.data.name)
-            setLocation(response.data.location)
-            setNote(response.data.note)
+            setName(response.data.data.name)
+            setLocation(response.data.data.location)
+            setNote(response.data.data.note)
         })
-    })
+    }, [])
 
     return (
         <div>
             <h1>Edit</h1>
-            <h3>{msg}</h3>
             <hr></hr>
             <form>
                 <div className='mb-3'>
@@ -70,30 +70,33 @@ function Edit(props) {
                         type='string'
                         className='form-control'
                         id='name'
+                        name='name'
                         placeholder='Name Warehouse'
                         value={name}
                         onChange={handleNameChange}
                     />
                 </div>
-                <p className='text-danger'>{validationmsg.name}</p>
+                <p className='text-danger'>{validationMsg.name}</p>
                 <div className='mb-3'>
                     <label>Location</label>
                     <input
                         type='string'
                         classLocation='form-control'
                         id='location'
+                        name='location'
                         placeholder='Location Warehouse'
                         value={location}
                         onChange={handleLocationChange}
                     />
                 </div>
-                <p className='text-danger'>{validationmsg.location}</p>
+                <p className='text-danger'>{validationMsg.location}</p>
                 <div className='mb-3'>
                     <label>Note</label>
                     <input
                         type='text'
                         classNote='form-control'
                         id='note'
+                        name='note'
                         placeholder='Note Warehouse'
                         value={note}
                         onChange={handleNoteChange}
@@ -105,4 +108,4 @@ function Edit(props) {
     );
 }
 
-export default Edit;
+export default EditWarehouse;

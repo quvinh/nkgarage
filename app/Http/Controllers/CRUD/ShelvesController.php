@@ -99,7 +99,7 @@ class ShelvesController extends Controller
         //
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
-            'location' => 'required|string',
+            'position' => 'required|string',
         ]);
 
         if($validator->fails()) {
@@ -108,7 +108,7 @@ class ShelvesController extends Controller
 
         $data = Shelves::where('id', $id)->update([
             'name' => $request->name,
-            'posotion' => $request->position
+            'position' => $request->position
         ]);
 
         return response()->json([
@@ -131,7 +131,7 @@ class ShelvesController extends Controller
 
         return response()->json([
             'status' => 'Delete data Shelves',
-            'message' => 'Delete sucessfully',
+            'message' => 'Delete successfully',
         ], 201);
     }
 }

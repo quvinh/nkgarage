@@ -51,7 +51,6 @@ class CategoryController extends Controller
         }
 
         $data = Categories::create($request->all());
-
         return response()->json([
             'message' => 'Data created successfully',
             'data' => $data
@@ -84,6 +83,7 @@ class CategoryController extends Controller
             'message' => 'Show successfully',
             'data' => $data,
         ]);
+
     }
 
     /**
@@ -113,6 +113,7 @@ class CategoryController extends Controller
             'message' => 'Data Categories successfully changed',
             'data' => $data,
         ], 201);
+
     }
 
     /**
@@ -129,7 +130,7 @@ class CategoryController extends Controller
 
         return response()->json([
             'status' => 'Delete data Category',
-            'message' => 'Delete sucessfully',
+            'message' => 'Delete successfully',
         ], 201);
     }
 }

@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import isEmpty from 'validator/lib/isEmpty'
 
-function Edit(props) {
+function EditShelf(props) {
     const [name, setName] = useState('');
     const [position, setPosition] = useState('');
-    const [validationmsg, setValidationMsg] = useState('');
+    const [note, setNote] = useState('');
+    const [validationMsg, setValidationMsg] = useState('');
     const history = useHistory();
 
     const handleNameChange = (e) => {
@@ -18,26 +19,26 @@ function Edit(props) {
     const handleUpdate = () => {
         const data = {
             name: name,
-            position: position
+            position: position,
         }
         console.log(data)
-        axios.get('http://127.0.0.1:8000/api/admin/shelf/update' + props.match.params.id, data)
-        .then(response => {
-            console.log('Updated Successfully', response)
-            history.push('/')
-        }).catch(error => {
+        axios.put('http://127.0.0.1:8000/api/admin/shelf/update/'+ props.match.params.id, data)
+        .then(res => {
+            console.log('Update Successfully', res)
+            history.push('/shelf')
+        }).catch(err => {
             const isValid = validatorAll()
-            console.log('Wrong some where',error)
+            console.log(isValid)
         })
     }
 
     const validatorAll = () => {
         const msg = {}
         if(isEmpty(name)) {
-            msg.name = 'Input name shelves'
+            msg.name = 'Input name shelf'
         }
         if(isEmpty(position)) {
-            msg.position = 'Input position shelves'
+            msg.position = 'Input position shelf'
         }
         setValidationMsg(msg)
         if(Object.keys(msg).length > 0) return false
@@ -45,17 +46,16 @@ function Edit(props) {
     }
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/adim/shelf/update' + props.match.params.id, data)
+        axios.get('http://127.0.0.1:8000/api/admin/shelf/show/' + props.match.params.id)
         .then(response => {
-            setName(response.data.name),
-            setPosition(response.data.position)
+            setName(response.data.data.name),
+            setPosition(response.data.data.position)
         })
-    })
+    }, []);
 
     return (
         <div>
-            <h1>Update</h1>
-            <h3>{msg}</h3>
+            <h1>Edit</h1>
             <form>
                 <div className='mb-3'>
                     <label>Name</label>
@@ -63,28 +63,30 @@ function Edit(props) {
                         type='string'
                         className='form-control'
                         id='name'
+                        name='name'
                         placeholder='Name Shelves'
                         value={name}
                         onChange={handleNameChange}
                     />
                 </div>
-                <p className='text-danger'>{validationmsg.name}</p>
+                <p className='text-danger'>{validationMsg.name}</p>
                 <div className='mb-3'>
                     <label>Position</label>
                     <input
                         type='string'
-                        classPosition='form-control'
+                        className='form-control'
                         id='position'
+                        name='position'
                         placeholder='Position Shelves'
                         value={position}
                         onChange={handlePositionChange}
                     />
                 </div>
-                <p className='text-danger'>{validationmsg.position}</p>
+                <p className='text-danger'>{validationMsg.position}</p>
                 <button type='button' onClick={handleUpdate} className='btn btn-primary'>Save</button>
             </form>
         </div>
     );
 }
 
-export default Edit;
+export default EditShelf;

@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 import {useHistory} from 'react-router-dom'
 import isEmpty from 'validator/lib/isEmpty';
 
-function Add(props) {
+function AddWarehouse(props) {
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');
     const [note, setNote] = useState('');
-    const [validationmsg, setValidationMsg] = useState('');
+    const [validationMsg, setValidationMsg] = useState('');
     const history = useHistory()
 
     const handleName = (e) => {
@@ -19,6 +19,7 @@ function Add(props) {
     const handleNote = (e) => {
         setNote(e.target.value)
     }
+
     const handleAdd = () => {
         const data = {
             name: name,
@@ -27,9 +28,9 @@ function Add(props) {
         }
         console.log(data);
         axios.post('http://127.0.0.1:8000/api/admin/warehouse/store', data)
-        .then(resopnse => {
-            console.log('Added Successfully', resopnse)
-            history.push('/')
+        .then(response => {
+            console.log('Added Successfully', response)
+            history.push('/warehouse')
         }).catch(error => {
             const isValid = validatorAll()
             console.log('Wrong some where', error)
@@ -60,30 +61,33 @@ function Add(props) {
                         type='string'
                         className='form-control'
                         id='name'
+                        name='name'
                         placeholder='Name Warehouse'
                         value={name}
                         onChange={handleName}
                     />
                 </div>
-                <p className='text-danger'>{validationmsg.name}</p>
+                <p className='text-danger'>{validationMsg.name}</p>
                 <div className='mb-3'>
                     <label>Location</label>
                     <input
                         type='string'
                         classLocation='form-control'
                         id='location'
+                        name='location'
                         placeholder='Location Warehouse'
                         value={location}
                         onChange={handleLocation}
                     />
                 </div>
-                <p className='text-danger'>{validationmsg.location}</p>
+                <p className='text-danger'>{validationMsg.location}</p>
                 <div className='mb-3'>
                     <label>Note</label>
                     <input
                         type='string'
                         classNote='form-control'
                         id='note'
+                        name='note'
                         placeholder='Note Warehouse'
                         value={note}
                         onChange={handleNote}
@@ -95,4 +99,4 @@ function Add(props) {
     );
 }
 
-export default Add;
+export default AddWarehouse;

@@ -11,8 +11,7 @@ class Shelves extends Model
     protected $table = 'shelves';
     protected $fillable = [
         'name',
-        'position',
-        'note',
+        'position'
     ];
 
     public $timestamps = false;

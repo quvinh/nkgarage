@@ -1,20 +1,21 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
-import ReactDOM from 'react-dom';
+import { Link } from 'react-router-dom';
 
-function Index() {
+function Shelves(props) {
     const [data, setData] = useState([])
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/admin/shelf')
         .then(res => (
-            setData(res.data)
-        ))
+            setData(res.data.data)
+        )).catch(err => {
+            console.log(err)
+        })
     }, [])
 
     return (
         <div>
-            <Link to={'/store'} className='btn btn-info'>Add</Link>
+            <Link to={'/shelf/add'} className='btn btn-info'>Add</Link>
             <br/><br/>
             <table className='table'>
                 <thead>
@@ -32,23 +33,18 @@ function Index() {
                                 <tr key={row.id}>
                                     <th scope='row'>{row.id}</th>
                                     <td>{row.name}</td>
-                                    <td>{row.note}</td>
+                                    <td>{row.position}</td>
                                     <td>
-                                        <Link to={'/update/' + row.id} className='btn btn-primary'>Edit</Link>
+                                        <Link to={'/shelf/edit/' + row.id} className='btn btn-primary'>Edit</Link>
                                     </td>
                                 </tr>
                             )
                         })
                     }
                 </tbody>
-
             </table>
         </div>
-    );
+    )
 }
 
-export default Index;
-
-if (document.getElementById('shelves')) {
-    ReactDOM.render(<Router><Index/></Router>, document.getElementById('shelves'))
-}
+export default Shelves;

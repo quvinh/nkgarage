@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import isEmpty from 'validator/lib/isempty';
+import isEmpty from 'validator/lib/isEmpty';
 
-function Edit(props) {
+function EditCategory(props) {
     const [name, setName] = useState('');
     const [note, setNote] = useState('');
-    const [validationmsg, setValidationMsg] = useState('');
+    const [validationMsg, setValidationMsg] = useState('');
     const history = useHistory();
 
     const handleNameChange = (e) => {
@@ -21,10 +21,10 @@ function Edit(props) {
             note: note
         }
         console.log(data)
-        axios.get('http://127.0.0.1:8000/api/admin/category/update'+ props.match.params.id, data)
+        axios.put('http://127.0.0.1:8000/api/admin/category/update/'+ props.match.params.id, data)
         .then(res => {
             console.log('Update Successfully', res)
-            history.push('/')
+            history.push('/category')
         }).catch(err => {
             const isValid = validatorAll()
             console.log(isValid)
@@ -42,15 +42,16 @@ function Edit(props) {
     }
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/admin/category/update' +props.match.params.id, data)
+        axios.get('http://127.0.0.1:8000/api/admin/category/show/' + props.match.params.id)
         .then(res => {
-            setName(res.data.name)
-            setNote(res.data.note)
+            setName(res.data.data.name)
+            setNote(res.data.data.note)
         })
-    })
+    }, []);
+
     return (
         <div>
-            <h1>Update</h1>
+            <h1>Edit</h1>
             <form>
                 <div className='mb-3'>
                     <label>Name</label>
@@ -58,20 +59,22 @@ function Edit(props) {
                         type='string'
                         className='form-control'
                         id='name'
+                        name='name'
                         placeholder='Name category'
                         value={name}
                         onChange={handleNameChange}
                     />
                 </div>
-                <p className='text-danger'>{validationmsg.name}</p>
+                <p className='text-danger'>{validationMsg.name}</p>
                 <div className='mb-3'>
                     <label>Note</label>
                     <input
                         type='text'
                         className='form-control'
                         id='note'
+                        name='note'
                         placeholder=''
-                        value={note}
+                        value={note == null?'' : note}
                         onChange={handleNoteChange}
                     />
                 </div>
@@ -81,4 +84,4 @@ function Edit(props) {
     );
 }
 
-export default Edit;
+export default EditCategory;

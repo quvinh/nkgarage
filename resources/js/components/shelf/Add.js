@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import isEmpty from 'validator/lib/isEmpty';
 
-function Add(props) {
+function AddShelf(props) {
     const [name, setName] = useState('');
     const [position, setPosition] = useState('');
-    const [validationmsg, setValidationMsg] = useState('');
+    const [note, setNote] = useState('');
+    const [validationMsg, setValidationMsg] = useState('');
     const history = useHistory();
 
     const handleName = (e) => {
@@ -15,16 +16,17 @@ function Add(props) {
     const handlePosition = (e) => {
         setPosition(e.target.value)
     }
+
     const handleAdd = () => {
         const data = {
             name: name,
-            position: position
+            position: position,
         }
         console.log(data)
         axios.post('http://127.0.0.1:8000/api/admin/shelf/store', data)
         .then(response => {
             console.log('Added Successfully', response);
-            history.push('/');
+            history.push('/shelf');
         }).catch(error => {
             const isValid = validatorAll()
             console.log(isValid)
@@ -54,28 +56,30 @@ function Add(props) {
                         type='string'
                         className='form-control'
                         id='name'
+                        name='name'
                         placeholder='Name Shelves'
                         value={name}
                         onChange={handleName}
                     />
                 </div>
-                <p className='text-danger'>{validationmsg.name}</p>
+                <p className='text-danger'>{validationMsg.name}</p>
                 <div className='mb-3'>
                     <label>Position</label>
                     <input
                         type='string'
-                        classPosition='form-control'
+                        className='form-control'
                         id='position'
+                        name='position'
                         placeholder='Position Shelves'
                         value={position}
                         onChange={handlePosition}
                     />
                 </div>
-                <p className='text-danger'>{validationmsg.position}</p>
+                <p className='text-danger'>{validationMsg.position}</p>
                 <button type='button' onClick={handleAdd} className='btn btn-primary'>Save</button>
             </form>
         </div>
     );
 }
 
-export default Add;
+export default AddShelf;

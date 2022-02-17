@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CRUD\Auth\PermissionController;
 use App\Http\Controllers\CRUD\Auth\RolesController;
 use App\Http\Controllers\CRUD\CategoryController;
+use App\Http\Controllers\CRUD\ExportController;
 use App\Http\Controllers\CRUD\ShelvesController;
 use App\Http\Controllers\CRUD\WarehouseController;
 use Illuminate\Http\Request;
@@ -40,6 +41,13 @@ Route::group([
 
 Route::prefix('admin')->group(function() {
     Route::get('/');
+
+    Route::get('/export', [ExportController::class, 'index']);
+    Route::get('/export/add', [ExportController::class, 'create']);
+    Route::post('/export/store', [ExportController::class, 'store']);
+    Route::get('/export/show/{id}', [ExportController::class, 'edit']);
+    Route::put('/export/update/{id}', [ExportController::class, 'update']);
+    Route::delete('/export/delete/{id}', [ExportController::class, 'destroy']);
 
     Route::get('/category', [CategoryController::class, 'index']);
     Route::get('/category/add', [CategoryController::class, 'create']);
