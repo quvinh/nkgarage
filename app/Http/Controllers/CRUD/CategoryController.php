@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\CRUD;
 
 use App\Http\Controllers\Controller;
-use App\Models\Warehouse;
+use App\Models\Categories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class WarehouseController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +17,7 @@ class WarehouseController extends Controller
     public function index()
     {
         //
-        $data = Warehouse::all();
+        $data = Categories::all();
         return response()->json([
             'data' => $data
         ], 201);
@@ -44,15 +44,13 @@ class WarehouseController extends Controller
         //
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
-            'location' => 'required|string',
         ]);
 
         if($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Warehouse::create($request->all());
-
+        $data = Categories::create($request->all());
         return response()->json([
             'message' => 'Data created successfully',
             'data' => $data
@@ -79,12 +77,13 @@ class WarehouseController extends Controller
     public function edit($id)
     {
         //
-        $data = Warehouse::find($id);
+        $data = Categories::find($id);
         return response()->json([
             'status' => 'Show form edit',
             'message' => 'Show successfully',
             'data' => $data,
         ]);
+
     }
 
     /**
@@ -99,23 +98,22 @@ class WarehouseController extends Controller
         //
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
-            'location' => 'required|string',
         ]);
 
         if($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Warehouse::where('id', $id)->update([
+        $data = Categories::where('id', $id)->update([
             'name' => $request->name,
-            'location' => $request->location,
             'note' => $request->note
         ]);
 
         return response()->json([
-            'message' => 'Data warehouse successfully changed',
+            'message' => 'Data Categories successfully changed',
             'data' => $data,
         ], 201);
+
     }
 
     /**
@@ -127,11 +125,11 @@ class WarehouseController extends Controller
     public function destroy($id)
     {
         //
-        $data = Warehouse::find($id);
+        $data = Categories::find($id);
         $data->delete();
 
         return response()->json([
-            'status' => 'Delete data warehouse',
+            'status' => 'Delete data Category',
             'message' => 'Delete successfully',
         ], 201);
     }

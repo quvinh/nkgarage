@@ -3,10 +3,13 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CRUD\Auth\PermissionController;
 use App\Http\Controllers\CRUD\Auth\RolesController;
+use App\Http\Controllers\CRUD\CategoryController;
+use App\Http\Controllers\CRUD\ExportController;
 use App\Http\Controllers\CRUD\ShelvesController;
 use App\Http\Controllers\CRUD\WarehouseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +42,21 @@ Route::group([
 
 Route::prefix('admin')->group(function() {
     Route::get('/');
+
+    Route::get('/export', [ExportController::class, 'index']);
+    Route::get('/export/add', [ExportController::class, 'create']);
+    Route::post('/export/store', [ExportController::class, 'store']);
+    Route::get('/export/show/{id}', [ExportController::class, 'edit']);
+    Route::put('/export/update/{id}', [ExportController::class, 'update']);
+    Route::delete('/export/delete/{id}', [ExportController::class, 'destroy']);
+
+    Route::get('/category', [CategoryController::class, 'index']);
+    Route::get('/category/add', [CategoryController::class, 'create']);
+    Route::post('/category/store', [CategoryController::class, 'store']);
+    Route::get('/category/show/{id}', [CategoryController::class, 'edit']);
+    Route::put('/category/update/{id}', [CategoryController::class, 'update']);
+    Route::delete('/category/delete/{id}', [CategoryController::class, 'destroy']);
+
 
     Route::get('/warehouse', [WarehouseController::class, 'index']);
     Route::get('/warehouse/add', [WarehouseController::class, 'create']);
