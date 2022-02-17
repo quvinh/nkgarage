@@ -18,9 +18,10 @@ class RolesController extends Controller
     {
         //
         $data = Roles::all();
-        return response()->json([
-            'data' => $data
-        ], 201);
+        // return response()->json([
+        //     'data' => $data
+        // ], 201);
+        return $data;
     }
 
     /**
@@ -56,6 +57,7 @@ class RolesController extends Controller
             'message' => 'Data created successfully',
             'data' => $data
         ], 201);
+        // return $data;
     }
 
     /**
@@ -104,7 +106,10 @@ class RolesController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Roles::where('id', $id)->update();
+        $data = Roles::where('id', $id)->update([
+            'name' => $request->name,
+            'note' => $request->note
+        ]);
 
         return response()->json([
             'message' => 'Data Roles successfully changed',

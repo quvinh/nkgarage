@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\CRUD\Auth;
+namespace App\Http\Controllers\CRUD;
 
 use App\Http\Controllers\Controller;
+use App\Models\Import;
 use App\Models\Permissions;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
-class PermissionController extends Controller
+class ImportController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,11 +17,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        //
-        $data = Permissions::all();
-        // return response()->json([
-        //     'data' => $data
-        // ], 201);
+        $data = Import::All();
         return $data;
     }
 
@@ -42,22 +39,22 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
+            'item_id' => 'required|char',
+            'amount' => 'required',
+            'unit' => 'required',
+            'status' => 'required',
+            'created_by' => 'required'
         ]);
-
-        if($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(),400);
         }
-
-        $data = Permissions::create($request->all());
+        $data = Import::create($request->all());
 
         return response()->json([
             'message' => 'Data created successfully',
             'data' => $data
-        ], 201);
-        // return $data;
+        ],201);
     }
 
     /**
@@ -79,14 +76,12 @@ class PermissionController extends Controller
      */
     public function edit($id)
     {
-        //
-        $data = Permissions::find($id);
+        $data = Import::find($id);
         return response()->json([
-            'status' => 'Show form edit',
-            'message' => 'Show successfully',
-            'data' => $data,
+            'status' => 'show form edit',
+            'message' => 'show successfully',
+            'data' => $data
         ]);
-        // return $data;
     }
 
     /**
@@ -98,25 +93,30 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
+        $validator = Validator::make($request->all(),[
+            'item_id' => 'required|char',
+            'amount' => 'required',
+            'unit' => 'required',
+            'status' => 'required',
+            'created_by' => 'required',
         ]);
 
-        if($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+        if($validator -> fails()) {
+            return response()->json($validator->errors()->toJson(),400);
         }
 
-        $data = Permissions::where('id', $id)->update([
-            'name' => $request->name,
-            'note' => $request->note
+        $data = Import::where('id', $id)->update([
+            'item_id' => $request->item_id,
+            'amount' => $request->amount,
+            'unit' => $request->unit,
+            'status' => $request->status,
+            'create_by' => $request->create_by
         ]);
 
         return response()->json([
-            'message' => 'Data Permissions successfully changed',
-            'data' => $data,
-        ], 201);
-        // return $data;
+            'message' => 'Data Import successfully changed',
+            'data' =>$data
+        ],201);
     }
 
     /**
@@ -127,8 +127,7 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $data = Permissions::find($id);
+        $data = Import::find($id);
         $data->delete();
 
         return response()->json([
