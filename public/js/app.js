@@ -5712,7 +5712,7 @@ function AddCategory(props) {
       history.push('/category');
     })["catch"](function (err) {
       var isValid = validatorAll();
-      console.log('Wrong', err);
+      console.log(isValid);
     });
   };
 

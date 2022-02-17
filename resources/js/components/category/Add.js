@@ -28,7 +28,7 @@ function AddCategory(props) {
             history.push('/category')
         }).catch(err => {
             const isValid = validatorAll()
-            console.log('Wrong', err)
+            console.log(isValid)
         })
     }
     const validatorAll = () => {
