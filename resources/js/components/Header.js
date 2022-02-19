@@ -39,7 +39,7 @@ function Header(props) {
                     <Link className="nav-link" to="/export">Export</Link>
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link" to="/detail_id">Detail_Item</Link>
+                    <Link className="nav-link" to="/detail_item">Detail_Item</Link>
                 </li>
             </ul>
             <Switch>

@@ -7,6 +7,8 @@ use App\Http\Controllers\CRUD\CategoryController;
 use App\Http\Controllers\CRUD\ExportController;
 use App\Http\Controllers\CRUD\ShelvesController;
 use App\Http\Controllers\CRUD\WarehouseController;
+use App\Http\Controllers\CRUD\Detail_ItemController;
+use App\Http\Controllers\CRUD\NotificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,12 +44,19 @@ Route::group([
 Route::prefix('admin')->group(function() {
     Route::get('/');
 
-    Route::get('/detail_item', [DetailItemController::class, 'index']);
-    Route::get('/detail_item/add', [DetailItemController::class, 'create']);
-    Route::post('/detail_item/store', [DetailItemController::class, 'store']);
-    Route::get('/detail_item/show/{id}', [DetailItemController::class, 'edit']);
-    Route::put('/detail_item/update/{id}', [DetailItemController::class, 'update']);
-    Route::delete('/detail_item/delete/{id}', [DetailItemController::class, 'destroy']);
+    Route::get('/notification', [NotificationController::class, 'index']);
+    Route::get('/notification/add', [NotificationController::class, 'create']);
+    Route::post('/notification/store', [NotificationController::class, 'store']);
+    Route::get('/notification/show/{id}', [NotificationController::class, 'edit']);
+    Route::put('/notification/update/{id}', [NotificationController::class, 'update']);
+    Route::delete('/notification/delete/{id}', [NotificationController::class, 'destroy']);
+
+    Route::get('/detail_item', [Detail_ItemController::class, 'index']);
+    Route::get('/detail_item/add', [Detail_ItemController::class, 'create']);
+    Route::post('/detail_item/store', [Detail_ItemController::class, 'store']);
+    Route::get('/detail_item/show/{id}', [Detail_ItemController::class, 'edit']);
+    Route::put('/detail_item/update/{id}', [Detail_ItemController::class, 'update']);
+    Route::delete('/detail_item/delete/{id}', [Detail_ItemController::class, 'destroy']);
 
 
     Route::get('/export', [ExportController::class, 'index']);
@@ -55,6 +64,7 @@ Route::prefix('admin')->group(function() {
     Route::post('/export/store', [ExportController::class, 'store']);
     Route::get('/export/show/{id}', [ExportController::class, 'edit']);
     Route::put('/export/update/{id}', [ExportController::class, 'update']);
+    Route::put('/export/updateStatus/{id}', [ExportController::class, 'updateStatus']);
     Route::delete('/export/delete/{id}', [ExportController::class, 'destroy']);
 
     Route::get('/category', [CategoryController::class, 'index']);

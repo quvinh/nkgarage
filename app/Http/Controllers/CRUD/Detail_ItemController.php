@@ -7,8 +7,13 @@ use App\Models\DetailItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class DetailItemController extends Controller
+class Detail_ItemController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         //
@@ -81,7 +86,6 @@ class DetailItemController extends Controller
             'message' => 'Show successfully',
             'data' => $data,
         ]);
-
     }
 
     /**
@@ -116,7 +120,6 @@ class DetailItemController extends Controller
             'message' => 'Data DetailItem successfully changed',
             'data' => $data,
         ], 201);
-
     }
 
     /**

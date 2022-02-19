@@ -15,7 +15,7 @@ function Detail_Item(props) {
     }, [])
     return (
         <div>
-            <Link to={'/detail/add'} className='btn btn-primary' >Add</Link>
+            <Link to={'/detail_item/add'} className='btn btn-primary' >Add</Link>
             <br/><br/>
             <table className='table'>
             <thead>
