@@ -3,12 +3,20 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CRUD\Auth\PermissionController;
 use App\Http\Controllers\CRUD\Auth\RolesController;
+<<<<<<< HEAD
 use App\Http\Controllers\CRUD\CategoryController;
 use App\Http\Controllers\CRUD\ExportController;
 use App\Http\Controllers\CRUD\ShelvesController;
 use App\Http\Controllers\CRUD\WarehouseController;
 use App\Http\Controllers\CRUD\Detail_ItemController;
 use App\Http\Controllers\CRUD\NotificationController;
+=======
+use App\Http\Controllers\CRUD\ImportController;
+use App\Http\Controllers\CRUD\ItemController;
+use App\Http\Controllers\CRUD\ShelvesController;
+use App\Http\Controllers\CRUD\WarehouseController;
+use App\Models\Import;
+>>>>>>> qvuong
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +53,7 @@ Route::group([
 Route::prefix('admin')->group(function() {
     Route::get('/');
 
+<<<<<<< HEAD
     Route::get('/notification', [NotificationController::class, 'index']);
     Route::get('/notification/add', [NotificationController::class, 'create']);
     Route::post('/notification/store', [NotificationController::class, 'store']);
@@ -76,6 +85,10 @@ Route::prefix('admin')->group(function() {
     Route::delete('/category/delete/{id}', [CategoryController::class, 'destroy']);
 
 
+=======
+
+    /*************Warehouse**************/
+>>>>>>> qvuong
     Route::get('/warehouse', [WarehouseController::class, 'index']);
     Route::get('/warehouse/add', [WarehouseController::class, 'create']);
     Route::post('/warehouse/store', [WarehouseController::class, 'store']);
@@ -83,6 +96,8 @@ Route::prefix('admin')->group(function() {
     Route::put('/warehouse/update/{id}', [WarehouseController::class, 'update']);
     Route::delete('/warehouse/delete/{id}', [WarehouseController::class, 'destroy']);
 
+
+    /*************Shelf*************/
     Route::get('/shelf', [ShelvesController::class, 'index']);
     Route::get('/shelf/add', [ShelvesController::class, 'create']);
     Route::post('/shelf/store', [ShelvesController::class, 'store']);
@@ -90,14 +105,38 @@ Route::prefix('admin')->group(function() {
     Route::put('/shelf/update/{id}', [ShelvesController::class, 'update']);
     Route::delete('/shelf/delete/{id}', [ShelvesController::class, 'destroy']);
 
+
+    //**********Import**************/
+    Route::get('/import',[ImportController::class, 'index']);
+    Route::get('/import/add', [ImportController::class, 'create']);
+    Route::post('/import/store', [ImportController::class, 'store']);
+    Route::get('/import/show/{id}', [ImportController::class, 'edit']);
+    Route::put('/import/update/{id}', [ImportController::class, 'update']);
+    Route::put('/import/updateStatus/{id}', [ImportController::class, 'updateStatus']);
+    Route::post('/import/updateAmountItem/{id}', [ImportController::class, 'updateAmountItem']);
+    Route::delete('/import/delete/{id}', [ImportController::class, 'destroy']);
+
+
+    /**************Item***************/
+    Route::get('/items',[ItemController::class, 'index']);
+    Route::get('/items/add', [ItemController::class, 'create']);
+    Route::post('/items/store', [ItemController::class, 'store']);
+    Route::get('/items/show/{id}', [ItemController::class, 'edit']);
+    Route::put('/items/update/{id}', [ItemController::class, 'update']);
+    Route::delete('/items/delete/{id}', [ItemController::class, 'destroy']);
+
+
     Route::prefix('auth_model')->group(function() {
+
+        /************Permission*************/
         Route::get('/permission', [PermissionController::class, 'index']);
         Route::get('/permission/add', [PermissionController::class, 'create']);
         Route::post('/permission/store', [PermissionController::class, 'store']);
         Route::get('/permission/show/{id}', [PermissionController::class, 'edit']);
         Route::put('/permission/update/{id}', [PermissionController::class, 'update']);
         Route::delete('/permission/delete/{id}', [PermissionController::class, 'destroy']);
-
+        
+        /***************Roles****************/
         Route::get('/roles', [RolesController::class, 'index']);
         Route::get('/roles/add', [RolesController::class, 'create']);
         Route::post('/roles/store', [RolesController::class, 'store']);

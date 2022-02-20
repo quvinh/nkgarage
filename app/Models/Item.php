@@ -21,6 +21,7 @@ class Item extends Model
         'amount',
         'unit',
         'price',
+        'status',
         'note',
     ];
 

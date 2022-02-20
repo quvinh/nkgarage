@@ -13,12 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+<<<<<<< HEAD
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 
 // Route::get('/auth/{path?}', function () {
 //     return view('admin.index');
+=======
+>>>>>>> qvuong
 Route::get('/{path?}', function () {
     return view('welcome');
 })->where('path', '.*');

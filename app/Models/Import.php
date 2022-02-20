@@ -14,8 +14,11 @@ class Import extends Model
     protected $table = 'imports';
     protected $fillable = [
         'item_id',
+        'batch_code',
+        'name',
         'amount',
         'unit',
+        'price',
         'status',
         'created_by',
         'note'
