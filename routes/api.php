@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CRUD\Auth\PermissionController;
 use App\Http\Controllers\CRUD\Auth\RolesController;
 use App\Http\Controllers\CRUD\ImportController;
+use App\Http\Controllers\CRUD\ItemController;
 use App\Http\Controllers\CRUD\ShelvesController;
 use App\Http\Controllers\CRUD\WarehouseController;
 use App\Models\Import;
@@ -66,8 +67,18 @@ Route::prefix('admin')->group(function() {
     Route::post('/import/store', [ImportController::class, 'store']);
     Route::get('/import/show/{id}', [ImportController::class, 'edit']);
     Route::put('/import/update/{id}', [ImportController::class, 'update']);
+    Route::put('/import/updateStatus/{id}', [ImportController::class, 'updateStatus']);
+    Route::post('/import/updateAmountItem/{id}', [ImportController::class, 'updateAmountItem']);
     Route::delete('/import/delete/{id}', [ImportController::class, 'destroy']);
 
+
+    /**************Item***************/
+    Route::get('/items',[ItemController::class, 'index']);
+    Route::get('/items/add', [ItemController::class, 'create']);
+    Route::post('/items/store', [ItemController::class, 'store']);
+    Route::get('/items/show/{id}', [ItemController::class, 'edit']);
+    Route::put('/items/update/{id}', [ItemController::class, 'update']);
+    Route::delete('/items/delete/{id}', [ItemController::class, 'destroy']);
 
 
     Route::prefix('auth_model')->group(function() {

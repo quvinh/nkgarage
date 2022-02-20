@@ -2,18 +2,29 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
-
-function EditImport(props) {
-    const [item_id, setItem_id] = useState('');
-    const [amount, setAmount] = useState('');
+function EditItem(props) {
+    const [id, setId] = useState('');
+    const [batch_code, setBatch_code] = useState('');
+    const [name, setName] = useState('');
+    const [amount, setAmout] = useState('');
     const [unit, setUnit] = useState('');
+    const [price, setPrice] = useState('');
     const [status, setStatus] = useState('');
-    const [created_by, setCreated_by] = useState('');
+    const [note, setNote] = useState('');
     const [msg, setMsg] = useState('');
+
     const history = useHistory();
 
-    const handleItem_idChange = (e) => {
-        setItem_id(e.target.value);
+    const handleIdChange = (e) => {
+        setId(e.target.value);
+    }
+
+    const handleBatch_codeChange = (e) => {
+        setBatch_code(e.target.value);
+    }
+
+    const handleNameChange = (e) => {
+        setName(e.target.value);
     }
 
     const handleAmountChange = (e) => {
@@ -24,12 +35,12 @@ function EditImport(props) {
         setUnit(e.target.value);
     }
 
-    const handleStatusChange = (e) => {
-        setStatus(e.target.value);
+    const handlePriceChange = (e) => {
+        setPrice(e.target.value);
     }
 
-    const handleCreated_byChange = (e) => {
-        setCreated_by(e.target.value);
+    const handleStatusChange = (e) => {
+        setStatus(e.target.value);
     }
 
     const handleNoteChange = (e) => {
@@ -37,33 +48,37 @@ function EditImport(props) {
     }
     const handleUpdateImport = () => {
         const data = {
-            item_id: item_id,
+            id: id,
+            batch_code: batch_code,
+            name: name,
             amount: amount,
             unit: unit,
+            price: price,
             status: status,
-            created_by: created_by,
             note: note
         }
-        axios.put('http://127.0.0.1:8000/api/admin/import/update/' 
+        axios.put('http://127.0.0.1:8000/api/admin/items/update/' 
             + props.match.params.id, data)
         .then(response => {
             setMsg('Update Successfully')
             console.log('Edited Successfully')
-            history.push('/import')
+            history.push('/items')
         }).catch((error) => {
             console.log(error)
             setMsg('Something went wrong')
         }) 
     }
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/admin/import/show/' 
+        axios.get('http://127.0.0.1:8000/api/admin/items/show/' 
             + props.match.params.id)
         .then(response => {
-            setItem_id(response.data.data.item_id)
-            setAmount(response.data.data.amount)
+            setId(response.data.data.item_id)
+            setBatch_code(response.data.data.amount)
+            setName(response.data.data.unit)
+            setAmount(response.data.data.unit)
             setUnit(response.data.data.unit)
+            setPrice(response.data.data.unit)
             setStatus(response.data.data.status)
-            setCreated_by(response.data.data.created_by)
             setNote(response.data.data.note)
         })
     }, []);

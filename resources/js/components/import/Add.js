@@ -9,6 +9,7 @@ function AddImport(props) {
     const [unit, setUnit] = useState('');
     const [status, setStatus] = useState('');
     const [created_by, setCreated_by] = useState('');
+
     const history = useHistory();
 
     const handleItem_id = (e) => {
@@ -41,10 +42,11 @@ function AddImport(props) {
             amount: amount,
             unit: unit,
             status: status,
-            created_by: created_by
+            created_by: created_by,
+            note: note
         }
         console.log(data);
-        axios.post('http://127.0.0.1:8000/api/admin/import', data)
+        axios.post('http://127.0.0.1:8000/api/admin/import/store', data)
         .then(res=> {
             console.log('Added successfully', res)
             history.push('/import')
@@ -76,7 +78,7 @@ function AddImport(props) {
     }
     return (
         <div>
-            <h2>Permisson Add</h2>
+            <h2>Import Add</h2>
             <br/>
             <form>
                 <div className='mb-3'>
