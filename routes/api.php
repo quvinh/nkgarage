@@ -64,7 +64,6 @@ Route::prefix('admin')->group(function() {
     Route::post('/export/store', [ExportController::class, 'store']);
     Route::get('/export/show/{id}', [ExportController::class, 'edit']);
     Route::put('/export/update/{id}', [ExportController::class, 'update']);
-    Route::put('/export/updateStatus/{id}', [ExportController::class, 'updateStatus']);
     Route::delete('/export/delete/{id}', [ExportController::class, 'destroy']);
 
     Route::get('/category', [CategoryController::class, 'index']);

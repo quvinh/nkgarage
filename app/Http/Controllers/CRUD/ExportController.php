@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CRUD;
 use App\Http\Controllers\Controller;
 use App\Models\Export;
 use App\Models\Item;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -44,24 +45,54 @@ class ExportController extends Controller
     public function store(Request $request)
     {
         //
-        if (Item::where('id', '=',))
-            $validator = Validator::make($request->all(), [
-                'detail_item_id' => 'required',
-                'amount' => 'required',
-                'unit' => 'required',
-                'status' => 'required',
-                'created_by' => 'required'
-            ]);
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'amount' => 'required',
+            'unit' => 'required',
+            'created_by' => 'required'
+        ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Export::create($request->all());
-        return response()->json([
-            'message' => 'Data created successfully',
-            'data' => $data
-        ], 201);
+        $id_detail_item = DB::table('detail_items')
+            ->where('item_id', $request->id)
+            ->get('id');
+
+        $item = DB::table('items')
+            ->where('id', $request->id)
+            ->get();
+
+        if ($request->amount <= $item[0]->amount) {
+            $de = $item[0]->amount - $request->amount;
+            Item::where('id', $item[0]->id)->update(['amount' => $de]);
+            $newExport = new Export();
+            $newExport->detail_item_id = $id_detail_item[0]->id;
+            $newExport->amount = $request->amount;
+            $newExport->unit = $request->unit;
+            $newExport->created_by = $request->created_by;
+            $newExport->status = 0;
+            $newExport->note = null;
+            $newExport->save();
+            return response()->json([
+                'message' => 'Data created successfully',
+                'status' => 'Add Export'
+            ], 201);
+        } else {
+            $newNotify = new Notification();
+            $newNotify->detail_item = $id_detail_item[0]->id;
+            $newNotify->title = 'Thiếu vật tư';
+            $newNotify->content = 'Cần nhập thêm';
+            $newNotify->amount = $request->amount - $item[0]->amount;
+            $newNotify->unit = $request->unit;
+            $newNotify->created_by = 'Hệ thống';
+            $newNotify->save();
+            return response()->json([
+                'message' => 'Data created successfully',
+                'status' => 'Add Notify'
+            ], 201);
+        }
     }
 
     /**
@@ -103,10 +134,10 @@ class ExportController extends Controller
     {
         //
         $validator = Validator::make($request->all(), [
-            'detail_item_id' => 'required',
+            'id' => 'required',
             'amount' => 'required',
             'unit' => 'required',
-            'status' => 'required',
+            // 'status' => 'required',
             'created_by' => 'required'
         ]);
 
@@ -115,7 +146,7 @@ class ExportController extends Controller
         }
 
         $data = Export::where('id', $id)->update([
-            'detail_item_id' => $request->detail_item_id,
+            // 'detail_item_id' => $request->detail_item_id,
             'amount' => $request->amount,
             'unit' => $request->unit,
             'status' => $request->status,
@@ -145,31 +176,4 @@ class ExportController extends Controller
             'message' => 'Delete successfully',
         ], 201);
     }
-    // public function updateStatus(Request $request, $id)
-    // {
-    //     $request->validate([
-    //         'detail_item_id' => 'required',
-    //         'amount' => 'required',
-    //         'unit' => 'required',
-    //         'status' => 'required',
-    //         'created_by' => 'required'
-    //     ]);
-
-    //     $amount = DB::table('detail_item')
-    //         ->join('exports', 'detail_item.id', '=', 'export.detail_item_id')
-    //         ->join('item', 'detail_item.id', '=', 'item.detail_item_id')
-    //         ->select('item.amount as amount_item')
-    //         ->where('export.id', '=', $id)
-    //         ->get('amount_item');
-    //     dd($amount[0]->amount);
-    //     if ($request->status == 1) {
-    //     }
-
-
-
-    //     return response()->json([
-    //         'status' => 'Delete data Category',
-    //         'message' => 'Delete successfully',
-    //     ], 201);
-    // }
 }
