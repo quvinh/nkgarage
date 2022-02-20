@@ -72,7 +72,7 @@ function AddWarehouse(props) {
                     <label>Location</label>
                     <input
                         type='string'
-                        classLocation='form-control'
+                        className='form-control'
                         id='location'
                         name='location'
                         placeholder='Location Warehouse'
@@ -85,7 +85,7 @@ function AddWarehouse(props) {
                     <label>Note</label>
                     <input
                         type='string'
-                        classNote='form-control'
+                        className='form-control'
                         id='note'
                         name='note'
                         placeholder='Note Warehouse'

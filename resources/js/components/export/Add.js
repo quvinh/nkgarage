@@ -138,7 +138,7 @@ function AddExport(props) {
                 <div className='mb-3'>
                     <label>Note</label>
                     <input
-                        type='string'
+                        type='text'
                         className='form-control'
                         id='note'
                         name='note'
@@ -161,6 +161,7 @@ function AddExport(props) {
                     />
                 </div>
                 <p className='text-danger'>{validationMsg.created_by}</p>
+                <button type='button' className='btn btn-primary' onClick={handleAdd}>Save</button>
             </form>
         </div>
     );

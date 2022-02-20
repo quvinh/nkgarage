@@ -37,7 +37,7 @@ function Warehouse(props) {
                                     <td>{row.location}</td>
                                     <td>{row.note}</td>
                                     <td>
-                                        <Link to={'/category/edit/' + row.id} className='btn btn-primary'>Edit</Link>
+                                        <Link to={'/warehouse/edit/' + row.id} className='btn btn-primary'>Edit</Link>
                                     </td>
                                 </tr>
                             )
@@ -52,6 +52,3 @@ function Warehouse(props) {
 
 export default Warehouse;
 
-if(document.getElementById('warehouse')) {
-    ReactDOM.render(<Router><Warehouse/></Router>, document.getElementById('warehouse'))
-}
