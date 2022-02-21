@@ -13,7 +13,7 @@ class Import extends Model
 
     protected $table = 'imports';
     protected $fillable = [
-        'item_id',
+        'detail_item_id',
         'amount',
         'unit',
         'status',
@@ -21,7 +21,7 @@ class Import extends Model
         'note'
     ];
 
-    public function item() {
-        return $this->belongsTo(Item::class, 'item_id', 'id');
+    public function detail_item() {
+        return $this->belongsTo(Item::class, 'detail_item_id', 'id');
     }
 }
