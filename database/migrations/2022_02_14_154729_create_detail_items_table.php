@@ -19,7 +19,13 @@ class CreateDetailItemsTable extends Migration
             $table->bigInteger('category_id');
             $table->bigInteger('warehouse_id');
             $table->bigInteger('shelf_id');
-            // $table->timestamps();
+            $table->char('batch_code', 20);
+            $table->integer('amount');
+            $table->string('unit', 10);
+            $table->integer('price');
+            $table->binary('status');
+            $table->timestamps();
+            $table->softDeletes();            
         });
     }
 

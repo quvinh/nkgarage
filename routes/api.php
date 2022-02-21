@@ -6,8 +6,10 @@ use App\Http\Controllers\CRUD\Auth\RolesController;
 use App\Http\Controllers\CRUD\ImportController;
 use App\Http\Controllers\CRUD\ItemController;
 use App\Http\Controllers\CRUD\ShelvesController;
+use App\Http\Controllers\CRUD\SuppliersController;
 use App\Http\Controllers\CRUD\WarehouseController;
 use App\Models\Import;
+use App\Models\Suppliers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -80,6 +82,14 @@ Route::prefix('admin')->group(function() {
     Route::put('/items/update/{id}', [ItemController::class, 'update']);
     Route::delete('/items/delete/{id}', [ItemController::class, 'destroy']);
 
+
+    /****************Suppliers***************/
+    Route::get('/suppliers',[SuppliersController::class, 'index']);
+    Route::get('/suppliers/add', [SuppliersController::class, 'create']);
+    Route::post('/suppliers/store', [SuppliersController::class, 'store']);
+    Route::get('/suppliers/show/{id}', [SuppliersController::class, 'edit']);
+    Route::put('/suppliers/update/{id}', [SuppliersController::class, 'update']);
+    Route::delete('/suppliers/delete/{id}', [SuppliersController::class, 'destroy']);
 
     Route::prefix('auth_model')->group(function() {
 

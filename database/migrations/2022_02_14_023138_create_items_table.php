@@ -15,15 +15,8 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->char('id', 20)->primary();
-            $table->char('batch_code', 20);
             $table->string('name');
-            $table->integer('amount');
-            $table->string('unit', 10);
-            $table->integer('price');
-            $table->binary('status');
             $table->text('note')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
         });
     }
 

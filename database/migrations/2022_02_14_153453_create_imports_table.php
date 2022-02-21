@@ -17,11 +17,15 @@ class CreateImportsTable extends Migration
             $table->id();
             $table->char('item_id', 20);
             $table->char('batch_code', 20);
+            $table->bigInteger('warehouse_id');
+            $table->bigInteger('category_id');
+            $table->char('shelf_id',20);
             $table->string('name');
             $table->integer('amount');
             $table->string('unit', 10);
             $table->integer('price');
             $table->binary('status');
+            $table->char('suppliers_id', 20);
             $table->bigInteger('created_by');
             $table->text('note')->nullable();
             $table->timestamps();

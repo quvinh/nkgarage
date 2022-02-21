@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateShelvesTable extends Migration
+class CreateSuppliersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateShelvesTable extends Migration
      */
     public function up()
     {
-        Schema::create('shelves', function (Blueprint $table) {
-            $table->char('id',20);
+        Schema::create('suppliers', function (Blueprint $table) {
+            $table->char('id', 20)->primary();
             $table->string('name');
-            $table->string('position');
-            // $table->timestamps();
         });
     }
 
@@ -28,6 +26,6 @@ class CreateShelvesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shelves');
+        Schema::dropIfExists('suppliers');
     }
 }
