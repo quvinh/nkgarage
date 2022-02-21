@@ -44,18 +44,37 @@ class ImportController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'item_id' => 'required',
+            // 'detail_item_id' => 'required',
             'batch_code' => 'required',
+            'warehouse_id' => 'required',
+            'category_id' => 'required',
+            'shelf_id' => 'required',
             'name' => 'required',
             'amount' => 'required',
             'unit' => 'required',
             'price' => 'required',
-            'status' => 'required',
+            'suppliers_id' => 'required',
             'created_by' => 'required'
         ]);
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(),400);
         }
-        $data = Import::create($request->all());
+        $data = Import::create([
+            'item_id' => $request->item_id,
+            // 'detail_item_id' => $request->detail_item_id,
+            'batch_code' => $request->batch_code,
+            'warehouse_id' => $request ->warehouse_id,
+            'category_id' => $request ->category_id,
+            'shelf_id' => $request ->shelf_id,
+            'name' => $request -> name,
+            'amount' => $request->amount,
+            'unit' => $request->unit,
+            'price' => $request->price,
+            'status' => 0,
+            'suppliers_id' => $request ->suppliers_id,
+            'created_by' => $request->created_by,
+            'note' => $request->note
+        ]);
 
         // $array_data = (array) $data;
         // array_push($array_data,$data);
@@ -123,11 +142,14 @@ class ImportController extends Controller
         $validator = Validator::make($request->all(),[
             'item_id' => 'required',
             'batch_code' => 'required',
+            'warehouse_id' => 'required',
+            'category_id' => 'required',
+            'shelf_id' => 'required',
             'name' => 'required',
             'amount' => 'required',
             'unit' => 'required',
             'price' => 'required',
-            'status' => 'required',
+            'suppliers_id' => 'required',
             'created_by' => 'required'
         ]);
 
@@ -137,11 +159,16 @@ class ImportController extends Controller
 
         $data = Import::where('id', $id)->update([
             'item_id' => $request->item_id,
-            'batch_code' => $request ->batch_code,
+            // 'detail_item_id' => $request->detail_item_id,
+            'batch_code' => $request->batch_code,
+            'warehouse_id' => $request ->warehouse_id,
+            'category_id' => $request ->category_id,
+            'shelf_id' => $request ->shelf_id,
             'name' => $request -> name,
             'amount' => $request->amount,
             'unit' => $request->unit,
-            'status' => $request->status,
+            'price' => $request->price,
+            'suppliers_id' => $request ->suppliers_id,
             'created_by' => $request->created_by,
             'note' => $request->note
         ]);
@@ -186,7 +213,9 @@ class ImportController extends Controller
         //     ->count();
 
         $countItem = DB::table('detail_items')
-            ->where([['warehouse_id','=',$import[0]->warehouse_id],['item_id','=',$import[0]->item_id],['batch_code','=',$import[0]->batch_code]])
+            ->where([['warehouse_id','=',$import[0]->warehouse_id],
+                ['item_id','=',$import[0]->item_id],
+                ['batch_code','=',$import[0]->batch_code]])
             ->get()
             ->count();
         $amountItem = DB::table('detail_items')->where([
@@ -207,6 +236,7 @@ class ImportController extends Controller
             else { 
                 // Item::where('id',$request->item_id)->update(['amount'=>++$itemA[0]->amount]);
                 $item = new DetailItem();
+                // $item->detail_item_id = $import[0]->detail_item_id;
                 $item->item_id = $import[0]->item_id;
                 $item->category_id = $import[0]->category_id;
                 $item->warehouse_id = $import[0]->warehouse_id;

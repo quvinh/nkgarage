@@ -18,5 +18,6 @@ class Item extends Model
         'note',
     ];
 
+    
     public $incrementing = false;
 }

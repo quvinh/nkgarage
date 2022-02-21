@@ -39,12 +39,7 @@ class ItemController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
-            'batch_code' => 'required',
-            'name' => 'required',
-            'amount' => 'required',
-            'unit' => 'required',
-            'price' => 'required',
-            'status' => 'required'
+            'name' => 'required'
         ]);
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(),400);
@@ -95,12 +90,7 @@ class ItemController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'id' => 'required',
-            'batch_code' => 'required',
             'name' => 'required',
-            'amount' => 'required',
-            'unit' => 'required',
-            'price' => 'required',
-            'status' => 'required',
         ]);
 
         if($validator -> fails()) {
@@ -109,13 +99,7 @@ class ItemController extends Controller
 
         $data = Item::where('id', $id)->update([
             'id' => $request->id,
-            'batch_code' => $request->batch_code,
-            'name' => $request->name,
-            'amount' => $request->amount,
-            'unit' => $request->unite,
-            'price' => $request->price,
-            'status' => $request->status,
-            'note' => $request->note
+            'name' => $request->name
         ]);
 
         return response()->json([
