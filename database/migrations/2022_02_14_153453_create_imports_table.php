@@ -20,7 +20,7 @@ class CreateImportsTable extends Migration
             $table->char('batch_code', 20);
             $table->bigInteger('warehouse_id');
             $table->bigInteger('category_id');
-            $table->char('shelf_id',20);
+            $table->bigInteger('shelf_id');
             $table->string('name');
             $table->integer('amount');
             $table->string('unit', 10);

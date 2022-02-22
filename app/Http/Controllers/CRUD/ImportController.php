@@ -191,16 +191,8 @@ class ImportController extends Controller
 
     public function updateStatus(Request $request, $id){
 
-        $validator = Validator::make($request->all(),[
-            'status' => 'required'
-        ]);
-
-        if($validator -> fails()) {
-            return response()->json($validator->errors()->toJson(),400);
-        }
-
         $data = Import::where('id', $id)->update([
-            'status' => $request->status
+            'status' => '1'
         ]);
         $import = DB::table('imports')
             ->where('id',$id)
@@ -218,6 +210,7 @@ class ImportController extends Controller
                 ['batch_code','=',$import[0]->batch_code]])
             ->get()
             ->count();
+
         $amountItem = DB::table('detail_items')->where([
             ['warehouse_id','=',$import[0]->warehouse_id],
             ['item_id','=',$import[0]->item_id],
