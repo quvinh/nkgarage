@@ -20,4 +20,5 @@ class Item extends Model
 
 
     public $incrementing = false;
+    public $timestamp = false;
 }

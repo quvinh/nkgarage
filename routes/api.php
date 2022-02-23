@@ -64,7 +64,8 @@ Route::prefix('admin')->group(function() {
     Route::get('/inventory/show/{id}', [InventoryController::class, 'edit']);
     Route::put('/inventory/update/{id}', [InventoryController::class, 'update']);
     Route::delete('/inventory/delete/{id}', [InventoryController::class, 'destroy']);
-    Route::get('/inventory/showInvent', [InventoryController::class, 'showInvent']);
+    Route::get('/inventory/showInventExport', [InventoryController::class, 'showInventExport']);
+    Route::get('/inventory/showInventImport', [InventoryController::class, 'showInventImport']);
 
     Route::get('/item', [ItemController::class, 'index']);
     Route::get('/item/add', [ItemController::class, 'create']);
@@ -122,6 +123,7 @@ Route::prefix('admin')->group(function() {
     Route::post('/import/store', [ImportController::class, 'store']);
     Route::get('/import/show/{id}', [ImportController::class, 'edit']);
     Route::put('/import/update/{id}', [ImportController::class, 'update']);
+    Route::get('/import/indexStatus', [ExportController::class, 'indexStatus']);
     Route::put('/import/updateStatus/{id}', [ImportController::class, 'updateStatus']);
     Route::post('/import/updateAmountItem/{id}', [ImportController::class, 'updateAmountItem']);
     Route::delete('/import/delete/{id}', [ImportController::class, 'destroy']);
@@ -135,6 +137,7 @@ Route::prefix('admin')->group(function() {
     Route::put('/items/update/{id}', [ItemController::class, 'update']);
     Route::delete('/items/delete/{id}', [ItemController::class, 'destroy']);
     Route::get('/items/searchItem/{name}/{id}', [ItemController::class, 'searchitem']);
+    Route::get('/items/ItemInWarehouse/{id}', [ItemController::class, 'itemInWarehouse']);
 
 
 
