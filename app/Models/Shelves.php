@@ -8,7 +8,6 @@ use Illuminate\Notifications\Notifiable;
 
 class Shelves extends Model
 {
-<<<<<<< HEAD
     use HasFactory,
         Notifiable;
 
@@ -19,16 +18,6 @@ class Shelves extends Model
         'position',
     ];
 
-    
-    public $incrementing = false;
-=======
-    use HasFactory;
-    protected $table = 'shelves';
-    protected $fillable = [
-        'name',
-        'position'
-    ];
 
-    public $timestamps = false;
->>>>>>> vvuong
+    public $incrementing = false;
 }

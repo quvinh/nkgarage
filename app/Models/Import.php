@@ -13,7 +13,6 @@ class Import extends Model
 
     protected $table = 'imports';
     protected $fillable = [
-<<<<<<< HEAD
         'item_id',
         // 'detail_item_id',
         'batch_code',
@@ -21,9 +20,6 @@ class Import extends Model
         'category_id',
         'shelf_id',
         'name',
-=======
-        'detail_item_id',
->>>>>>> vvuong
         'amount',
         'unit',
         'price',
@@ -32,13 +28,7 @@ class Import extends Model
         'created_by',
         'note'
     ];
-<<<<<<< HEAD
     public function item() {
         return $this->belongsTo(Item::class, 'item_id', 'id');
-=======
-
-    public function detail_item() {
-        return $this->belongsTo(Item::class, 'detail_item_id', 'id');
->>>>>>> vvuong
     }
 }

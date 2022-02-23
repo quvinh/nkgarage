@@ -135,7 +135,7 @@ class ItemController extends Controller
         ->join('warehouses','warehouses.id','=','detail_items.warehouse_id')
         ->join('shelves','shelves.id','=','detail_items.shelf_id')
         ->join('categories','categories.id','=','detail_items.category_id')
-        ->select('items.name as nameItem','categories.name as nameCategory',
+        ->select('items.id as itemId','items.name as nameItem','categories.name as nameCategory',
             'warehouses.name as nameWarehouse','shelves.name as nameShelves',
             'batch_code','amount',
             'unit','price','status')
