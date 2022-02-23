@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\CRUD;
 
 use App\Http\Controllers\Controller;
-use App\Models\Shelves;
+use App\Models\DetailItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 
-class ShelvesController extends Controller
+class DetailitemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,11 +16,10 @@ class ShelvesController extends Controller
      */
     public function index()
     {
-        //
-        $data = Shelves::all();
+        $data = DetailItem::All();
         return response()->json([
             'data' => $data
-        ], 201);
+        ],201);
     }
 
     /**
@@ -42,23 +40,25 @@ class ShelvesController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
-            'position' => 'required|string',
+            'item_id' => 'required',
+            'category_id' => 'required',
+            'warehouse_id' => 'required',
+            'shelf_id' => 'required',
+            'batch_code' => 'required',
+            'amount' => 'required',
+            'unit' => 'required',
+            'price' => 'required'
         ]);
-
-        if($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(),400);
         }
-
-        $data = Shelves::create($request->all());
+        $data = DetailItem::create($request->all());
 
         return response()->json([
             'message' => 'Data created successfully',
-            'status' => 'Created Data',
             'data' => $data
-        ], 201);
+        ],201);
     }
 
     /**
@@ -80,12 +80,11 @@ class ShelvesController extends Controller
      */
     public function edit($id)
     {
-        //
-        $data = Shelves::find($id);
+        $data = DetailItem::find($id);
         return response()->json([
-            'status' => 'Show form edit',
-            'message' => 'Show successfully',
-            'data' => $data,
+            'status' => 'show form edit',
+            'message' => 'show successfully',
+            'data' => $data
         ]);
     }
 
@@ -98,26 +97,37 @@ class ShelvesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
-            'position' => 'required|string',
+        $validator = Validator::make($request->all(),[
+            'item_id' => 'required',
+            'category_id' => 'required',
+            'warehouse_id' => 'required',
+            'shelf_id' => 'required',
+            'batch_code' => 'required',
+            'amount' => 'required',
+            'unit' => 'required',
+            'price' => 'required'
         ]);
 
-        if($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+        if($validator -> fails()) {
+            return response()->json($validator->errors()->toJson(),400);
         }
 
-        $data = Shelves::where('id', $id)->update([
-            'name' => $request->name,
-            'position' => $request->position
+        $data = DetailItem::where('id', $id)->update([
+            'item_id' => $request->item_id,
+            'category_id' => $request->category_id,
+            'warehouse_id' =>$request->warehouse_id,
+            'shelf_id' => $request->shelf_id,
+            'batch_code' => $request->batch_code,
+            'amount' => $request->amount,
+            'unit'=>$request->unit,
+            'price'=>$request->price,
+            'status' =>$request->status
         ]);
 
         return response()->json([
-            'message' => 'Data Shelves successfully changed',
-            'status' => 'Updated Data',
-            'data' => $data,
-        ], 201);
+            'message' => 'Data Import successfully changed',
+            'data' =>$data
+        ],201);
     }
 
     /**
@@ -128,32 +138,12 @@ class ShelvesController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $data = Shelves::find($id);
+        $data = DetailItem::find($id);
         $data->delete();
 
         return response()->json([
-            'status' => 'Delete data Shelves',
-            'message' => 'Delete successfully',
+            'tatus' => 'Delete data Permissions',
+            'message' => 'Delete sucessfully',
         ], 201);
-    }
-
-    public function itemShelf($id)
-    {
-        // $shelf = DB::table('shelves')
-        //     // ->join('warehouses','warehouses.id','=','shelves.warehouse_id')
-        //     ->where('warehouse_id',$id)
-        //     ->get();
-
-        $item = DB::table('detail_items')
-            ->join('items','items.id','=','detail_items.item_id')
-            ->where('shelf_id',$id)
-            ->get();
-
-        return response()->json([
-            'message' => 'Data Shelves successfully changed',
-            'data' => $item,
-        ], 201);
-
     }
 }

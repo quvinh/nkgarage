@@ -15,8 +15,15 @@ class Shelves extends Model
     protected $fillable = [
         'name',
         'position',
+        'warehouse_id',
+        'status'
     ];
 
     public $timestamps = false;
-    // public $incrementing = false;
+
+    public $incrementing = false;
+
+    public function warehouseshelf() {
+        return $this->belongsTo(Warehouse::class, 'warehouse_id', 'id');
+    }
 }

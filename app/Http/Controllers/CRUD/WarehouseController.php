@@ -139,11 +139,15 @@ class WarehouseController extends Controller
         ], 201);
     }
 
-    public function itemShelf($id){
-        $shelf = DB::table('detail_items')
-        ->join('shelves','detail_items.shelf_id','=','shelves.id')
-        ->join('warehouses','warehouses.id','=','detail_items.warehouse_id')
-        ->join('items','detail_items.item_id','=','items.id')
-        ->select('');
+    public function shelfWarehouse($id){
+        $shelf = DB::table('shelves')
+            // ->join('warehouses','warehouses.id','=','shelves.warehouse_id')
+            ->where('warehouse_id',$id)
+            ->get();
+
+        return response()->json([
+            'message' => 'Data warehouse successfully',
+            'data' => $shelf,
+        ], 201);
     }
 }
