@@ -16,6 +16,10 @@ class CreateImportsTable extends Migration
         Schema::create('imports', function (Blueprint $table) {
             $table->id();
             $table->char('item_id', 20);
+            $table->string('name');
+            $table->bigInteger('category_id');
+            $table->bigInteger('warehouse_id');
+            $table->bigInteger('shelf');
             $table->integer('amount');
             $table->string('unit', 10);
             $table->binary('status');

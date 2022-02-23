@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\CRUD;
 
 use App\Http\Controllers\Controller;
-use App\Models\Categories;
+use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class CategoryController extends Controller
+class ItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +17,7 @@ class CategoryController extends Controller
     public function index()
     {
         //
-        $data = Categories::all();
+        $data = Item::all();
         return response()->json([
             'data' => $data
         ], 201);
@@ -50,10 +50,9 @@ class CategoryController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Categories::create($request->all());
+        $data = Item::create($request->all());
         return response()->json([
             'message' => 'Data created successfully',
-            'status' => 'Crated Data',
             'data' => $data
         ], 201);
     }
@@ -78,7 +77,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         //
-        $data = Categories::find($id);
+        $data = Item::find($id);
         return response()->json([
             'status' => 'Show form edit',
             'message' => 'Show successfully',
@@ -105,14 +104,13 @@ class CategoryController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Categories::where('id', $id)->update([
+        $data = Item::where('id', $id)->update([
             'name' => $request->name,
             'note' => $request->note
         ]);
 
         return response()->json([
-            'message' => 'Data Categories successfully changed',
-            'status' => 'Updated Data',
+            'message' => 'Data Item successfully changed',
             'data' => $data,
         ], 201);
 
@@ -127,7 +125,7 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //
-        $data = Categories::find($id);
+        $data = Item::find($id);
         $data->delete();
 
         return response()->json([

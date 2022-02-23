@@ -46,16 +46,21 @@ class Detail_ItemController extends Controller
             'item_id' => 'required',
             'category_id' => 'required',
             'shelf_id' => 'required',
-            'warehouse_id' => 'required'
+            'warehouse_id' => 'required',
+            'batch_code' => 'required',
+            'amount' => 'required',
+            'unit' => 'required',
+            'price' => 'required',
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
         $data = DetailItem::create($request->all());
         return response()->json([
             'message' => 'Data created successfully',
+            'status' => 'Created Data',
             'data' => $data
         ], 201);
     }
@@ -102,10 +107,14 @@ class Detail_ItemController extends Controller
             'item_id' => 'required',
             'category_id' => 'required',
             'shelf_id' => 'required',
-            'warehouse_id' => 'required'
+            'warehouse_id' => 'required',
+            'batch_code' => 'required',
+            'amount' => 'required',
+            'unit' => 'required',
+            'price' => 'required',
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
@@ -113,11 +122,16 @@ class Detail_ItemController extends Controller
             'item_id' => $request->item_id,
             'category_id' => $request->category_id,
             'warehouse_id' => $request->warehouse,
-            'shelf_id' => $request->shelf_id
+            'shelf_id' => $request->shelf_id,
+            'batch_code' => $request->batch_code,
+            'amount' => $request->amount,
+            'unit' => $request->unit,
+            'price' => $request->price,
         ]);
 
         return response()->json([
             'message' => 'Data DetailItem successfully changed',
+            'status' => 'Updated Data',
             'data' => $data,
         ], 201);
     }

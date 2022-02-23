@@ -15,7 +15,8 @@ class CreateExportsTable extends Migration
     {
         Schema::create('exports', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('detail_item_id');
+            $table->char('item_id',20);
+            $table->string('name');
             $table->integer('amount');
             $table->string('unit', 10);
             $table->binary('status');
@@ -35,4 +36,5 @@ class CreateExportsTable extends Migration
     {
         Schema::dropIfExists('exports');
     }
+
 }

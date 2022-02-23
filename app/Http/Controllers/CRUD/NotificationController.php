@@ -58,6 +58,7 @@ class NotificationController extends Controller
         $data = Notification::create($request->all());
         return response()->json([
             'message' => 'Data created successfully',
+            'status' => 'Created Data',
             'data' => $data
         ], 201);
     }
@@ -124,6 +125,7 @@ class NotificationController extends Controller
 
         return response()->json([
             'message' => 'Data Notification successfully changed',
+            'status' => 'Updated Data',
             'data' => $data,
         ], 201);
     }
