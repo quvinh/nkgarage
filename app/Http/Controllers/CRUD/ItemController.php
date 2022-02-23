@@ -142,7 +142,7 @@ class ItemController extends Controller
         ->select('items.id as item_id','items.name as name_item','categories.id as category_id',
             'warehouses.id as warehouse_id','shelves.id as shelf_id',
             'batch_code','amount',
-            'unit','price','status')
+            'unit','price')
         ->where([['items.name','like','%'.$name.'%'],
         ['warehouses.id','=',$id]])
         ->get();
@@ -162,9 +162,10 @@ class ItemController extends Controller
         ->select('items.id as itemId','items.name as nameItem','categories.name as nameCategory',
             'warehouses.name as nameWarehouse','shelves.name as nameShelves',
             'batch_code','amount',
-            'unit','price','status')
+            'unit','price')
         ->where('warehouses.id',$id)
         ->get();
+        // dd($search);
         return response()->json([
             'message' => 'Get all Item in Warehouse',
             'data' => $search

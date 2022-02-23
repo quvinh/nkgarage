@@ -139,7 +139,7 @@ Route::prefix('admin')->group(function() {
     Route::get('/items/show/{id}', [ItemController::class, 'edit']);
     Route::put('/items/update/{id}', [ItemController::class, 'update']);
     Route::delete('/items/delete/{id}', [ItemController::class, 'destroy']);
-    Route::get('/items/searchItem/{name}/{id}', [ItemController::class, 'searchitem']);
+    Route::get('/items/searchItem/{name}/{id}', [ItemController::class, 'searchItem']);
     Route::get('/items/itemInWarehouse/{id}', [ItemController::class, 'itemInWarehouse']);
 
     /*************Detail_item**************/
