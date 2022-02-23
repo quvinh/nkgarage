@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\CRUD;
 
 use App\Http\Controllers\Controller;
-use App\Models\Warehouse;
+use App\Models\DetailItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 
-class WarehouseController extends Controller
+class Detail_ItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +17,7 @@ class WarehouseController extends Controller
     public function index()
     {
         //
-        $data = Warehouse::all();
+        $data = DetailItem::all();
         return response()->json([
             'data' => $data
         ], 201);
@@ -44,16 +43,17 @@ class WarehouseController extends Controller
     {
         //
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
-            'location' => 'required|string',
+            'item_id' => 'required',
+            'category_id' => 'required',
+            'shelf_id' => 'required',
+            'warehouse_id' => 'required'
         ]);
 
         if($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Warehouse::create($request->all());
-
+        $data = DetailItem::create($request->all());
         return response()->json([
             'message' => 'Data created successfully',
             'data' => $data
@@ -80,7 +80,7 @@ class WarehouseController extends Controller
     public function edit($id)
     {
         //
-        $data = Warehouse::find($id);
+        $data = DetailItem::find($id);
         return response()->json([
             'status' => 'Show form edit',
             'message' => 'Show successfully',
@@ -99,22 +99,25 @@ class WarehouseController extends Controller
     {
         //
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
-            'location' => 'required|string',
+            'item_id' => 'required',
+            'category_id' => 'required',
+            'shelf_id' => 'required',
+            'warehouse_id' => 'required'
         ]);
 
         if($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Warehouse::where('id', $id)->update([
-            'name' => $request->name,
-            'location' => $request->location,
-            'note' => $request->note
+        $data = DetailItem::where('id', $id)->update([
+            'item_id' => $request->item_id,
+            'category_id' => $request->category_id,
+            'warehouse_id' => $request->warehouse,
+            'shelf_id' => $request->shelf_id
         ]);
 
         return response()->json([
-            'message' => 'Data warehouse successfully changed',
+            'message' => 'Data DetailItem successfully changed',
             'data' => $data,
         ], 201);
     }
@@ -128,20 +131,12 @@ class WarehouseController extends Controller
     public function destroy($id)
     {
         //
-        $data = Warehouse::find($id);
+        $data = DetailItem::find($id);
         $data->delete();
 
         return response()->json([
-            'status' => 'Delete data warehouse',
+            'status' => 'Delete data Category',
             'message' => 'Delete successfully',
         ], 201);
-    }
-
-    public function itemShelf($id){
-        $shelf = DB::table('detail_items')
-        ->join('shelves','detail_items.shelf_id','=','shelves.id')
-        ->join('warehouses','warehouses.id','=','detail_items.warehouse_id')
-        ->join('items','detail_items.item_id','=','items.id')
-        ->select('');
     }
 }

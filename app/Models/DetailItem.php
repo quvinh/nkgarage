@@ -5,10 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+<<<<<<< HEAD
+=======
+use Illuminate\Notifications\Notifiable;
+>>>>>>> vvuong
 
 class DetailItem extends Model
 {
     use HasFactory,
+<<<<<<< HEAD
+=======
+    Notifiable,
+>>>>>>> vvuong
     SoftDeletes;
 
     protected $table = 'detail_items';
@@ -22,7 +30,11 @@ class DetailItem extends Model
         'amount',
         'unit',
         'price',
+<<<<<<< HEAD
         'status',
+=======
+        'status'
+>>>>>>> vvuong
     ];
 
     public $timestamps = false;

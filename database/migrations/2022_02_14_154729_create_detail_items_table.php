@@ -25,7 +25,7 @@ class CreateDetailItemsTable extends Migration
             $table->integer('price');
             $table->binary('status');
             $table->timestamps();
-            $table->softDeletes();            
+            $table->softDeletes();
         });
     }
 
