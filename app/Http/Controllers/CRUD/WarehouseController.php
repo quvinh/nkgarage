@@ -150,4 +150,5 @@ class WarehouseController extends Controller
             'data' => $shelf,
         ], 201);
     }
+
 }

@@ -52,11 +52,15 @@ class ShelvesController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Shelves::create($request->all());
+        $data = Shelves::create([
+            'name' => $request->name,
+            'position' => $request->position,
+            'warehouse_id' => $request->warehouse_id,
+            'status' => '0',
+        ]);
 
         return response()->json([
             'message' => 'Data created successfully',
-            'status' => 'Created Data',
             'data' => $data
         ], 201);
     }
@@ -147,12 +151,16 @@ class ShelvesController extends Controller
 
         $item = DB::table('detail_items')
             ->join('items','items.id','=','detail_items.item_id')
+            ->join('categories','categories.id','=','detail_items.category_id')
+            ->select('detail_items.item_id as id','items.name as itemname',
+                'batch_code','categories.name as categoryname',
+                'amount','unit','status')
             ->where('shelf_id',$id)
             ->get();
 
         return response()->json([
             'message' => 'Data Shelves successfully changed',
-            'data' => $item,
+            'data' => $item
         ], 201);
 
     }
