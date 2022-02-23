@@ -52,7 +52,12 @@ class ShelvesController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Shelves::create($request->all());
+        $data = Shelves::create([
+            'name' => $request->name,
+            'position' => $request->position,
+            'warehouse_id' => $request->warehouse_id,
+            'status' => '0',
+        ]);
 
         return response()->json([
             'message' => 'Data created successfully',
@@ -107,7 +112,12 @@ class ShelvesController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Shelves::where('id', $id)->update();
+        $data = Shelves::where('id', $id)->update([
+            'name' => $request->name,
+            'position' => $request->position,
+            'warehouse_id' => $request->warehouse_id,
+            'status' => '0',
+        ]);
 
         return response()->json([
             'message' => 'Data Shelves successfully changed',
