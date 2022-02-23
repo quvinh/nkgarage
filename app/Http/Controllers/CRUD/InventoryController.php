@@ -160,7 +160,15 @@ class InventoryController extends Controller
         $invent = DB::table('imports')
             ->join('detail_items', 'detail_items.item_id', '=', 'imports.item_id')
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
-            ->select('imports.item_id', 'warehouses.name', 'imports.created_by', 'imports.amount as luongNhap', 'imports.created_at', 'detail_items.amount as tonKho', 'imports.status')
+            ->join('items', 'items.id', '=', 'detail_items.item_id')
+            ->select('imports.item_id as item_id',
+                'items.name as name_item',
+                'warehouses.name as name_warehouse',
+                'imports.created_by as created_by',
+                'imports.amount as amount_import',
+                'imports.created_at as created_at',
+                'detail_items.amount as amount_inventory',
+                'imports.status as status')
             ->where('imports.status', 1)
             ->get();
         return response()->json([
