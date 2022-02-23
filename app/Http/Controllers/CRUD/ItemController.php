@@ -129,12 +129,12 @@ class ItemController extends Controller
     }
 
     public function searchItem($name,$id){
-        
+
         $search = DB::table('detail_items')
         ->join('items','items.id','=','detail_items.item_id')
         ->join('warehouses','warehouses.id','=','detail_items.warehouse_id')
         ->join('shelves','shelves.id','=','detail_items.shelf_id')
-        ->join('categories','categories.id','=','detail_items.category_id') 
+        ->join('categories','categories.id','=','detail_items.category_id')
         ->select('items.name as nameItem','categories.name as nameCategory',
             'warehouses.name as nameWarehouse','shelves.name as nameShelves',
             'batch_code','amount',
@@ -142,11 +142,11 @@ class ItemController extends Controller
         ->where([['items.name','like','%'.$name.'%'],
         ['warehouses.id','=',$id]])
         ->get();
-        dd($search);
+        // dd($search);
         return response()->json([
             'message' => 'Data Import successfully changed',
             'data' => $search
         ], 201);
     }
-    
+
 }
