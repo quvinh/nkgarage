@@ -139,8 +139,8 @@ class ItemController extends Controller
         ->join('warehouses','warehouses.id','=','detail_items.warehouse_id')
         ->join('shelves','shelves.id','=','detail_items.shelf_id')
         ->join('categories','categories.id','=','detail_items.category_id')
-        ->select('items.id as itemId','items.name as nameItem','categories.name as nameCategory',
-            'warehouses.name as nameWarehouse','shelves.name as nameShelves',
+        ->select('items.id as item_id','items.name as name_item','categories.id as category_id',
+            'warehouses.id as warehouse_id','shelves.id as shelf_id',
             'batch_code','amount',
             'unit','price','status')
         ->where([['items.name','like','%'.$name.'%'],
