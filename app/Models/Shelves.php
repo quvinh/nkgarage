@@ -11,13 +11,19 @@ class Shelves extends Model
     use HasFactory,
         Notifiable;
 
-    protected $table = 'items';
+    protected $table = 'shelves';
     protected $fillable = [
-        'id',
         'name',
         'position',
+        'warehouse_id',
+        'status'
     ];
 
+    public $timestamps = false;
     
     public $incrementing = false;
+
+    public function warehouseshelf() {
+        return $this->belongsTo(Warehouse::class, 'warehouse_id', 'id');
+    }
 }

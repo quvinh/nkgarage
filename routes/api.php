@@ -52,6 +52,7 @@ Route::prefix('admin')->group(function() {
     Route::get('/warehouse/show/{id}', [WarehouseController::class, 'edit']);
     Route::put('/warehouse/update/{id}', [WarehouseController::class, 'update']);
     Route::delete('/warehouse/delete/{id}', [WarehouseController::class, 'destroy']);
+    Route::get('/warehouse/shelfWarehouse/{id}', [WarehouseController::class, 'shelfWarehouse']);
 
 
     /*************Shelf*************/
@@ -61,6 +62,8 @@ Route::prefix('admin')->group(function() {
     Route::get('/shelf/show/{id}', [ShelvesController::class, 'edit']);
     Route::put('/shelf/update/{id}', [ShelvesController::class, 'update']);
     Route::delete('/shelf/delete/{id}', [ShelvesController::class, 'destroy']);
+    Route::post('/shelf/itemShelf/{id}', [ShelvesController::class, 'itemShelf']);
+
 
 
     //**********Import**************/
@@ -82,6 +85,14 @@ Route::prefix('admin')->group(function() {
     Route::put('/items/update/{id}', [ItemController::class, 'update']);
     Route::delete('/items/delete/{id}', [ItemController::class, 'destroy']);
     Route::get('/items/searchItem/{name}/{id}', [ItemController::class, 'searchitem']);
+
+    /*************Detail_item**************/
+    Route::get('/detail_item',[ItemController::class, 'index']);
+    Route::get('/detail_item/add', [ItemController::class, 'create']);
+    Route::post('/detail_item/store', [ItemController::class, 'store']);
+    Route::get('/detail_item/show/{id}', [ItemController::class, 'edit']);
+    Route::put('/detail_item/update/{id}', [ItemController::class, 'update']);
+    Route::delete('/detail_item/delete/{id}', [ItemController::class, 'destroy']);
 
 
 

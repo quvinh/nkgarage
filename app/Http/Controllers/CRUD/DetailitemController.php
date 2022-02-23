@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\CRUD;
 
 use App\Http\Controllers\Controller;
-use App\Models\Warehouse;
+use App\Models\DetailItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 
-class WarehouseController extends Controller
+class DetailitemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,11 +16,10 @@ class WarehouseController extends Controller
      */
     public function index()
     {
-        //
-        $data = Warehouse::all();
+        $data = DetailItem::All();
         return response()->json([
             'data' => $data
-        ], 201);
+        ],201);
     }
 
     /**
@@ -42,22 +40,25 @@ class WarehouseController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
-            'location' => 'required|string',
+            'item_id' => 'required',
+            'category_id' => 'required',
+            'warehouse_id' => 'required',
+            'shelf_id' => 'required',
+            'batch_code' => 'required',
+            'amount' => 'required',
+            'unit' => 'required',
+            'price' => 'required'
         ]);
-
-        if($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(),400);
         }
-
-        $data = Warehouse::create($request->all());
+        $data = DetailItem::create($request->all());
 
         return response()->json([
             'message' => 'Data created successfully',
             'data' => $data
-        ], 201);
+        ],201);
     }
 
     /**
@@ -79,12 +80,11 @@ class WarehouseController extends Controller
      */
     public function edit($id)
     {
-        //
-        $data = Warehouse::find($id);
+        $data = DetailItem::find($id);
         return response()->json([
-            'status' => 'Show form edit',
-            'message' => 'Show successfully',
-            'data' => $data,
+            'status' => 'show form edit',
+            'message' => 'show successfully',
+            'data' => $data
         ]);
     }
 
@@ -97,22 +97,37 @@ class WarehouseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
-            'location' => 'required|string',
+        $validator = Validator::make($request->all(),[
+            'item_id' => 'required',
+            'category_id' => 'required',
+            'warehouse_id' => 'required',
+            'shelf_id' => 'required',
+            'batch_code' => 'required',
+            'amount' => 'required',
+            'unit' => 'required',
+            'price' => 'required'
         ]);
 
-        if($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+        if($validator -> fails()) {
+            return response()->json($validator->errors()->toJson(),400);
         }
 
-        $data = Warehouse::where('id', $id)->update();
+        $data = DetailItem::where('id', $id)->update([
+            'item_id' => $request->item_id,
+            'category_id' => $request->category_id,
+            'warehouse_id' =>$request->warehouse_id,
+            'shelf_id' => $request->shelf_id,
+            'batch_code' => $request->batch_code,
+            'amount' => $request->amount,
+            'unit'=>$request->unit,
+            'price'=>$request->price,
+            'status' =>$request->status
+        ]);
 
         return response()->json([
-            'message' => 'Data warehouse successfully changed',
-            'data' => $data,
-        ], 201);
+            'message' => 'Data Import successfully changed',
+            'data' =>$data
+        ],201);
     }
 
     /**
@@ -123,25 +138,12 @@ class WarehouseController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $data = Warehouse::find($id);
+        $data = DetailItem::find($id);
         $data->delete();
 
         return response()->json([
-            'tatus' => 'Delete data warehouse',
+            'tatus' => 'Delete data Permissions',
             'message' => 'Delete sucessfully',
-        ], 201);
-    }
-
-    public function shelfWarehouse($id){
-        $shelf = DB::table('shelves')
-            // ->join('warehouses','warehouses.id','=','shelves.warehouse_id')
-            ->where('warehouse_id',$id)
-            ->get();
-
-        return response()->json([
-            'message' => 'Data warehouse successfully',
-            'data' => $shelf,
         ], 201);
     }
 }

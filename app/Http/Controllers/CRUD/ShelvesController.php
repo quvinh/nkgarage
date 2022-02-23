@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Shelves;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class ShelvesController extends Controller
 {
@@ -130,5 +131,24 @@ class ShelvesController extends Controller
             'tatus' => 'Delete data Shelves',
             'message' => 'Delete sucessfully',
         ], 201);
+    }
+
+    public function itemShelf($id)
+    {
+        // $shelf = DB::table('shelves')
+        //     // ->join('warehouses','warehouses.id','=','shelves.warehouse_id')
+        //     ->where('warehouse_id',$id)
+        //     ->get();
+
+        $item = DB::table('detail_items')
+            ->join('items','items.id','=','detail_items.item_id')
+            ->where('shelf_id',$id)
+            ->get();
+
+        return response()->json([
+            'message' => 'Data Shelves successfully changed',
+            'data' => $item,
+        ], 201);
+
     }
 }
