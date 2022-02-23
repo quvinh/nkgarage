@@ -140,7 +140,7 @@ class ItemController extends Controller
             'batch_code','amount',
             'unit','price','status')
         ->where([['items.name','like','%'.$name.'%'],
-        ['warehouses.name','like','%'.$id.'%']])
+        ['warehouses.id','=',$id]])
         ->get();
         dd($search);
         return response()->json([
@@ -148,7 +148,5 @@ class ItemController extends Controller
             'data' => $search
         ], 201);
     }
-    public function itemShelf($id){
-        
-    }
+    
 }

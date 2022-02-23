@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class WarehouseController extends Controller
 {
@@ -130,5 +131,13 @@ class WarehouseController extends Controller
             'tatus' => 'Delete data warehouse',
             'message' => 'Delete sucessfully',
         ], 201);
+    }
+
+    public function itemShelf($id){
+        $shelf = DB::table('detail_items')
+        ->join('shelves','detail_items.shelf_id','=','shelves.id')
+        ->join('warehouses','warehouses.id','=','detail_items.warehouse_id')
+        ->join('items','detail_items.item_id','=','items.id')
+        ->select('');
     }
 }
