@@ -21,7 +21,19 @@ class ImportController extends Controller
     public function index()
     {
         $data = Import::All();
-        return $data;
+        return response()->json([
+            'data' => $data
+        ],201);
+    }
+
+    public function indexStatus() {
+        $data = DB::table('imports')
+        ->where('status', 0)
+        ->get();
+
+        return response()->json([
+            'data' => $data
+        ],201);
     }
 
     /**
@@ -70,7 +82,7 @@ class ImportController extends Controller
             'amount' => $request->amount,
             'unit' => $request->unit,
             'price' => $request->price,
-            'status' => 0,
+            'status' => '0',
             'suppliers_id' => $request ->suppliers_id,
             'created_by' => $request->created_by,
             'note' => $request->note
@@ -203,20 +215,20 @@ class ImportController extends Controller
         //     ->where('item_id', $import[0]->item_id)
         //     ->get()
         //     ->count();
-
+ 
         $countItem = DB::table('detail_items')
             ->where([['warehouse_id','=',$import[0]->warehouse_id],
                 ['item_id','=',$import[0]->item_id],
                 ['batch_code','=',$import[0]->batch_code]])
             ->get()
             ->count();
-
+        
         $amountItem = DB::table('detail_items')->where([
             ['warehouse_id','=',$import[0]->warehouse_id],
             ['item_id','=',$import[0]->item_id],
             ['batch_code','=',$import[0]->batch_code]
         ])->get('amount');
-        if($request->status==1){
+        if($import[0]->status==1){
             
             if($countItem > 0) {
                 DetailItem::where([
@@ -241,6 +253,7 @@ class ImportController extends Controller
                 $item->price = $import[0]->price;
                 $item->status = 0;
                 $item->save();
+                
             }
         }
 

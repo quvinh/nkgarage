@@ -14,7 +14,7 @@ class CreateShelvesTable extends Migration
     public function up()
     {
         Schema::create('shelves', function (Blueprint $table) {
-            $table->char('id',20);
+            $table->id();
             $table->string('name');
             $table->string('position');
             // $table->timestamps();

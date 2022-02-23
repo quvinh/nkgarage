@@ -81,6 +81,8 @@ Route::prefix('admin')->group(function() {
     Route::get('/items/show/{id}', [ItemController::class, 'edit']);
     Route::put('/items/update/{id}', [ItemController::class, 'update']);
     Route::delete('/items/delete/{id}', [ItemController::class, 'destroy']);
+    Route::get('/items/searchItem/{name}/{id}', [ItemController::class, 'searchitem']);
+
 
 
     /****************Suppliers***************/

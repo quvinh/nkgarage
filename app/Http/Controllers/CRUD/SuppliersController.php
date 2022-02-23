@@ -17,7 +17,9 @@ class SuppliersController extends Controller
     public function index()
     {
         $data = Suppliers::All();
-        return $data;
+        return response()->json([
+            'data' => $data
+        ],201);
     }
 
     /**

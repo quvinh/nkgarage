@@ -40,7 +40,7 @@ class DetailItem extends Model
     }
 
     public function warehouse() {
-        return $this->belongsTo(Warehouse::class, 'shelf_id', 'id');
+        return $this->belongsTo(Warehouse::class, 'warehouse_id', 'id');
     }
     
 }
