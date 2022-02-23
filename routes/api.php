@@ -15,7 +15,6 @@ use App\Models\Suppliers;
 use App\Http\Controllers\CRUD\Detail_ItemController;
 use App\Http\Controllers\CRUD\InventoryController;
 use App\Http\Controllers\CRUD\NotificationController;
-use App\Http\Controllers\CRUD\ItemController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
