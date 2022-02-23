@@ -1,14 +1,13 @@
 <?php
 
 namespace App\Http\Controllers\CRUD;
-
 use App\Http\Controllers\Controller;
-use App\Models\Warehouse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use App\Models\Item;
 use Illuminate\Support\Facades\DB;
 
-class WarehouseController extends Controller
+class ItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,11 +16,10 @@ class WarehouseController extends Controller
      */
     public function index()
     {
-        //
-        $data = Warehouse::all();
+        $data = Item::All();
         return response()->json([
             'data' => $data
-        ], 201);
+        ],201);
     }
 
     /**
@@ -42,22 +40,19 @@ class WarehouseController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
-            'location' => 'required|string',
+            'id' => 'required',
+            'name' => 'required'
         ]);
-
-        if($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(),400);
         }
-
-        $data = Warehouse::create($request->all());
+        $data = Item::create($request->all());
 
         return response()->json([
             'message' => 'Data created successfully',
             'data' => $data
-        ], 201);
+        ],201);
     }
 
     /**
@@ -79,12 +74,11 @@ class WarehouseController extends Controller
      */
     public function edit($id)
     {
-        //
-        $data = Warehouse::find($id);
+        $data = Item::find($id);
         return response()->json([
-            'status' => 'Show form edit',
-            'message' => 'Show successfully',
-            'data' => $data,
+            'status' => 'show form edit',
+            'message' => 'show successfully',
+            'data' => $data
         ]);
     }
 
@@ -97,22 +91,24 @@ class WarehouseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
-            'location' => 'required|string',
+        $validator = Validator::make($request->all(),[
+            'id' => 'required',
+            'name' => 'required',
         ]);
 
-        if($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+        if($validator -> fails()) {
+            return response()->json($validator->errors()->toJson(),400);
         }
 
-        $data = Warehouse::where('id', $id)->update();
+        $data = Item::where('id', $id)->update([
+            'id' => $request->id,
+            'name' => $request->name
+        ]);
 
         return response()->json([
-            'message' => 'Data warehouse successfully changed',
-            'data' => $data,
-        ], 201);
+            'message' => 'Data Import successfully changed',
+            'data' =>$data
+        ],201);
     }
 
     /**
@@ -123,21 +119,34 @@ class WarehouseController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $data = Warehouse::find($id);
+        $data = Item::find($id);
         $data->delete();
 
         return response()->json([
-            'tatus' => 'Delete data warehouse',
+            'tatus' => 'Delete data Permissions',
             'message' => 'Delete sucessfully',
         ], 201);
     }
 
-    public function itemShelf($id){
-        $shelf = DB::table('detail_items')
-        ->join('shelves','detail_items.shelf_id','=','shelves.id')
+    public function searchItem($name,$id){
+        
+        $search = DB::table('detail_items')
+        ->join('items','items.id','=','detail_items.item_id')
         ->join('warehouses','warehouses.id','=','detail_items.warehouse_id')
-        ->join('items','detail_items.item_id','=','items.id')
-        ->select('');
+        ->join('shelves','shelves.id','=','detail_items.shelf_id')
+        ->join('categories','categories.id','=','detail_items.category_id') 
+        ->select('items.name as nameItem','categories.name as nameCategory',
+            'warehouses.name as nameWarehouse','shelves.name as nameShelves',
+            'batch_code','amount',
+            'unit','price','status')
+        ->where([['items.name','like','%'.$name.'%'],
+        ['warehouses.id','=',$id]])
+        ->get();
+        dd($search);
+        return response()->json([
+            'message' => 'Data Import successfully changed',
+            'data' => $search
+        ], 201);
     }
+    
 }

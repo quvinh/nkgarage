@@ -14,13 +14,20 @@ class Import extends Model
     protected $table = 'imports';
     protected $fillable = [
         'item_id',
+        // 'detail_item_id',
+        'batch_code',
+        'warehouse_id',
+        'category_id',
+        'shelf_id',
+        'name',
         'amount',
         'unit',
+        'price',
         'status',
+        'suppliers_id',
         'created_by',
         'note'
     ];
-
     public function item() {
         return $this->belongsTo(Item::class, 'item_id', 'id');
     }

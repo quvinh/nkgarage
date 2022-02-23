@@ -4,20 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 
-class Item extends Model
+class Suppliers extends Model
 {
-    use HasFactory,
-        Notifiable;//
+    use HasFactory;
 
-    protected $table = 'items';
+    protected $table = 'suppliers';
     protected $fillable = [
         'id',
         'name',
-        'note',
     ];
 
-    
-    public $incrementing = false;
+    public function import() {
+        return $this->belongsTo(Import::class, 'suppliers_id', 'id');
+    }
 }

@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DetailItem extends Model
 {
-    use HasFactory;
+    use HasFactory,
+    SoftDeletes;
 
     protected $table = 'detail_items';
 
@@ -15,7 +17,12 @@ class DetailItem extends Model
         'item_id',
         'category_id',
         'warehouse_id',
-        'shelf_if'
+        'shelf_id',
+        'batch_code',
+        'amount',
+        'unit',
+        'price',
+        'status',
     ];
 
     public $timestamps = false;
@@ -33,6 +40,7 @@ class DetailItem extends Model
     }
 
     public function warehouse() {
-        return $this->belongsTo(Warehouse::class, 'shelf_id', 'id');
+        return $this->belongsTo(Warehouse::class, 'warehouse_id', 'id');
     }
+    
 }
