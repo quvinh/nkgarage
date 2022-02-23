@@ -64,7 +64,8 @@ Route::prefix('admin')->group(function() {
     Route::get('/inventory/show/{id}', [InventoryController::class, 'edit']);
     Route::put('/inventory/update/{id}', [InventoryController::class, 'update']);
     Route::delete('/inventory/delete/{id}', [InventoryController::class, 'destroy']);
-    Route::get('/inventory/showInvent', [InventoryController::class, 'showInvent']);
+    Route::get('/inventory/showInventExport', [InventoryController::class, 'showInventExport']);
+    Route::get('/inventory/showInventImport', [InventoryController::class, 'showInventImport']);
 
     Route::get('/item', [ItemController::class, 'index']);
     Route::get('/item/add', [ItemController::class, 'create']);
@@ -121,6 +122,7 @@ Route::prefix('admin')->group(function() {
 
     //**********Import**************/
     Route::get('/import',[ImportController::class, 'index']);
+    Route::get('/import/indexStatus',[ImportController::class, 'indexStatus']);
     Route::get('/import/add', [ImportController::class, 'create']);
     Route::post('/import/store', [ImportController::class, 'store']);
     Route::get('/import/show/{id}', [ImportController::class, 'edit']);

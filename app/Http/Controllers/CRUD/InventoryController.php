@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CRUD;
 use App\Http\Controllers\Controller;
 use App\Models\Inventories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class InventoryController extends Controller
@@ -139,6 +140,33 @@ class InventoryController extends Controller
         return response()->json([
             'status' => 'Delete data Category',
             'message' => 'Delete successfully',
+        ], 201);
+    }
+
+    public function showInventExport() {
+        $invent = DB::table('exports')
+            ->join('detail_items', 'detail_items.item_id', '=', 'exports.item_id')
+            ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
+            ->select('exports.item_id', 'warehouses.name','exports.created_by', 'exports.amount as luongXuat', 'exports.created_at', 'detail_items.amount as tonKho', 'exports.status')
+            ->where('exports.status', 1)
+            ->get();
+        return response()->json([
+            'message' => 'Show export data',
+            'status' => 'Xuất đã duyệt',
+            'data' => $invent
+        ], 201);
+    }
+    public function showInventImport() {
+        $invent = DB::table('imports')
+            ->join('detail_items', 'detail_items.item_id', '=', 'imports.item_id')
+            ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
+            ->select('imports.item_id', 'warehouses.name', 'imports.created_by', 'imports.amount as luongNhap', 'imports.created_at', 'detail_items.amount as tonKho', 'imports.status')
+            ->where('imports.status', 1)
+            ->get();
+        return response()->json([
+            'message' => 'Show import data',
+            'status' => 'Nhập đã duyệt',
+            'data' => $invent
         ], 201);
     }
 }
