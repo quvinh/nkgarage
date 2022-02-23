@@ -18,6 +18,6 @@ class Item extends Model
         'note',
     ];
 
-    
+    public $timestamps = false;
     public $incrementing = false;
 }

@@ -241,6 +241,7 @@ class ImportController extends Controller
             else { 
                 // Item::where('id',$request->item_id)->update(['amount'=>++$itemA[0]->amount]);
                 $item = new DetailItem();
+                $it = new Item();
                 // $item->detail_item_id = $import[0]->detail_item_id;
                 $item->item_id = $import[0]->item_id;
                 $item->category_id = $import[0]->category_id;
@@ -254,6 +255,9 @@ class ImportController extends Controller
                 $item->status = 0;
                 $item->save();
                 
+                $it->id = $import[0]->item_id;
+                $it->name = $import[0]->name;
+                $it->save();
             }
         }
 

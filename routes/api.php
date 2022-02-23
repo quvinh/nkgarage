@@ -62,7 +62,7 @@ Route::prefix('admin')->group(function() {
     Route::get('/shelf/show/{id}', [ShelvesController::class, 'edit']);
     Route::put('/shelf/update/{id}', [ShelvesController::class, 'update']);
     Route::delete('/shelf/delete/{id}', [ShelvesController::class, 'destroy']);
-    Route::post('/shelf/itemShelf/{id}', [ShelvesController::class, 'itemShelf']);
+    Route::get('/shelf/itemShelf/{id}', [ShelvesController::class, 'itemShelf']);
 
 
 

@@ -142,12 +142,16 @@ class ShelvesController extends Controller
 
         $item = DB::table('detail_items')
             ->join('items','items.id','=','detail_items.item_id')
+            ->join('categories','categories.id','=','detail_items.category_id')
+            ->select('detail_items.item_id as id','items.name as itemname',
+                'batch_code','categories.name as categoryname',
+                'amount','unit','status')
             ->where('shelf_id',$id)
             ->get();
 
         return response()->json([
             'message' => 'Data Shelves successfully changed',
-            'data' => $item,
+            'data' => $item
         ], 201);
 
     }
