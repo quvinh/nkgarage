@@ -16,10 +16,11 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $data = Item::All();
+        //
+        $data = Item::all();
         return response()->json([
             'data' => $data
-        ],201);
+        ], 201);
     }
 
     /**
@@ -74,12 +75,14 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
+        //
         $data = Item::find($id);
         return response()->json([
-            'status' => 'show form edit',
-            'message' => 'show successfully',
-            'data' => $data
+            'status' => 'Show form edit',
+            'message' => 'Show successfully',
+            'data' => $data,
         ]);
+
     }
 
     /**
@@ -119,6 +122,7 @@ class ItemController extends Controller
      */
     public function destroy($id)
     {
+        //
         $data = Item::find($id);
         $data->delete();
 

@@ -13,7 +13,9 @@ use App\Http\Controllers\CRUD\WarehouseController;
 use App\Models\Import;
 use App\Models\Suppliers;
 use App\Http\Controllers\CRUD\Detail_ItemController;
+use App\Http\Controllers\CRUD\InventoryController;
 use App\Http\Controllers\CRUD\NotificationController;
+use App\Http\Controllers\CRUD\ItemController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -57,6 +59,22 @@ Route::prefix('admin')->group(function() {
     Route::put('/notification/update/{id}', [NotificationController::class, 'update']);
     Route::delete('/notification/delete/{id}', [NotificationController::class, 'destroy']);
 
+    Route::get('/inventory', [InventoryController::class, 'index']);
+    Route::get('/inventory/add', [InventoryController::class, 'create']);
+    Route::post('/inventory/store', [InventoryController::class, 'store']);
+    Route::get('/inventory/show/{id}', [InventoryController::class, 'edit']);
+    Route::put('/inventory/update/{id}', [InventoryController::class, 'update']);
+    Route::delete('/inventory/delete/{id}', [InventoryController::class, 'destroy']);
+    Route::get('/inventory/showInvent', [InventoryController::class, 'showInvent']);
+
+    Route::get('/item', [ItemController::class, 'index']);
+    Route::get('/item/add', [ItemController::class, 'create']);
+    Route::post('/item/store', [ItemController::class, 'store']);
+    Route::get('/item/show/{id}', [ItemController::class, 'edit']);
+    Route::put('/item/update/{id}', [ItemController::class, 'update']);
+    Route::delete('/item/delete/{id}', [ItemController::class, 'destroy']);
+
+
     Route::get('/detail_item', [Detail_ItemController::class, 'index']);
     Route::get('/detail_item/add', [Detail_ItemController::class, 'create']);
     Route::post('/detail_item/store', [Detail_ItemController::class, 'store']);
@@ -66,10 +84,12 @@ Route::prefix('admin')->group(function() {
 
 
     Route::get('/export', [ExportController::class, 'index']);
+    Route::get('/export/indexStatus', [ExportController::class, 'indexStatus']);
     Route::get('/export/add', [ExportController::class, 'create']);
     Route::post('/export/store', [ExportController::class, 'store']);
     Route::get('/export/show/{id}', [ExportController::class, 'edit']);
     Route::put('/export/update/{id}', [ExportController::class, 'update']);
+    Route::put('/export/updateStatus/{id}', [ExportController::class, 'updateStatus']);
     Route::delete('/export/delete/{id}', [ExportController::class, 'destroy']);
 
     Route::get('/category', [CategoryController::class, 'index']);

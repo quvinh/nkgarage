@@ -53,6 +53,7 @@ class CategoryController extends Controller
         $data = Categories::create($request->all());
         return response()->json([
             'message' => 'Data created successfully',
+            'status' => 'Crated Data',
             'data' => $data
         ], 201);
     }
@@ -111,6 +112,7 @@ class CategoryController extends Controller
 
         return response()->json([
             'message' => 'Data Categories successfully changed',
+            'status' => 'Updated Data',
             'data' => $data,
         ], 201);
 

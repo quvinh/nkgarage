@@ -56,6 +56,7 @@ class WarehouseController extends Controller
 
         return response()->json([
             'message' => 'Data created successfully',
+            'status' => 'Created Data',
             'data' => $data
         ], 201);
     }
@@ -115,6 +116,7 @@ class WarehouseController extends Controller
 
         return response()->json([
             'message' => 'Data warehouse successfully changed',
+            'status' => 'Updated Data',
             'data' => $data,
         ], 201);
     }

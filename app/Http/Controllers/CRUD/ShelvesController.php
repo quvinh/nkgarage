@@ -55,6 +55,7 @@ class ShelvesController extends Controller
 
         return response()->json([
             'message' => 'Data created successfully',
+            'status' => 'Created Data',
             'data' => $data
         ], 201);
     }
@@ -113,6 +114,7 @@ class ShelvesController extends Controller
 
         return response()->json([
             'message' => 'Data Shelves successfully changed',
+            'status' => 'Updated Data',
             'data' => $data,
         ], 201);
     }
