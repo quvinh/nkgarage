@@ -6,6 +6,7 @@ use App\Http\Controllers\CRUD\Auth\RolesController;
 use App\Http\Controllers\CRUD\ImportController;
 use App\Http\Controllers\CRUD\ItemController;
 use App\Http\Controllers\CRUD\CategoryController;
+use App\Http\Controllers\CRUD\DashBoardController;
 use App\Http\Controllers\CRUD\ExportController;
 use App\Http\Controllers\CRUD\ShelvesController;
 use App\Http\Controllers\CRUD\SuppliersController;
@@ -50,6 +51,11 @@ Route::group([
 
 Route::prefix('admin')->group(function() {
     Route::get('/');
+
+    Route::get('/dashboard/tonKho', [DashBoardController::class, 'tonKho']);
+    Route::get('/dashboard/solgKho', [DashBoardController::class, 'solgKho']);
+    Route::get('/dashboard/export', [DashBoardController::class, 'export']);
+    Route::get('/dashboard/import', [DashBoardController::class, 'import']);
 
     Route::get('/notification', [NotificationController::class, 'index']);
     Route::get('/notification/add', [NotificationController::class, 'create']);

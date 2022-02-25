@@ -15,6 +15,7 @@ class Export extends Model
     protected $fillable = [
         'item_id',
         'name',
+        'code',
         'warehouse_id',
         'amount',
         'unit',

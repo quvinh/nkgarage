@@ -87,7 +87,7 @@ class TransferController extends Controller
             }
         } else {
             $newNotify = new Notification();
-            $newNotify->detail_item = null;
+            $newNotify->detail_item = $detail_item[0]->id;
             $newNotify->title = 'Thiếu vật tư';
             $newNotify->content = 'Không thể chuyển vật tư';
             $newNotify->amount = $request->amount;

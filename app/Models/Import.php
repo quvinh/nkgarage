@@ -14,7 +14,7 @@ class Import extends Model
     protected $table = 'imports';
     protected $fillable = [
         'item_id',
-        // 'detail_item_id',
+        'code',
         'batch_code',
         'warehouse_id',
         'category_id',

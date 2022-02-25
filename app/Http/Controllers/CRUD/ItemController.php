@@ -151,7 +151,7 @@ class ItemController extends Controller
             'data' => $search
         ], 201);
     }
-    public function searchWarehouse($id){
+    public function ItemInWarehouse($id) {
         $search = DB::table('detail_items')
         ->join('items','items.id','=','detail_items.item_id')
         ->join('warehouses','warehouses.id','=','detail_items.warehouse_id')
