@@ -73,7 +73,7 @@ class ImportController extends Controller
         }
         $data = Import::create([
             'item_id' => $request->item_id,
-            // 'detail_item_id' => $request->detail_item_id,
+            'code' => $request->code,
             'batch_code' => $request->batch_code,
             'warehouse_id' => $request ->warehouse_id,
             'category_id' => $request ->category_id,
@@ -90,14 +90,14 @@ class ImportController extends Controller
 
         // $array_data = (array) $data;
         // array_push($array_data,$data);
-        
+
         return response()->json([
             'message' => 'Data created successfully',
             'data' => $data
         ],201);
     }
 
-     
+
     // public function waitStore(Request $request) {
 
     //     $validator = Validator::make($request->all(), [
@@ -147,7 +147,7 @@ class ImportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    
+
     public function update(Request $request, $id)
     {
 
@@ -185,7 +185,7 @@ class ImportController extends Controller
             'note' => $request->note
         ]);
 
-        
+
 
         return response()->json([
             'message' => 'Data Import successfully changed',
@@ -215,21 +215,21 @@ class ImportController extends Controller
         //     ->where('item_id', $import[0]->item_id)
         //     ->get()
         //     ->count();
- 
+
         $countItem = DB::table('detail_items')
             ->where([['warehouse_id','=',$import[0]->warehouse_id],
                 ['item_id','=',$import[0]->item_id],
                 ['batch_code','=',$import[0]->batch_code]])
             ->get()
             ->count();
-        
+
         $amountItem = DB::table('detail_items')->where([
             ['warehouse_id','=',$import[0]->warehouse_id],
             ['item_id','=',$import[0]->item_id],
             ['batch_code','=',$import[0]->batch_code]
         ])->get('amount');
         if($import[0]->status==1){
-            
+
             if($countItem > 0) {
                 DetailItem::where([
                     ['warehouse_id','=',$import[0]->warehouse_id],
@@ -238,7 +238,7 @@ class ImportController extends Controller
                     ])->update(['amount'=>$amountItem[0]->amount+$import[0]->amount]);
 
             }
-            else { 
+            else {
                 // Item::where('id',$request->item_id)->update(['amount'=>++$itemA[0]->amount]);
                 $item = new DetailItem();
                 // $item->detail_item_id = $import[0]->detail_item_id;
@@ -253,7 +253,7 @@ class ImportController extends Controller
                 $item->price = $import[0]->price;
                 $item->status = 0;
                 $item->save();
-                
+
             }
         }
 

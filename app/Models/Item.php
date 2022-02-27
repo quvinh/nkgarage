@@ -13,12 +13,12 @@ class Item extends Model
 
     protected $table = 'items';
     protected $fillable = [
-        'id',
-        'name',
-        'note',
+       'id',
+       'name',
+       'note'
     ];
 
 
     public $incrementing = false;
-    public $timestamp = false;
+    public $timestamps = false;
 }

@@ -143,30 +143,51 @@ class InventoryController extends Controller
             'message' => 'Delete successfully',
         ], 201);
     }
-    public function showInventExport() {
-        $invent = DB::table('exports')
-            ->join('detail_items', 'detail_items.item_id', '=', 'exports.item_id')
-            ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
-            ->select('exports.item_id', 'warehouses.name','exports.created_by', 'exports.amount as luongXuat', 'exports.created_at', 'detail_items.amount as tonKho', 'exports.status')
-            ->where('exports.status', 1)
+    public function showHistoryExport($id) {
+        $history = DB::table('exports')
+            ->join('warehouses', 'warehouses.id', '=', 'exports.warehouse_id')
+            ->select('exports.item_id', 'exports.name', 'warehouses.name as tenKho','exports.code', 'exports.created_by', 'exports.amount as luongXuat', 'exports.created_at','exports.status')
+            ->where('code', $id)
             ->get();
         return response()->json([
             'message' => 'Show export data',
-            'status' => 'Xuất đã duyệt',
-            'data' => $invent
+            'status' => 'History Export',
+            'data' => $history
         ], 201);
     }
-    public function showInventImport() {
-        $invent = DB::table('imports')
-            ->join('detail_items', 'detail_items.item_id', '=', 'imports.item_id')
-            ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
-            ->select('imports.item_id', 'warehouses.name', 'imports.created_by', 'imports.amount as luongNhap', 'imports.created_at', 'detail_items.amount as tonKho', 'imports.status')
-            ->where('imports.status', 1)
+    public function showHistoryImport($id) {
+        $history = DB::table('imports')
+            ->join('warehouses', 'warehouses.id', '=', 'imports.warehouse_id')
+            ->select('imports.name','imports.item_id', 'warehouses.name as tenKho','imports.code', 'imports.created_by', 'imports.amount as luongNhap', 'imports.created_at','imports.status')
+            ->where('code', $id)
             ->get();
         return response()->json([
             'message' => 'Show import data',
-            'status' => 'Nhập đã duyệt',
-            'data' => $invent
+            'status' => 'History Import',
+            'data' => $history
         ], 201);
     }
+    public function showCodeImport() {
+        $history = DB::table('imports')
+            ->join('warehouses', 'warehouses.id', '=', 'imports.warehouse_id')
+            ->select('warehouses.name as tenKho','imports.code',DB::raw('date_format(imports.created_at, "%d/%m/%Y") as created_at'), 'imports.created_by','imports.status')
+            ->get();
+        return response()->json([
+            'message' => 'Show import data',
+            'status' => 'History Import',
+            'data' => $history
+        ], 201);
+    }
+    public function showCodeExport() {
+        $history = DB::table('exports')
+            ->join('warehouses', 'warehouses.id', '=', 'exports.warehouse_id')
+            ->select('warehouses.name as tenKho','exports.code',DB::raw('date_format(exports.created_at, "%d/%m/%Y") as created_at'), 'exports.created_by','exports.status')
+            ->get();
+        return response()->json([
+            'message' => 'Show export data',
+            'status' => 'History export',
+            'data' => $history
+        ], 201);
+    }
+
 }

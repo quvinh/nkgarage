@@ -86,9 +86,9 @@ class DashBoardController extends Controller
     public function export()
     {
         $export = DB::table('exports')
-            ->select(DB::raw('sum(exports.amount) as exportAmount'), DB::raw('MONTH(created_at) as month'))
+            ->select(DB::raw('sum(exports.amount) as exportAmount'), DB::raw('date_format(created_at, "%M") as month'))
             ->groupBy('month', 'status')
-            ->having('status', 1)
+            ->having('status', 0)
             ->get();
         return response()->json([
             'message' => 'Data DashBoard',
@@ -100,9 +100,9 @@ class DashBoardController extends Controller
     public function import()
     {
         $import = DB::table('imports')
-            ->select(DB::raw('sum(imports.amount) as importAmount'), DB::raw('MONTH(created_at) as month'))
+            ->select(DB::raw('sum(imports.amount) as importAmount'), DB::raw('date_format(created_at, "%M") as month'))
             ->groupBy('month', 'status')
-            ->having('status', 1)
+            ->having('status', 0)
             ->get();
         return response()->json([
             'message' => 'Data DashBoard',
@@ -135,4 +135,29 @@ class DashBoardController extends Controller
             'data' => $tonKho,
         ], 201);
     }
+    public function exportCode ()
+    {
+        $exportCode = DB::table('exports')
+        ->select(DB::raw('count(code) as exportCode, created_at'))
+        ->get();
+        return response()->json([
+            'message' => 'Data DashBoard',
+            'status' => 'DashBoard',
+            'data' => $exportCode,
+        ], 201);
+    }
+    public function importCode ()
+    {
+        $importCode = DB::table('imports')
+        ->select(DB::raw('count(code) as importCode, date_format(created_at, "%M") as month, day(created_at) as day'))
+        ->groupBy('month', 'day', 'status')
+        ->having('status', 0)
+        ->get();
+        return response()->json([
+            'message' => 'Data DashBoard',
+            'status' => 'DashBoard',
+            'data' => $importCode,
+        ], 201);
+    }
+
 }

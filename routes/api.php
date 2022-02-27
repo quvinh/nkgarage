@@ -56,6 +56,8 @@ Route::prefix('admin')->group(function() {
     Route::get('/dashboard/solgKho', [DashBoardController::class, 'solgKho']);
     Route::get('/dashboard/export', [DashBoardController::class, 'export']);
     Route::get('/dashboard/import', [DashBoardController::class, 'import']);
+    Route::get('/dashboard/importCode', [DashBoardController::class, 'importCode']);
+    Route::get('/dashboard/exportCode', [DashBoardController::class, 'exportCode']);
 
     Route::get('/notification', [NotificationController::class, 'index']);
     Route::get('/notification/add', [NotificationController::class, 'create']);
@@ -70,8 +72,10 @@ Route::prefix('admin')->group(function() {
     Route::get('/inventory/show/{id}', [InventoryController::class, 'edit']);
     Route::put('/inventory/update/{id}', [InventoryController::class, 'update']);
     Route::delete('/inventory/delete/{id}', [InventoryController::class, 'destroy']);
-    Route::get('/inventory/showInventExport', [InventoryController::class, 'showInventExport']);
-    Route::get('/inventory/showInventImport', [InventoryController::class, 'showInventImport']);
+    Route::get('/inventory/showHistoryExport/{id}', [InventoryController::class, 'showHistoryExport']);
+    Route::get('/inventory/showHistoryImport/{id}', [InventoryController::class, 'showHistoryImport']);
+    Route::get('/inventory/showCodeExport', [InventoryController::class, 'showCodeExport']);
+    Route::get('/inventory/showCodeImport', [InventoryController::class, 'showCodeImport']);
 
     Route::get('/item', [ItemController::class, 'index']);
     Route::get('/item/add', [ItemController::class, 'create']);

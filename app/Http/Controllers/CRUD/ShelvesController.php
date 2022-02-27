@@ -44,7 +44,7 @@ class ShelvesController extends Controller
         //
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
-            'position' => 'required|string',
+            'position' => 'required',
         ]);
 
         if($validator->fails()) {

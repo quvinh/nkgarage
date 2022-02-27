@@ -15,9 +15,10 @@ class Shelves extends Model
     protected $fillable = [
         'id',
         'name',
-        'position',
+        'position'
     ];
 
 
     public $incrementing = false;
+    public $timestamps = false;
 }
