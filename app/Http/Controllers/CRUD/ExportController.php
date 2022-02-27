@@ -83,8 +83,9 @@ class ExportController extends Controller
             if ($request->amount <= $detail_item[0]->amount) {
                 $newExport = new Export();
                 $newExport->item_id =$request->item_id;
+                $newExport->code = $request->code;
                 $newExport->amount = $request->amount;
-                // $newExport->warehouse_id = $request->warehouse_id;
+                $newExport->warehouse_id = $request->warehouse_id;
                 $newExport->name = $item[0]->name;
                 $newExport->unit = $request->unit;
                 $newExport->created_by = $request->created_by;

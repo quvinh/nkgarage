@@ -73,7 +73,7 @@ class ImportController extends Controller
         }
         $data = Import::create([
             'item_id' => $request->item_id,
-            // 'detail_item_id' => $request->detail_item_id,
+            'code' => $request->code,
             'batch_code' => $request->batch_code,
             'warehouse_id' => $request ->warehouse_id,
             'category_id' => $request ->category_id,

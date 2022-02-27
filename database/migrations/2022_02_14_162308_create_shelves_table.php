@@ -17,9 +17,12 @@ class CreateShelvesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('position');
+<<<<<<< HEAD
             $table->bigInteger('warehouse_id');
             $table->binary('status');
             // $table->timestamps();
+=======
+>>>>>>> vvuong2
         });
     }
 

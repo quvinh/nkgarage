@@ -7,6 +7,7 @@ use App\Http\Controllers\CRUD\Auth\RolesController;
 use App\Http\Controllers\CRUD\ImportController;
 use App\Http\Controllers\CRUD\ItemController;
 use App\Http\Controllers\CRUD\CategoryController;
+use App\Http\Controllers\CRUD\DashBoardController;
 use App\Http\Controllers\CRUD\ExportController;
 use App\Http\Controllers\CRUD\ShelvesController;
 use App\Http\Controllers\CRUD\SuppliersController;
@@ -57,6 +58,13 @@ Route::prefix('admin')->group(function() {
     Route::put('/detail_user/update/{id}', [DetailUserController::class, 'update']);
     Route::delete('/detail_user/delete/{id}', [DetailUserController::class, 'destroy']);
 
+    Route::get('/dashboard/tonKho', [DashBoardController::class, 'tonKho']);
+    Route::get('/dashboard/solgKho', [DashBoardController::class, 'solgKho']);
+    Route::get('/dashboard/export', [DashBoardController::class, 'export']);
+    Route::get('/dashboard/import', [DashBoardController::class, 'import']);
+    Route::get('/dashboard/importCode', [DashBoardController::class, 'importCode']);
+    Route::get('/dashboard/exportCode', [DashBoardController::class, 'exportCode']);
+
     Route::get('/notification', [NotificationController::class, 'index']);
     Route::get('/notification/add', [NotificationController::class, 'create']);
     Route::post('/notification/store', [NotificationController::class, 'store']);
@@ -70,8 +78,21 @@ Route::prefix('admin')->group(function() {
     Route::get('/inventory/show/{id}', [InventoryController::class, 'edit']);
     Route::put('/inventory/update/{id}', [InventoryController::class, 'update']);
     Route::delete('/inventory/delete/{id}', [InventoryController::class, 'destroy']);
+
     Route::get('/inventory/showInventExport', [InventoryController::class, 'showInventExport']);
     Route::get('/inventory/showInventImport', [InventoryController::class, 'showInventImport']);
+    Route::get('/inventory/showHistoryExport/{id}', [InventoryController::class, 'showHistoryExport']);
+    Route::get('/inventory/showHistoryImport/{id}', [InventoryController::class, 'showHistoryImport']);
+    Route::get('/inventory/showCodeExport', [InventoryController::class, 'showCodeExport']);
+    Route::get('/inventory/showCodeImport', [InventoryController::class, 'showCodeImport']);
+
+    Route::get('/item', [ItemController::class, 'index']);
+    Route::get('/item/add', [ItemController::class, 'create']);
+    Route::post('/item/store', [ItemController::class, 'store']);
+    Route::get('/item/show/{id}', [ItemController::class, 'edit']);
+    Route::put('/item/update/{id}', [ItemController::class, 'update']);
+    Route::delete('/item/delete/{id}', [ItemController::class, 'destroy']);
+
 
     Route::get('/detail_item', [Detail_ItemController::class, 'index']);
     Route::get('/detail_item/add', [Detail_ItemController::class, 'create']);
@@ -125,6 +146,7 @@ Route::prefix('admin')->group(function() {
     Route::post('/import/store', [ImportController::class, 'store']);
     Route::get('/import/show/{id}', [ImportController::class, 'edit']);
     Route::put('/import/update/{id}', [ImportController::class, 'update']);
+    Route::get('/import/indexStatus', [ExportController::class, 'indexStatus']);
     Route::put('/import/updateStatus/{id}', [ImportController::class, 'updateStatus']);
     Route::post('/import/updateAmountItem/{id}', [ImportController::class, 'updateAmountItem']);
     Route::delete('/import/delete/{id}', [ImportController::class, 'destroy']);
