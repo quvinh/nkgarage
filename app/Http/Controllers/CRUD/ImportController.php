@@ -215,9 +215,11 @@ class ImportController extends Controller
         //     ->where('item_id', $import[0]->item_id)
         //     ->get()
         //     ->count();
- 
+        $item_id1 = DB::table('items')->get('id');
+
         $countItem = DB::table('detail_items')
             ->where([['warehouse_id','=',$import[0]->warehouse_id],
+                ['shelf_id','=',$import[0]->shelf_id],
                 ['item_id','=',$import[0]->item_id],
                 ['batch_code','=',$import[0]->batch_code]])
             ->get()
@@ -225,42 +227,41 @@ class ImportController extends Controller
         
         $amountItem = DB::table('detail_items')->where([
             ['warehouse_id','=',$import[0]->warehouse_id],
+            ['shelf_id','=',$import[0]->shelf_id],
             ['item_id','=',$import[0]->item_id],
             ['batch_code','=',$import[0]->batch_code]
         ])->get('amount');
+
         if($import[0]->status==1){
             
             if($countItem > 0) {
                 DetailItem::where([
                     ['warehouse_id','=',$import[0]->warehouse_id],
+                    ['shelf_id','=',$import[0]->shelf_id],
                     ['item_id','=',$import[0]->item_id],
                     ['batch_code','=',$import[0]->batch_code]
                     ])->update(['amount'=>$amountItem[0]->amount+$import[0]->amount]);
+            }
+            // Item::where('id',$request->item_id)->update(['amount'=>++$itemA[0]->amount]);
+            $item = new DetailItem();
+            // $item->detail_item_id = $import[0]->detail_item_id;
+            $item->item_id = $import[0]->item_id;
+            $item->category_id = $import[0]->category_id;
+            $item->warehouse_id = $import[0]->warehouse_id;
+            $item->shelf_id = $import[0]->shelf_id;
+            $item->batch_code = $import[0]->batch_code;
+            // $item->name = $import[0]->name;
+            $item->amount = $import[0]->amount;
+            $item->unit = $import[0]->unit;
+            $item->price = $import[0]->price;
+            $item->status = 0;
+            $item->save();
 
-            }
-            else { 
-                // Item::where('id',$request->item_id)->update(['amount'=>++$itemA[0]->amount]);
-                $item = new DetailItem();
-                $it = new Item();
-                // $item->detail_item_id = $import[0]->detail_item_id;
-                $item->item_id = $import[0]->item_id;
-                $item->category_id = $import[0]->category_id;
-                $item->warehouse_id = $import[0]->warehouse_id;
-                $item->shelf_id = $import[0]->shelf_id;
-                $item->batch_code = $import[0]->batch_code;
-                // $item->name = $import[0]->name;
-                $item->amount = $import[0]->amount;
-                $item->unit = $import[0]->unit;
-                $item->price = $import[0]->price;
-                $item->status = 0;
-                $item->save();
-                
-                $it->id = $import[0]->item_id;
-                $it->name = $import[0]->name;
-                $it->save();
-            }
+            $it = new Item();
+            $it->id = $import[0]->item_id;
+            $it->name = $import[0]->name;
+            $it->save();
         }
-
         return response()->json([
             'message' => 'Data Import successfully changed',
             'data' =>$data

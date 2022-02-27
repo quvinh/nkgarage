@@ -148,5 +148,30 @@ class ItemController extends Controller
             'data' => $search
         ], 201);
     }
+
+    public function amountItemsplit($id,$warehouse_id,$shelf_id){
+        $amountKKD = DB::table('exports')
+            ->where([['item_id','=',$id],
+                ['warehouse_id','=',$warehouse_id],
+                ['shelf_id','=',$shelf_id]])
+            ->get('amount')
+            ->sum();
+        
+        $amountitems = DB::table('detail_items')
+        ->where([['item_id','=',$id],
+        ['warehouse_id','=',$warehouse_id],
+        ['shelf_id','=',$shelf_id]])
+            ->get('amount')
+            ->sum();
+        
+        $amountKD = $amountitems - $amountKKD;
+
+        return response()->json([
+            'message' => 'Data Import successfully changed',
+            'amountKD' => $amountKD,
+            'amountKKD' => $amountKKD,
+            'amountitems' => $amountitems
+        ], 201);
+    }
     
 }

@@ -81,6 +81,7 @@ class DetailitemController extends Controller
     public function edit($id)
     {
         $data = DetailItem::find($id);
+        
         return response()->json([
             'status' => 'show form edit',
             'message' => 'show successfully',
@@ -146,4 +147,6 @@ class DetailitemController extends Controller
             'message' => 'Delete sucessfully',
         ], 201);
     }
+
+    
 }

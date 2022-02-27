@@ -107,7 +107,11 @@ class WarehouseController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Warehouse::where('id', $id)->update();
+        $data = Warehouse::where('id', $id)->update([
+            'name' => $request->name,
+            'location' => $request->location,
+            'note' => $request->note
+        ]);
 
         return response()->json([
             'message' => 'Data warehouse successfully changed',
@@ -142,6 +146,17 @@ class WarehouseController extends Controller
         return response()->json([
             'message' => 'Data warehouse successfully',
             'data' => $shelf,
+        ], 201);
+    }
+    public function amountShelf($id){
+        $amount = DB::table('shelves')
+        ->where('warehouse_id',$id)
+        ->get()
+        ->count();
+
+        return response()->json([
+            'message' => 'Data warehouse successfully',
+            'data' => $amount,
         ], 201);
     }
 }
