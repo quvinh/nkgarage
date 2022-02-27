@@ -18,10 +18,11 @@ class RolesController extends Controller
     {
         //
         $data = Roles::all();
-        // return response()->json([
-        //     'data' => $data
-        // ], 201);
-        return $data;
+        return response()->json([
+            'status' => 'get all roles',
+            'data' => $data
+        ], 201);
+        // return $data;
     }
 
     /**

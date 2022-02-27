@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -26,12 +27,6 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
-    public function showFormLogin() {
-        return response()->json([
-            'status' => 'Show form login',
-            'message' => '...',
-        ]);
-    }
 
     public function login(Request $request)
     {
@@ -160,6 +155,21 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'User successfully changed password',
             'user' => $user,
+        ], 201);
+    }
+
+    public function users() {
+        $data = DB::table('users')
+            ->leftJoin('detail_users', 'users.id', '=', 'detail_users.id')
+            ->select('users.id as id', 'users.username as username',
+            'users.email as email', 'users.fullname', 'users.phone',
+            'detail_users.address as address', 'detail_users.birthday as birthday',
+            'detail_users.gender')
+            ->get();
+        // $data = User::all();
+        return response()->json([
+            'message' => 'All users',
+            'data' => $data,
         ], 201);
     }
 }

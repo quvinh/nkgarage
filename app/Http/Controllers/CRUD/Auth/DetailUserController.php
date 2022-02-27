@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\CRUD\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Permissions;
+use App\Models\DetailUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class PermissionController extends Controller
+class DetailUserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,14 +17,11 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        //
-        $data = Permissions::all();
-
-        // return response()->json([,
-        //     'status' => 'All permission',
-        //     'data' => $data
-        // ], 201);
-        return $data;
+        $data = DetailUser::all();
+        return response()->json([
+            'status' => 'get all roles',
+            'data' => $data
+        ], 201);
     }
 
     /**
@@ -42,24 +40,41 @@ class PermissionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $user_id)
     {
-        //
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
+            'address' => 'required|string',
+            'birthday' => 'required',
+            'gender' => 'required',
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Permissions::create($request->all());
+        $checkUserID = DB::table('detail_users')
+            ->where('user_id', $user_id)
+            ->count();
+        if ($checkUserID > 0) {
+            $data = DetailUser::where('user_id', $user_id)
+                ->update([
+                    'address' => $request->address,
+                    'birthday' => $request->birthday,
+                    'gender' => $request->gender
+                ]);
+            dd($request);
+            return response()->json([
+                'message' => 'Data updated successfully',
+                'status' => 'Update'
+            ], 201);
+        } else {
+            $data = DetailUser::create($request->all());
 
-        return response()->json([
-            'message' => 'Data created successfully',
-            'data' => $data
-        ], 201);
-        // return $data;
+            return response()->json([
+                'message' => 'Data created successfully',
+                'data' => $data
+            ], 201);
+        }
     }
 
     /**
@@ -79,16 +94,17 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id) //idUser
     {
-        //
-        $data = Permissions::find($id);
+        // $data = DetailUser::find($id);
+        $data = DB::table('detail_users')
+            ->where('user_id', $id)
+            ->get();
         return response()->json([
             'status' => 'Show form edit',
             'message' => 'Show successfully',
             'data' => $data,
         ]);
-        // return $data;
     }
 
     /**
@@ -100,25 +116,25 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'address' => 'required|string',
+            'birthday' => 'required',
+            'gender' => 'required',
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Permissions::where('id', $id)->update([
+        $data = DetailUser::where('id', $id)->update([
             'name' => $request->name,
             'note' => $request->note
         ]);
 
         return response()->json([
-            'message' => 'Data Permissions successfully changed',
+            'message' => 'Data DetailUser successfully changed',
             'data' => $data,
         ], 201);
-        // return $data;
     }
 
     /**
@@ -129,12 +145,11 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $data = Permissions::find($id);
+        $data = DetailUser::find($id);
         $data->delete();
 
         return response()->json([
-            'tatus' => 'Delete data Permissions',
+            'tatus' => 'Delete data DetailUser',
             'message' => 'Delete sucessfully',
         ], 201);
     }
