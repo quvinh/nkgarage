@@ -150,5 +150,15 @@ class WarehouseController extends Controller
             'data' => $shelf,
         ], 201);
     }
+    public function amountShelf($id){
+        $amount = DB::table('shelves')
+        ->where('warehouse_id',$id)
+        ->get()
+        ->count();
 
+        return response()->json([
+            'message' => 'Data warehouse successfully',
+            'data' => $amount,
+        ], 201);
+    }
 }

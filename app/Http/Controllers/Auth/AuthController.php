@@ -161,15 +161,22 @@ class AuthController extends Controller
     public function users() {
         $data = DB::table('users')
             ->leftJoin('detail_users', 'users.id', '=', 'detail_users.id')
+            ->leftJoin('role_users', 'users.id', '=', 'role_users.user_id')
             ->select('users.id as id', 'users.username as username',
             'users.email as email', 'users.fullname', 'users.phone',
             'detail_users.address as address', 'detail_users.birthday as birthday',
-            'detail_users.gender')
+            'detail_users.gender', 'role_users.roles_id as roles_id')
             ->get();
-        // $data = User::all();
+        // dd($data);
+
+        $dataRoles = DB::table('roles')
+            ->where('id', $data[0]->roles_id)
+            ->get();
+
         return response()->json([
             'message' => 'All users',
             'data' => $data,
+            'dataRoles' => $dataRoles,
         ], 201);
     }
 }

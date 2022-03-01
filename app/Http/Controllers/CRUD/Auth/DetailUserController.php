@@ -4,6 +4,7 @@ namespace App\Http\Controllers\CRUD\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\DetailUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -145,12 +146,21 @@ class DetailUserController extends Controller
      */
     public function destroy($id)
     {
-        $data = DetailUser::find($id);
+        $data = User::find($id);
         $data->delete();
 
         return response()->json([
-            'tatus' => 'Delete data DetailUser',
+            'status' => 'Delete data User',
             'message' => 'Delete sucessfully',
         ], 201);
     }
+
+    // public function deleteUser($id)
+    // {
+    //     User::where('id', $id)->delete();
+    //     return response()->json([
+    //         'status' => 'Delete data User',
+    //         'message' => 'Delete sucessfully',
+    //     ], 201);
+    // }
 }

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\CRUD\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Roles;
+use App\Models\RoleUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class RolesController extends Controller
@@ -48,7 +50,7 @@ class RolesController extends Controller
             'name' => 'required|string|between:2,100',
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
@@ -103,7 +105,7 @@ class RolesController extends Controller
             'name' => 'required|string|between:2,100',
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
@@ -133,6 +135,56 @@ class RolesController extends Controller
         return response()->json([
             'tatus' => 'Delete data Roles',
             'message' => 'Delete sucessfully',
+        ], 201);
+    }
+
+    public function detailRoles($id)
+    {
+        $data = DB::table('permission_roles')
+            ->join('roles', 'roles.id', '=', 'permission_roles.roles_id')
+            ->join('permissions', 'permissions.id', '=', 'permission_roles.permission_id')
+            ->select(
+                'roles.id as roles_id',
+                'roles.name',
+                'permissions.id as permission_id',
+                'permissions.name as permission_name'
+            )
+            ->where('roles.id', $id)
+            ->get();
+
+        return response()->json([
+            'message' => 'Data Roles - Permissions',
+            'data' => $data,
+        ], 201);
+    }
+
+    public function userRoles(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'roles_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        $checkUserId = RoleUser::where('user_id', $request->user_id)->count();
+
+        if ($checkUserId > 0) {
+            RoleUser::where('user_id', $request->user_id)->update([
+                'user_id' => $request->user_id,
+                'roles_id' => $request->roles_id
+            ]);
+        } else {
+            RoleUser::create($request->all());
+        }
+
+
+        return response()->json([
+            'message' => 'Data updated successfully',
+            'status' => 'User - Roles'
+            // 'data' => $data
         ], 201);
     }
 }

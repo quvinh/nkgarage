@@ -4,6 +4,8 @@ namespace App\Http\Controllers\CRUD;
 
 use App\Http\Controllers\Controller;
 use App\Models\Shelves;
+use App\Models\Export;
+use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -85,6 +87,15 @@ class ShelvesController extends Controller
     public function edit($id)
     {
         //
+        // $data = DB::table('shelves')
+        //     ->join('warehouses','warehouses.id','=','shelves.warehouse_id')
+        //         ->select('shelves.id as id',
+        //             'shelves.warehouse_id as warehouse_id',
+        //             'warehouses.name as warehouse_name',
+        //             'shelves.name as name',
+        //             'position','status')
+        //         ->where('shelves.id',$id)
+        //         ->get();
         $data = Shelves::find($id);
         return response()->json([
             'status' => 'Show form edit',
@@ -114,7 +125,9 @@ class ShelvesController extends Controller
 
         $data = Shelves::where('id', $id)->update([
             'name' => $request->name,
-            'position' => $request->position
+            'position' => $request->position,
+            'warehouse_id' => $request->warehouse_id,
+            'status' => $request-> status,
         ]);
 
         return response()->json([
@@ -132,13 +145,26 @@ class ShelvesController extends Controller
      */
     public function destroy($id)
     {
-        //
         $data = Shelves::find($id);
         $data->delete();
 
         return response()->json([
             'status' => 'Delete data Shelves',
             'message' => 'Delete successfully',
+        ], 201);
+    }
+
+    public function destroyItem($id)
+    {
+        $item = DB::table('detail_items')
+            ->where('shelf_id', $id)
+            ->get();
+
+        $item->delete();
+
+        return response()->json([
+            'tatus' => 'Delete data Shelves',
+            'message' => 'Delete sucessfully',
         ], 201);
     }
 
@@ -149,12 +175,14 @@ class ShelvesController extends Controller
         //     ->where('warehouse_id',$id)
         //     ->get();
 
+
         $item = DB::table('detail_items')
             ->join('items','items.id','=','detail_items.item_id')
             ->join('categories','categories.id','=','detail_items.category_id')
             ->select('detail_items.item_id as id','items.name as itemname',
                 'batch_code','categories.name as categoryname',
-                'amount','unit','status')
+                'amount','unit','status',
+                'warehouse_id','shelf_id')
             ->where('shelf_id',$id)
             ->get();
 
@@ -164,4 +192,22 @@ class ShelvesController extends Controller
         ], 201);
 
     }
+    public function amountItem(){
+        $count_item = DB::table('detail_items')
+            ->select(DB::raw('count(item_id) as countItem'))
+            ->groupBy('shelf_id')
+            ->get();
+        $amount_item =  DB::table('detail_items')
+            ->join('shelves','shelves.id','=','detail_items.shelf_id')
+            ->select(DB::raw('sum(amount) as amountItem'))
+            ->groupBy('shelf_id')
+            ->get();
+        return response()->json([
+            'message' => 'Data warehouse successfully',
+            'data' => $count_item,
+            'data_amout'=>$amount_item
+        ], 201);
+    }
+    // public function countItem()
+
 }

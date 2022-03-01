@@ -15,6 +15,10 @@ class Suppliers extends Model
         'name',
     ];
 
+    public $timestamps = false;
+
+    public $incrementing = false;
+
     public function import() {
         return $this->belongsTo(Import::class, 'suppliers_id', 'id');
     }

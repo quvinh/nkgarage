@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CRUD\Auth\DetailUserController;
 use App\Http\Controllers\CRUD\Auth\PermissionController;
 use App\Http\Controllers\CRUD\Auth\RolesController;
+use App\Http\Controllers\CRUD\DetailitemController;
 use App\Http\Controllers\CRUD\ImportController;
 use App\Http\Controllers\CRUD\ItemController;
 use App\Http\Controllers\CRUD\CategoryController;
@@ -135,8 +136,9 @@ Route::prefix('admin')->group(function() {
     Route::get('/shelf/show/{id}', [ShelvesController::class, 'edit']);
     Route::put('/shelf/update/{id}', [ShelvesController::class, 'update']);
     Route::delete('/shelf/delete/{id}', [ShelvesController::class, 'destroy']);
-    Route::post('/shelf/itemShelf/{id}', [ShelvesController::class, 'itemShelf']);
-
+    Route::get('/shelf/itemShelf/{id}', [ShelvesController::class, 'itemShelf']);
+    Route::delete('/shelf/delete-item/{id}', [ShelvesController::class, 'destroyItem']);
+    Route::get('/shelf/amountItem/{id}', [ShelvesController::class, 'amountItem']);
 
 
     //**********Import**************/
@@ -163,13 +165,16 @@ Route::prefix('admin')->group(function() {
     Route::get('/items/searchItem/{id}', [ItemController::class, 'searchItem']);
     Route::get('/items/itemInWarehouse/{id}', [ItemController::class, 'itemInWarehouse']);
 
+    Route::get('/items/searchItem/{name}/{id}', [ItemController::class, 'searchitem']);
+    Route::get('/items/amountItem/{id}/{warehouse_id}/{shelf_id}', [ItemController::class, 'amountItemsplit']);
+
     /*************Detail_item**************/
-    Route::get('/detail_item',[ItemController::class, 'index']);
-    Route::get('/detail_item/add', [ItemController::class, 'create']);
-    Route::post('/detail_item/store', [ItemController::class, 'store']);
-    Route::get('/detail_item/show/{id}', [ItemController::class, 'edit']);
-    Route::put('/detail_item/update/{id}', [ItemController::class, 'update']);
-    Route::delete('/detail_item/delete/{id}', [ItemController::class, 'destroy']);
+    Route::get('/detail_item',[DetailitemController::class, 'index']);
+    Route::get('/detail_item/add', [DetailitemController::class, 'create']);
+    Route::post('/detail_item/store', [DetailitemController::class, 'store']);
+    Route::get('/detail_item/show/{id}', [DetailitemController::class, 'edit']);
+    Route::put('/detail_item/update/{id}', [DetailitemController::class, 'update']);
+    Route::delete('/detail_item/delete/{id}', [DetailitemController::class, 'destroy']);
 
 
 
@@ -198,5 +203,8 @@ Route::prefix('admin')->group(function() {
         Route::get('/roles/show/{id}', [RolesController::class, 'edit']);
         Route::put('/roles/update/{id}', [RolesController::class, 'update']);
         Route::delete('/roles/delete/{id}', [RolesController::class, 'destroy']);
+
+        Route::get('/detail_roles/{id}', [RolesController::class, 'detailRoles']);
+        Route::post('/user_roles', [RolesController::class, 'userRoles']);
     });
 });

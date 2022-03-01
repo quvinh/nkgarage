@@ -140,11 +140,13 @@ class ItemController extends Controller
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
             ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
             ->join('categories', 'categories.id', '=', 'detail_items.category_id')
+            // ->join('imports', 'import.id', '=', 'detail_items.category_id')
             ->select(
                 'items.id as item_id',
                 'items.name as name_item',
                 'categories.id as category_id',
                 'warehouses.id as warehouse_id',
+                'warehouses.name as name_warehouse',
                 'shelves.id as shelf_id',
                 'batch_code',
                 'amount',
@@ -162,49 +164,76 @@ class ItemController extends Controller
             'data' => $search
         ], 201);
     }
-    // public function ItemInWarehouse($id) {
+
+    public function itemInWarehouse($id) {
+        $search = DB::table('detail_items')
+        ->join('items','items.id','=','detail_items.item_id')
+        ->join('warehouses','warehouses.id','=','detail_items.warehouse_id')
+        ->join('shelves','shelves.id','=','detail_items.shelf_id')
+        ->join('categories','categories.id','=','detail_items.category_id')
+        ->select('items.id as itemId','items.name as nameItem','categories.name as nameCategory',
+            'warehouses.name as nameWarehouse','shelves.name as nameShelves',
+            'batch_code','amount',
+            'unit','price','status')
+        ->where('warehouses.id',$id)
+        ->get();
+        return response()->json([
+            'message' => 'Get all Item in Warehouse',
+            'data' => $search
+        ], 201);
+    }
+
+    // public function itemInWarehouse($id)
+    // {
     //     $search = DB::table('detail_items')
-    //     ->join('items','items.id','=','detail_items.item_id')
-    //     ->join('warehouses','warehouses.id','=','detail_items.warehouse_id')
-    //     ->join('shelves','shelves.id','=','detail_items.shelf_id')
-    //     ->join('categories','categories.id','=','detail_items.category_id')
-    //     ->select('items.id as itemId','items.name as nameItem','categories.name as nameCategory',
-    //         'warehouses.name as nameWarehouse','shelves.name as nameShelves',
-    //         'batch_code','amount',
-    //         'unit','price','status')
-    //     ->where('warehouses.id',$id)
-    //     ->get();
+    //         ->join('items', 'items.id', '=', 'detail_items.item_id')
+    //         ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
+    //         ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
+    //         ->join('categories', 'categories.id', '=', 'detail_items.category_id')
+    //         ->select(
+    //             'items.id as itemId',
+    //             'items.name as nameItem',
+    //             'categories.name as nameCategory',
+    //             'warehouses.name as nameWarehouse',
+    //             'warehouses.id as warehouse_id',
+    //             'shelves.name as nameShelves',
+    //             'batch_code',
+    //             'amount',
+    //             'unit',
+    //             'price'
+    //         )
+    //         ->where('warehouses.id', $id)
+    //         ->get();
+    //     // dd($search);
     //     return response()->json([
     //         'message' => 'Get all Item in Warehouse',
     //         'data' => $search
     //     ], 201);
     // }
 
-    public function itemInWarehouse($id)
-    {
-        $search = DB::table('detail_items')
-            ->join('items', 'items.id', '=', 'detail_items.item_id')
-            ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
-            ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
-            ->join('categories', 'categories.id', '=', 'detail_items.category_id')
-            ->select(
-                'items.id as itemId',
-                'items.name as nameItem',
-                'categories.name as nameCategory',
-                'warehouses.name as nameWarehouse',
-                'warehouses.id as warehouse_id',
-                'shelves.name as nameShelves',
-                'batch_code',
-                'amount',
-                'unit',
-                'price'
-            )
-            ->where('warehouses.id', $id)
-            ->get();
-        // dd($search);
+    public function amountItemsplit($id,$warehouse_id,$shelf_id){
+        $amountKKD = DB::table('exports')
+            ->where([['item_id','=',$id],
+                ['warehouse_id','=',$warehouse_id],
+                ['shelf_id','=',$shelf_id]])
+            ->get('amount')
+            ->sum();
+
+        $amountitems = DB::table('detail_items')
+        ->where([['item_id','=',$id],
+        ['warehouse_id','=',$warehouse_id],
+        ['shelf_id','=',$shelf_id]])
+            ->get('amount')
+            ->sum();
+
+        $amountKD = $amountitems - $amountKKD;
+
         return response()->json([
-            'message' => 'Get all Item in Warehouse',
-            'data' => $search
+            'message' => 'Data Import successfully changed',
+            'amountKD' => $amountKD,
+            'amountKKD' => $amountKKD,
+            'amountitems' => $amountitems
         ], 201);
     }
+
 }
