@@ -54,16 +54,19 @@ Route::prefix('admin')->group(function() {
     Route::put('/warehouse/update/{id}', [WarehouseController::class, 'update']);
     Route::delete('/warehouse/delete/{id}', [WarehouseController::class, 'destroy']);
     Route::get('/warehouse/shelfWarehouse/{id}', [WarehouseController::class, 'shelfWarehouse']);
+    Route::get('/warehouse/itemShelf/{id}/{shelf_id}', [WarehouseController::class, 'itemShelf']);
+    Route::get('/warehouse/itemWarehouse/{id}', [WarehouseController::class, 'itemWarehouse']);
+    Route::get('/warehouse/countWarehouse', [WarehouseController::class, 'countWarehouse']);
+    Route::get('/warehouse/amountShelf/{id}', [WarehouseController::class, 'amountShelf']);
 
 
     /*************Shelf*************/
     Route::get('/shelf', [ShelvesController::class, 'index']);
     Route::get('/shelf/add', [ShelvesController::class, 'create']);
-    Route::post('/shelf/store', [ShelvesController::class, 'store']);
+    Route::post('/shelf/store/{id}', [ShelvesController::class, 'store']);
     Route::get('/shelf/show/{id}', [ShelvesController::class, 'edit']);
     Route::put('/shelf/update/{id}', [ShelvesController::class, 'update']);
     Route::delete('/shelf/delete/{id}', [ShelvesController::class, 'destroy']);
-    Route::get('/shelf/itemShelf/{id}', [ShelvesController::class, 'itemShelf']);
     Route::delete('/shelf/delete-item/{id}', [ShelvesController::class, 'destroyItem']);
     Route::get('/shelf/amountItem/{id}', [ShelvesController::class, 'amountItem']);
 

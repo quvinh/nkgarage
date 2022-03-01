@@ -42,7 +42,7 @@ class ShelvesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$id)
     {
         //
         $validator = Validator::make($request->all(), [
@@ -57,7 +57,7 @@ class ShelvesController extends Controller
         $data = Shelves::create([
             'name' => $request->name,
             'position' => $request->position,
-            'warehouse_id' => $request->warehouse_id,
+            'warehouse_id' => $id,
             'status' => '0',
         ]);
 
@@ -126,7 +126,7 @@ class ShelvesController extends Controller
         $data = Shelves::where('id', $id)->update([
             'name' => $request->name,
             'position' => $request->position,
-            'warehouse_id' => $request->warehouse_id,
+            // 'warehouse_id' => $warehouse_id,
             'status' => $request-> status,
         ]);
 
@@ -167,32 +167,10 @@ class ShelvesController extends Controller
         ], 201);
     }
 
-    public function itemShelf($id)
-    {
-        // $shelf = DB::table('shelves')
-        //     // ->join('warehouses','warehouses.id','=','shelves.warehouse_id')
-        //     ->where('warehouse_id',$id)
-        //     ->get();
-
-
-        $item = DB::table('detail_items')
-            ->join('items','items.id','=','detail_items.item_id')
-            ->join('categories','categories.id','=','detail_items.category_id')
-            ->select('detail_items.item_id as id','items.name as itemname',
-                'batch_code','categories.name as categoryname',
-                'amount','unit','status',
-                'warehouse_id','shelf_id')
-            ->where('shelf_id',$id)
-            ->get();
-
-        return response()->json([
-            'message' => 'Data Shelves successfully changed',
-            'data' => $item
-        ], 201);
-
-    }
+    
     public function amountItem(){
         $count_item = DB::table('detail_items')
+            ->join('shelves','shelves.id','=','detail_items.shelf_id')
             ->select(DB::raw('count(item_id) as countItem'))
             ->groupBy('shelf_id')
             ->get();
