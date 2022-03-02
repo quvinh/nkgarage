@@ -148,6 +148,7 @@ class ItemController extends Controller
                 'warehouses.id as warehouse_id',
                 'warehouses.name as name_warehouse',
                 'shelves.id as shelf_id',
+                'shelves.name as shelf_name',
                 'batch_code',
                 'amount',
                 'unit',
