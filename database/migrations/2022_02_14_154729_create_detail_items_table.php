@@ -24,6 +24,7 @@ class CreateDetailItemsTable extends Migration
             $table->string('unit', 10);
             $table->integer('price');
             $table->binary('status');
+            $table->char('supplier_id',);
             $table->timestamps();
             $table->softDeletes();            
         });

@@ -41,7 +41,7 @@ class SuppliersController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'required',
+            'code' => 'required',
             'name' => 'required'
         ]);
         if($validator->fails()){
@@ -92,7 +92,7 @@ class SuppliersController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'id' => 'required',
+            'code' => 'required',
             'name' => 'required',
         ]);
 
@@ -100,8 +100,8 @@ class SuppliersController extends Controller
             return response()->json($validator->errors()->toJson(),400);
         }
 
-        $data = Suppliers::where('id', $id)->update([
-            'id' => $request->id,
+        $data = Suppliers::where('code', $id)->update([
+            'code' => $request->id,
             'name' => $request->name,
         ]);
 

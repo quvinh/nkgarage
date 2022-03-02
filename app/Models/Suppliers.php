@@ -11,10 +11,12 @@ class Suppliers extends Model
 
     protected $table = 'suppliers';
     protected $fillable = [
-        'id',
+        'code',
         'name',
     ];
 
+    public $incrementing = false;
+    
     public function import() {
         return $this->belongsTo(Import::class, 'suppliers_id', 'id');
     }

@@ -224,7 +224,6 @@ class ImportController extends Controller
                 ['batch_code','=',$import[0]->batch_code]])
             ->get()
             ->count();
-        
         $amountItem = DB::table('detail_items')->where([
             ['warehouse_id','=',$import[0]->warehouse_id],
             ['shelf_id','=',$import[0]->shelf_id],

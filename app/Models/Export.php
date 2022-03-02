@@ -13,8 +13,12 @@ class Export extends Model
 
     protected $table = 'exports';
     protected $fillable = [
-        'detail_item_id',
+        'item_id',
+        'name',
+        'code',
+        'warehouse_id',
         'amount',
+        'price',
         'unit',
         'status',
         'note',
@@ -23,5 +27,8 @@ class Export extends Model
 
     public function detail_item() {
         return $this->belongsTo(DetailItem::class, 'detail_item_id', 'id');
+    }
+    public function item() {
+        return $this->hasOne(Item::class);
     }
 }

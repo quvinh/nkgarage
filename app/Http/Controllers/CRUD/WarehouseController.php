@@ -188,7 +188,41 @@ class WarehouseController extends Controller
             'data' => $item
         ], 201);
     }
+    // public function itemShelf($id, $shelf_id)
+    // {
+    //     $item = DB::table('detail_items')
+    //         ->join('items', 'items.id', '=', 'detail_items.item_id')
+    //         ->join('categories', 'categories.id', '=', 'detail_items.category_id')
+    //         ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
+    //         ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
+    //         ->joim('exports', 'exports.item_id','=','detail_items.item_id')
+    //         ->select(DB::raw(
+    //             'detail_items.id as detail_item_id',
+    //             'detail_items.item_id as id',
+    //             'items.name as itemname',
+    //             'shelves.position as position',
+    //             'categories.name as categoryname',
+    //             'amount',
+    //             'unit',
+    //             'shelves.status as shelf_status',
+    //             'detail_items.status',
+    //             'detail_items.warehouse_id',
+    //             'warehouses.name as warehousename',
+    //             'shelf_id',
+    //             'shelves.name as shelfname',
+    //             'price')
+    //         )
+    //         ->where('shelf_id', $shelf_id)
+    //         ->where('detail_items.warehouse_id', $id)
+    //         ->get();
 
+    //     return response()->json([
+    //         'message' => 'Data itemShelf',
+    //         'data' => $item
+    //     ], 201);
+    // }
+
+    // public function 
 
     public function itemWarehouse($id)
     {
@@ -254,7 +288,7 @@ class WarehouseController extends Controller
         $countItem = DB::table('detail_items')
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
             ->select(DB::raw('sum(amount) as amountItem'))
-            ->where('warehouse_id',$id)
+            ->where('warehouse_id', $id)
             ->get();
 
         return response()->json([
@@ -276,5 +310,39 @@ class WarehouseController extends Controller
             'data' => $tonKho,
         ], 201);
     }
-    // public function
+
+    public function searchItems($name, $id)
+    {
+
+        $search = DB::table('detail_items')
+            ->join('items', 'items.id', '=', 'detail_items.item_id')
+            ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
+            ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
+            ->join('categories', 'categories.id', '=', 'detail_items.category_id')
+            ->select(
+                'detail_items.item_id as id',
+                'items.name as itemname',
+                'categories.name as categoryname',
+                'detail_items.shelf_id as shelf_id',
+                'warehouses.name as nameWarehouse',
+                'shelves.name as shelfname',
+                'batch_code',
+                'amount',
+                'unit',
+                'price',
+                'detail_items.status'
+            )
+            ->where([
+                ['items.name', 'like', '%' . $name . '%'],
+                ['warehouses.id','=',$id],
+            ])
+            ->get();
+        // dd($search);
+        return response()->json([
+            'message' => 'Data Import successfully changed',
+            'data' => $search
+        ], 201);
+    }
+
+
 }

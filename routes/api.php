@@ -5,6 +5,7 @@ use App\Http\Controllers\CRUD\Auth\PermissionController;
 use App\Http\Controllers\CRUD\Auth\RolesController;
 use App\Http\Controllers\CRUD\CategoryController;
 use App\Http\Controllers\CRUD\DetailitemController;
+use App\Http\Controllers\CRUD\ExportController;
 use App\Http\Controllers\CRUD\ImportController;
 use App\Http\Controllers\CRUD\ItemController;
 use App\Http\Controllers\CRUD\ShelvesController;
@@ -60,6 +61,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/warehouse/countWarehouse', [WarehouseController::class, 'countWarehouse']);
     Route::get('/warehouse/amountShelf/{id}', [WarehouseController::class, 'amountShelf']);
     Route::get('/warehouse/sumAmountItem/{id}', [WarehouseController::class, 'sumAmountItem']);
+    Route::get('/warehouse/searchItems/{name}/{id}',[WarehouseController::class, 'searchItems']);
     // Route::get('/warehouse/warehouseShow', [WarehouseController::class, 'warehouseShow']);
 
 
@@ -119,6 +121,18 @@ Route::prefix('admin')->group(function () {
     Route::get('/category', [CategoryController::class, 'index']);
     Route::get('/category/show/{id}', [CategoryController::class, 'edit']);
 
+
+    /************Ẽport***********/
+    Route::get('/export', [ExportController::class, 'index']);
+    Route::get('/export/indexStatus', [ExportController::class, 'indexStatus']);
+    Route::get('/export/add', [ExportController::class, 'create']);
+    Route::post('/export/store', [ExportController::class, 'store']);
+    Route::get('/export/show/{id}', [ExportController::class, 'edit']);
+    Route::put('/export/update/{id}', [ExportController::class, 'update']);
+    Route::put('/export/updateStatus/{id}', [ExportController::class, 'updateStatus']);
+    Route::put('/export/dStatus/{id}', [ExportController::class, 'dStatus']);
+    Route::delete('/export/delete/{id}', [ExportController::class, 'destroy']);
+
     Route::prefix('auth_model')->group(function () {
 
         /************Permission*************/
@@ -136,8 +150,5 @@ Route::prefix('admin')->group(function () {
         Route::get('/roles/show/{id}', [RolesController::class, 'edit']);
         Route::put('/roles/update/{id}', [RolesController::class, 'update']);
         Route::delete('/roles/delete/{id}', [RolesController::class, 'destroy']);
-
-
-        
     });
 });
