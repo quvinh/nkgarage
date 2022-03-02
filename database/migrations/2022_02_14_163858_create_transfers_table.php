@@ -21,7 +21,7 @@ class CreateTransfersTable extends Migration
             $table->bigInteger('from');//warehouse
             $table->bigInteger('to');
             $table->text('note')->nullable();
-            $table->binary('status');
+            $table->char('status',1);
             $table->bigInteger('created_by');
             $table->timestamps();
             $table->softDeletes();

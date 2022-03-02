@@ -18,6 +18,7 @@ class CreateWarehousesTable extends Migration
             $table->string('name');
             $table->string('location');
             $table->text('note')->nullable();
+            $table->boolean('status');
             // $table->timestamps();
         });
     }

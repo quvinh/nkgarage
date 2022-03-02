@@ -17,6 +17,8 @@ class CreateShelvesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('position');
+            $table->boolean('status');
+            $table->integer('warehouse_id');
         });
     }
 

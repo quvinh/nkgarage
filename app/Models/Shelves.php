@@ -15,7 +15,8 @@ class Shelves extends Model
     protected $fillable = [
         'id',
         'name',
-        'position'
+        'position',
+        'status'
     ];
 
 

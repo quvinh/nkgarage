@@ -18,6 +18,7 @@ class Export extends Model
         'code',
         'warehouse_id',
         'amount',
+        'price',
         'unit',
         'status',
         'note',

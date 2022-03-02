@@ -18,10 +18,12 @@ class CreateExportsTable extends Migration
             $table->char('code', 20);
             $table->char('item_id',20);
             $table->bigInteger('warehouse_id');
+            $table->bigInteger('shelf_id');
             $table->string('name');
             $table->integer('amount');
+            $table->integer('price');
             $table->string('unit', 10);
-            $table->binary('status');
+            $table->char('status',1);
             $table->text('note')->nullable();
             $table->bigInteger('created_by');
             $table->timestamps();

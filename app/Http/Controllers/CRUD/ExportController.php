@@ -85,7 +85,9 @@ class ExportController extends Controller
                 $newExport->item_id =$request->item_id;
                 $newExport->code = $request->code;
                 $newExport->amount = $request->amount;
+                $newExport->price = $request->price;
                 $newExport->warehouse_id = $request->warehouse_id;
+                $newExport->shelf_id = $request->shelf_id;
                 $newExport->name = $item[0]->name;
                 $newExport->unit = $request->unit;
                 $newExport->created_by = $request->created_by;
@@ -98,6 +100,7 @@ class ExportController extends Controller
                 ], 201);
             } else {
                 $newNotify = new Notification();
+                $newNotify->item_id = $detail_item[0]->item_id;
                 $newNotify->detail_item_id = $detail_item[0]->id;
                 $newNotify->title = 'Thiếu vật tư';
                 $newNotify->content = 'Cần nhập thêm';
@@ -112,6 +115,7 @@ class ExportController extends Controller
             }
         } else {
             $newNotify = new Notification();
+            $newNotify->item_id = $detail_item[0]->item_id;
             $newNotify->detail_item_id = $detail_item[0]->id;
             $newNotify->title = 'Thiếu vật tư';
             $newNotify->content = 'Cần nhập thêm';
@@ -177,9 +181,12 @@ class ExportController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
         $data = Export::where('id', $id)->update([
+            'shelf_id'=>$request->shelf_id,
+            'code'=>$request->code,
             'detail_item_id' => $request->detail_item_id,
             'warehouse_id' => $request->warehouse_id,
             'amount' => $request->amount,
+            'price'=> $request->price,
             'unit' => $request->unit,
             'status' => $request->status,
             'created_by' => $request->created_by
@@ -208,7 +215,7 @@ class ExportController extends Controller
             'message' => 'Delete successfully',
         ], 201);
     }
-    public function updateStatus(Request $request, $id)
+    public function updateStatus($id)
     {
         $export_item = DB::table('exports')
             ->where('id', $id)
@@ -216,7 +223,20 @@ class ExportController extends Controller
         $detail_item = DB::table('detail_items')
             ->where('item_id', $export_item[0]->item_id)
             ->get();
-        Export::where('id', $id)->update(['status' => '1']);
+        Export::where('id', $id)->update(['status' => '2']);
         DetailItem::where('item_id', $export_item[0]->item_id)->update(['amount' => $detail_item[0]->amount - $export_item[0]->amount]);
+        return response()->json([
+            'message' => 'Data Export successfully changed',
+            'status' => 'Changed Status',
+        ], 201);
+    }
+    public function dStatus($id)
+    {
+        $dStatus =  Export::where('id', $id)->update(['status' => '1']);
+        return response()->json([
+            'message' => 'Data Export successfully changed',
+            'status' => 'Changed Status',
+            'data' => $dStatus,
+        ], 201);
     }
 }
