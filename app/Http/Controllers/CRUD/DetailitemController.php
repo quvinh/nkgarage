@@ -99,14 +99,10 @@ class DetailitemController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'item_id' => 'required',
-            'category_id' => 'required',
-            'warehouse_id' => 'required',
             'shelf_id' => 'required',
-            'batch_code' => 'required',
             'amount' => 'required',
-            'unit' => 'required',
-            'price' => 'required'
+            'price' => 'required',
+            'status' => 'required',
         ]);
 
         if($validator -> fails()) {
@@ -114,13 +110,8 @@ class DetailitemController extends Controller
         }
 
         $data = DetailItem::where('id', $id)->update([
-            'item_id' => $request->item_id,
-            'category_id' => $request->category_id,
-            'warehouse_id' =>$request->warehouse_id,
             'shelf_id' => $request->shelf_id,
-            'batch_code' => $request->batch_code,
             'amount' => $request->amount,
-            'unit'=>$request->unit,
             'price'=>$request->price,
             'status' =>$request->status
         ]);

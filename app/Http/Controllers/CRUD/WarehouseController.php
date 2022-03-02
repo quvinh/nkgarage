@@ -164,12 +164,14 @@ class WarehouseController extends Controller
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
             ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
             ->select(
+                'detail_items.id as detail_item_id',
                 'detail_items.item_id as id',
                 'items.name as itemname',
                 'batch_code',
                 'categories.name as categoryname',
                 'amount',
                 'unit',
+                'shelves.status as shelf_status',
                 'detail_items.status',
                 'detail_items.warehouse_id',
                 'warehouses.name as warehousename',
@@ -196,6 +198,7 @@ class WarehouseController extends Controller
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
             ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
             ->select(
+                'detail_item.id as detail_item_id',
                 'detail_items.item_id as id',
                 'items.name as itemname',
                 'batch_code',
@@ -219,18 +222,49 @@ class WarehouseController extends Controller
         ], 201);
     }
 
-    public function amountShelf()
+    // public function amountShelf()
+    // {
+    //     $countShelf = DB::table('shelves')
+    //         ->join('warehouses', 'warehouses.id', '=', 'shelves.warehouse_id')
+    //         ->select(DB::raw('count(id) as countShelf'))
+    //         ->groupBy('warehouse_id')
+    //         ->get();
+
+    //     return response()->json([
+    //         'message' => 'Data warehouse successfully',
+    //         'data' => $countShelf,
+    //     ], 201);
+    // }
+    public function amountShelf($id)
     {
         $countShelf = DB::table('shelves')
             ->join('warehouses', 'warehouses.id', '=', 'shelves.warehouse_id')
-            ->select(DB::raw('count(id) as countShelf'))
-            ->groupBy('warehouse_id',)
-            ->get();
+            ->where('warehouse_id', $id)
+            ->get()
+            ->count();
 
         return response()->json([
             'message' => 'Data warehouse successfully',
             'data' => $countShelf,
         ], 201);
+    }
+
+    public function sumAmountItem($id)
+    {
+        $countItem = DB::table('detail_items')
+            ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
+            ->select(DB::raw('sum(amount) as amountItem'))
+            ->where('warehouse_id',$id)
+            ->get();
+
+        return response()->json([
+            'message' => 'Data warehouse successfully',
+            'data' => $countItem
+        ], 201);
+    }
+
+    public function warehouseShow()
+    {
         $tonKho = DB::table('detail_items')
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
             ->select(DB::raw('sum(amount * price) as total,sum(amount) as tonKho, warehouse_id, name'))
@@ -242,4 +276,5 @@ class WarehouseController extends Controller
             'data' => $tonKho,
         ], 201);
     }
+    // public function
 }
