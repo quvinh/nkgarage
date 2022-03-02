@@ -23,7 +23,7 @@ class CreateDetailItemsTable extends Migration
             $table->integer('amount');
             $table->string('unit', 10);
             $table->integer('price');
-            $table->binary('status');
+            $table->char('status',1);
             $table->timestamps();
             $table->softDeletes();
         });

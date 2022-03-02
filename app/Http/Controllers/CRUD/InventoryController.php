@@ -143,11 +143,25 @@ class InventoryController extends Controller
             'message' => 'Delete successfully',
         ], 201);
     }
-    public function showHistoryExport($id) {
+    public function showHistoryExport($code)
+    {
         $history = DB::table('exports')
             ->join('warehouses', 'warehouses.id', '=', 'exports.warehouse_id')
-            ->select('exports.item_id', 'exports.name', 'warehouses.name as tenKho','exports.code', 'exports.created_by', 'exports.amount as luongXuat', 'exports.created_at','exports.status')
-            ->where('code', $id)
+            ->select(
+                'exports.item_id',
+                'exports.id as id',
+                'exports.shelf_id',
+                'exports.name',
+                'warehouses.name as tenKho',
+                'exports.code',
+                'exports.created_by',
+                'exports.amount as luongXuat',
+                'exports.price',
+                'exports.created_at',
+                'exports.status'
+            )
+            ->where('code', $code)
+            ->where('exports.deleted_at', null)
             ->get();
         return response()->json([
             'message' => 'Show export data',
@@ -155,11 +169,25 @@ class InventoryController extends Controller
             'data' => $history
         ], 201);
     }
-    public function showHistoryImport($id) {
+    public function showHistoryImport($code)
+    {
         $history = DB::table('imports')
             ->join('warehouses', 'warehouses.id', '=', 'imports.warehouse_id')
-            ->select('imports.name','imports.item_id', 'warehouses.name as tenKho','imports.code', 'imports.created_by', 'imports.amount as luongNhap', 'imports.created_at','imports.status')
-            ->where('code', $id)
+            ->select(
+                'imports.item_id',
+                'imports.name',
+                'imports.shelf_id',
+                'imports.id as id',
+                'warehouses.name as tenKho',
+                'imports.code',
+                'imports.created_by',
+                'imports.amount as luongNhap',
+                'imports.price',
+                'imports.created_at',
+                'imports.status'
+            )
+            ->where('code', $code)
+            ->where('imports.deleted_at', null)
             ->get();
         return response()->json([
             'message' => 'Show import data',
@@ -167,10 +195,19 @@ class InventoryController extends Controller
             'data' => $history
         ], 201);
     }
-    public function showCodeImport() {
+    public function showCodeImport()
+    {
         $history = DB::table('imports')
             ->join('warehouses', 'warehouses.id', '=', 'imports.warehouse_id')
-            ->select('warehouses.name as tenKho','imports.code',DB::raw('date_format(imports.created_at, "%d/%m/%Y") as created_at'), 'imports.created_by','imports.status')
+            ->select(
+                'warehouses.name as tenKho',
+                'imports.code',
+                DB::raw('date_format(imports.created_at, "%d/%m/%Y %H:%i") as created_at'),
+                'imports.created_by',
+                'imports.status'
+            )
+            ->where('imports.deleted_at', null)
+            ->groupBy('code')
             ->get();
         return response()->json([
             'message' => 'Show import data',
@@ -178,10 +215,19 @@ class InventoryController extends Controller
             'data' => $history
         ], 201);
     }
-    public function showCodeExport() {
+    public function showCodeExport()
+    {
         $history = DB::table('exports')
             ->join('warehouses', 'warehouses.id', '=', 'exports.warehouse_id')
-            ->select('warehouses.name as tenKho','exports.code',DB::raw('date_format(exports.created_at, "%d/%m/%Y") as created_at'), 'exports.created_by','exports.status')
+            ->select(
+                'warehouses.name as tenKho',
+                'exports.code',
+                DB::raw('date_format(exports.created_at, "%d/%m/%Y %H:%i") as created_at'),
+                'exports.created_by',
+                'exports.status'
+            )
+            ->where('exports.deleted_at', null)
+            ->groupBy('code')
             ->get();
         return response()->json([
             'message' => 'Show export data',
@@ -189,5 +235,4 @@ class InventoryController extends Controller
             'data' => $history
         ], 201);
     }
-
 }

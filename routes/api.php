@@ -61,8 +61,8 @@ Route::prefix('admin')->group(function() {
 
     Route::get('/dashboard/tonKho', [DashBoardController::class, 'tonKho']);
     Route::get('/dashboard/solgKho', [DashBoardController::class, 'solgKho']);
-    Route::get('/dashboard/export', [DashBoardController::class, 'export']);
-    Route::get('/dashboard/import', [DashBoardController::class, 'import']);
+    Route::get('/dashboard/export/{year}', [DashBoardController::class, 'export']);
+    Route::get('/dashboard/import/{year}', [DashBoardController::class, 'import']);
     Route::get('/dashboard/importCode', [DashBoardController::class, 'importCode']);
     Route::get('/dashboard/exportCode', [DashBoardController::class, 'exportCode']);
 
@@ -110,6 +110,7 @@ Route::prefix('admin')->group(function() {
     Route::get('/export/show/{id}', [ExportController::class, 'edit']);
     Route::put('/export/update/{id}', [ExportController::class, 'update']);
     Route::put('/export/updateStatus/{id}', [ExportController::class, 'updateStatus']);
+    Route::put('/export/dStatus/{id}', [ExportController::class, 'dStatus']);
     Route::delete('/export/delete/{id}', [ExportController::class, 'destroy']);
 
     Route::get('/category', [CategoryController::class, 'index']);
@@ -153,6 +154,7 @@ Route::prefix('admin')->group(function() {
     Route::put('/import/update/{id}', [ImportController::class, 'update']);
     Route::get('/import/indexStatus', [ExportController::class, 'indexStatus']);
     Route::put('/import/updateStatus/{id}', [ImportController::class, 'updateStatus']);
+    Route::put('/import/dStatus/{id}', [ImportController::class, 'dStatus']);
     Route::post('/import/updateAmountItem/{id}', [ImportController::class, 'updateAmountItem']);
     Route::delete('/import/delete/{id}', [ImportController::class, 'destroy']);
 

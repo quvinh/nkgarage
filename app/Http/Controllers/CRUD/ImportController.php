@@ -204,7 +204,7 @@ class ImportController extends Controller
     public function updateStatus(Request $request, $id){
 
         $data = Import::where('id', $id)->update([
-            'status' => '1'
+            'status' => '2'
         ]);
         $import = DB::table('imports')
             ->where('id',$id)
@@ -228,7 +228,7 @@ class ImportController extends Controller
             ['item_id','=',$import[0]->item_id],
             ['batch_code','=',$import[0]->batch_code]
         ])->get('amount');
-        if($import[0]->status==1){
+        if($import[0]->status==2){
 
             if($countItem > 0) {
                 DetailItem::where([
@@ -268,6 +268,15 @@ class ImportController extends Controller
             'data' =>$data
         ],201);
     }
+    public function dStatus($id)
+    {
+        $dStatus =  Import::where('id', $id)->update(['status' => '1']);
+        return response()->json([
+            'message' => 'Data Export successfully changed',
+            'status' => 'Changed Status',
+            'data' => $dStatus,
+        ], 201);
+    }
 
     public function destroy($id)
     {
@@ -275,7 +284,7 @@ class ImportController extends Controller
         $data->delete();
 
         return response()->json([
-            'tatus' => 'Delete data Permissions',
+            'tatus' => 'Delete data Imports',
             'message' => 'Delete sucessfully',
         ], 201);
     }

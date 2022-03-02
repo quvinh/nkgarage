@@ -83,12 +83,15 @@ class DashBoardController extends Controller
     {
         //
     }
-    public function export()
+    public function export($year)
     {
         $export = DB::table('exports')
-            ->select(DB::raw('sum(exports.amount) as exportAmount'), DB::raw('date_format(created_at, "%M") as month'))
+            ->select(DB::raw('sum(exports.amount) as exportAmount'), DB::raw('date_format(created_at, "%M") as month, year(created_at) as year'))
+            ->where('deleted_at', null)
+            ->orderBy('created_at', 'asc')
             ->groupBy('month', 'status')
-            ->having('status', 0)
+            ->having('status', 2)
+            ->having('year', $year)
             ->get();
         return response()->json([
             'message' => 'Data DashBoard',
@@ -97,12 +100,15 @@ class DashBoardController extends Controller
         ], 201);
     }
 
-    public function import()
+    public function import($year)
     {
         $import = DB::table('imports')
-            ->select(DB::raw('sum(imports.amount) as importAmount'), DB::raw('date_format(created_at, "%M") as month'))
-            ->groupBy('month', 'status')
-            ->having('status', 0)
+            ->select(DB::raw('sum(imports.amount) as importAmount'), DB::raw('date_format(created_at, "%M") as month, year(created_at) as year'))
+            ->where('deleted_at', null)
+            ->orderBy('created_at', 'asc')
+            ->groupBy('month', 'year', 'status')
+            ->having('status', 2)
+            ->having('year', $year)
             ->get();
         return response()->json([
             'message' => 'Data DashBoard',
@@ -115,6 +121,7 @@ class DashBoardController extends Controller
     {
         $solgKho = DB::table('warehouses')
             ->select(DB::raw('count(id) as solgKho'))
+            ->where('status',true)
             ->get();
         return response()->json([
             'message' => 'Data DashBoard',
@@ -126,7 +133,7 @@ class DashBoardController extends Controller
     {
         $tonKho = DB::table('detail_items')
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
-            ->select(DB::raw('sum(amount * price) as total,sum(amount) as tonKho, warehouse_id, name'))
+            ->select(DB::raw('sum(amount * price) as total,sum(amount) as tonKho'), 'warehouse_id', 'name')
             ->groupBy('warehouse_id', 'name')
             ->get();
         return response()->json([
@@ -135,10 +142,12 @@ class DashBoardController extends Controller
             'data' => $tonKho,
         ], 201);
     }
-    public function exportCode ()
+    public function exportCode (Request $request)
     {
         $exportCode = DB::table('exports')
-        ->select(DB::raw('count(code) as exportCode, created_at'))
+        ->select(DB::raw('count(code) as exportCode, date_format(created_at, "%M") as month, day(created_at) as day'))
+        ->groupBy('month', 'day', 'status')
+        ->having('status', 2)
         ->get();
         return response()->json([
             'message' => 'Data DashBoard',
@@ -146,12 +155,14 @@ class DashBoardController extends Controller
             'data' => $exportCode,
         ], 201);
     }
-    public function importCode ()
+    public function importCode (Request $request)
     {
         $importCode = DB::table('imports')
-        ->select(DB::raw('count(code) as importCode, date_format(created_at, "%M") as month, day(created_at) as day'))
+        ->select(DB::raw('count(code) as importCode, date_format(created_at, "%M") as month, day(created_at) as day,year(created_at) as year'))
         ->groupBy('month', 'day', 'status')
-        ->having('status', 0)
+        ->having('status', 2)
+        ->having('month',$request->month)
+        ->having('year', $request->year)
         ->get();
         return response()->json([
             'message' => 'Data DashBoard',
