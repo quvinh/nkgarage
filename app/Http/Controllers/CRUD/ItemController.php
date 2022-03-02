@@ -134,7 +134,6 @@ class ItemController extends Controller
 
     public function searchItem($id)
     {
-
         $search = DB::table('detail_items')
             ->join('items', 'items.id', '=', 'detail_items.item_id')
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
@@ -162,24 +161,6 @@ class ItemController extends Controller
         // dd($search);
         return response()->json([
             'message' => 'Data Import successfully changed',
-            'data' => $search
-        ], 201);
-    }
-
-    public function itemInWarehouse($id) {
-        $search = DB::table('detail_items')
-        ->join('items','items.id','=','detail_items.item_id')
-        ->join('warehouses','warehouses.id','=','detail_items.warehouse_id')
-        ->join('shelves','shelves.id','=','detail_items.shelf_id')
-        ->join('categories','categories.id','=','detail_items.category_id')
-        ->select('items.id as itemId','items.name as nameItem','categories.name as nameCategory',
-            'warehouses.name as nameWarehouse','shelves.name as nameShelves',
-            'batch_code','amount',
-            'unit','price','status')
-        ->where('warehouses.id',$id)
-        ->get();
-        return response()->json([
-            'message' => 'Get all Item in Warehouse',
             'data' => $search
         ], 201);
     }
@@ -212,18 +193,23 @@ class ItemController extends Controller
     //     ], 201);
     // }
 
-    public function amountItemsplit($id,$warehouse_id,$shelf_id){
+    public function amountItemsplit($id, $warehouse_id, $shelf_id)
+    {
         $amountKKD = DB::table('exports')
-            ->where([['item_id','=',$id],
-                ['warehouse_id','=',$warehouse_id],
-                ['shelf_id','=',$shelf_id]])
+            ->where([
+                ['item_id', '=', $id],
+                ['warehouse_id', '=', $warehouse_id],
+                ['shelf_id', '=', $shelf_id]
+            ])
             ->get('amount')
             ->sum();
 
         $amountitems = DB::table('detail_items')
-        ->where([['item_id','=',$id],
-        ['warehouse_id','=',$warehouse_id],
-        ['shelf_id','=',$shelf_id]])
+            ->where([
+                ['item_id', '=', $id],
+                ['warehouse_id', '=', $warehouse_id],
+                ['shelf_id', '=', $shelf_id]
+            ])
             ->get('amount')
             ->sum();
 
@@ -236,5 +222,4 @@ class ItemController extends Controller
             'amountitems' => $amountitems
         ], 201);
     }
-
 }

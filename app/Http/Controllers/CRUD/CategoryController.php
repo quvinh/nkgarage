@@ -46,7 +46,7 @@ class CategoryController extends Controller
             'name' => 'required|string|between:2,100',
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
@@ -84,7 +84,6 @@ class CategoryController extends Controller
             'message' => 'Show successfully',
             'data' => $data,
         ]);
-
     }
 
     /**
@@ -101,7 +100,7 @@ class CategoryController extends Controller
             'name' => 'required|string|between:2,100',
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
@@ -115,7 +114,6 @@ class CategoryController extends Controller
             'status' => 'Updated Data',
             'data' => $data,
         ], 201);
-
     }
 
     /**

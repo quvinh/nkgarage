@@ -51,7 +51,7 @@ Route::group([
     Route::get('/users', [AuthController::class, 'users']);
 });
 
-Route::prefix('admin')->group(function() {
+Route::prefix('admin')->group(function () {
     Route::get('/');
 
     Route::post('/detail_user/store/{id}', [DetailUserController::class, 'store']);
@@ -87,12 +87,12 @@ Route::prefix('admin')->group(function() {
     Route::get('/inventory/showCodeExport', [InventoryController::class, 'showCodeExport']);
     Route::get('/inventory/showCodeImport', [InventoryController::class, 'showCodeImport']);
 
-    Route::get('/item', [ItemController::class, 'index']);
-    Route::get('/item/add', [ItemController::class, 'create']);
-    Route::post('/item/store', [ItemController::class, 'store']);
-    Route::get('/item/show/{id}', [ItemController::class, 'edit']);
-    Route::put('/item/update/{id}', [ItemController::class, 'update']);
-    Route::delete('/item/delete/{id}', [ItemController::class, 'destroy']);
+    // Route::get('/item', [ItemController::class, 'index']);
+    // Route::get('/item/add', [ItemController::class, 'create']);
+    // Route::post('/item/store', [ItemController::class, 'store']);
+    // Route::get('/item/show/{id}', [ItemController::class, 'edit']);
+    // Route::put('/item/update/{id}', [ItemController::class, 'update']);
+    // Route::delete('/item/delete/{id}', [ItemController::class, 'destroy']);
 
 
     Route::get('/detail_item', [Detail_ItemController::class, 'index']);
@@ -132,6 +132,9 @@ Route::prefix('admin')->group(function() {
     Route::get('/warehouse/itemWarehouse/{id}', [WarehouseController::class, 'itemWarehouse']);
     Route::get('/warehouse/countWarehouse', [WarehouseController::class, 'countWarehouse']);
     Route::get('/warehouse/amountShelf/{id}', [WarehouseController::class, 'amountShelf']);
+    Route::get('/warehouse/sumAmountItem/{id}', [WarehouseController::class, 'sumAmountItem']);
+    Route::get('/warehouse/searchItems/{name}/{id}',[WarehouseController::class, 'searchItems']);
+    // Route::get('/warehouse/warehouseShow', [WarehouseController::class, 'warehouseShow']);
 
 
     /*************Shelf*************/
@@ -160,13 +163,13 @@ Route::prefix('admin')->group(function() {
 
 
     /**************Item***************/
-    Route::get('/items',[ItemController::class, 'index']);
+    Route::get('/items', [ItemController::class, 'index']);
     Route::get('/items/add', [ItemController::class, 'create']);
     Route::post('/items/store', [ItemController::class, 'store']);
     Route::get('/items/show/{id}', [ItemController::class, 'edit']);
     Route::put('/items/update/{id}', [ItemController::class, 'update']);
     Route::delete('/items/delete/{id}', [ItemController::class, 'destroy']);
-    // Route::get('/items/searchItem/{name}/{id}', [ItemController::class, 'searchItem']);
+    Route::get('/items/searchItem/{id}', [ItemController::class, 'searchItem']);
     Route::get('/items/searchItem/{id}', [ItemController::class, 'searchItem']);
     Route::get('/items/itemInWarehouse/{id}', [ItemController::class, 'itemInWarehouse']);
 
@@ -174,7 +177,7 @@ Route::prefix('admin')->group(function() {
     Route::get('/items/amountItem/{id}/{warehouse_id}/{shelf_id}', [ItemController::class, 'amountItemsplit']);
 
     /*************Detail_item**************/
-    Route::get('/detail_item',[DetailitemController::class, 'index']);
+    Route::get('/detail_item', [DetailitemController::class, 'index']);
     Route::get('/detail_item/add', [DetailitemController::class, 'create']);
     Route::post('/detail_item/store', [DetailitemController::class, 'store']);
     Route::get('/detail_item/show/{id}', [DetailitemController::class, 'edit']);
@@ -184,14 +187,32 @@ Route::prefix('admin')->group(function() {
 
 
     /****************Suppliers***************/
-    Route::get('/suppliers',[SuppliersController::class, 'index']);
+    Route::get('/suppliers', [SuppliersController::class, 'index']);
     Route::get('/suppliers/add', [SuppliersController::class, 'create']);
     Route::post('/suppliers/store', [SuppliersController::class, 'store']);
     Route::get('/suppliers/show/{id}', [SuppliersController::class, 'edit']);
     Route::put('/suppliers/update/{id}', [SuppliersController::class, 'update']);
     Route::delete('/suppliers/delete/{id}', [SuppliersController::class, 'destroy']);
 
-    Route::prefix('auth_model')->group(function() {
+
+
+    /**************Category****************/
+    Route::get('/category', [CategoryController::class, 'index']);
+    Route::get('/category/show/{id}', [CategoryController::class, 'edit']);
+
+
+    /************Ẽport***********/
+    Route::get('/export', [ExportController::class, 'index']);
+    Route::get('/export/indexStatus', [ExportController::class, 'indexStatus']);
+    Route::get('/export/add', [ExportController::class, 'create']);
+    Route::post('/export/store', [ExportController::class, 'store']);
+    Route::get('/export/show/{id}', [ExportController::class, 'edit']);
+    Route::put('/export/update/{id}', [ExportController::class, 'update']);
+    Route::put('/export/updateStatus/{id}', [ExportController::class, 'updateStatus']);
+    Route::put('/export/dStatus/{id}', [ExportController::class, 'dStatus']);
+    Route::delete('/export/delete/{id}', [ExportController::class, 'destroy']);
+
+    Route::prefix('auth_model')->group(function () {
 
         /************Permission*************/
         Route::get('/permission', [PermissionController::class, 'index']);

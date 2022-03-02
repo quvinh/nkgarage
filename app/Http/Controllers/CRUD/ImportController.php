@@ -239,6 +239,7 @@ class ImportController extends Controller
 
             }
             else {
+                // dd($import[0]);
                 // Item::where('id',$request->item_id)->update(['amount'=>++$itemA[0]->amount]);
                 $item = new DetailItem();
                 $it = new Item();
@@ -248,7 +249,7 @@ class ImportController extends Controller
                 $item->warehouse_id = $import[0]->warehouse_id;
                 $item->shelf_id = $import[0]->shelf_id;
                 $item->batch_code = $import[0]->batch_code;
-                // $item->name = $import[0]->name;
+                $item->supplier_id = $import[0]->suppliers_id;
                 $item->amount = $import[0]->amount;
                 $item->unit = $import[0]->unit;
                 $item->price = $import[0]->price;
@@ -260,6 +261,7 @@ class ImportController extends Controller
 
                 $item->save();
                 $it->save();
+
             }
         }
 

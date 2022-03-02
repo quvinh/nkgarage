@@ -24,6 +24,7 @@ class DetailItem extends Model
         'amount',
         'unit',
         'price',
+        'supplier_id',
         'status',
     ];
 
@@ -43,6 +44,10 @@ class DetailItem extends Model
 
     public function warehouse() {
         return $this->belongsTo(Warehouse::class, 'warehouse_id', 'id');
+    }
+
+    public function suppliers() {
+        return $this->belongsTo(Suppliers::class, 'supplier_id', 'id');
     }
 
 }

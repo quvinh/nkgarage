@@ -28,7 +28,12 @@ class Import extends Model
         'created_by',
         'note'
     ];
+
     public function item() {
         return $this->belongsTo(Item::class, 'item_id', 'id');
+    }
+
+    public function suppliers() {
+        return $this->belongsTo(Suppliers::class, 'suppliers_id', 'id');
     }
 }
