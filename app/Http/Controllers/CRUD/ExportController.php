@@ -70,11 +70,17 @@ class ExportController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
         $count_item = DB::table('detail_items')
-            ->where([['item_id', $request->item_id], ['warehouse_id', $request->warehouse_id]])
+            ->where([
+                ['item_id', $request->item_id], ['warehouse_id', $request->warehouse_id],
+                ['shelf_id', $request->shelf_id], ['supplier_id', $request->supplier_id]
+            ])
             ->get()
             ->count();
         $detail_item = DB::table('detail_items')
-            ->where([['item_id', $request->item_id],['warehouse_id', $request->warehouse_id]])
+            ->where([
+                ['item_id', $request->item_id], ['warehouse_id', $request->warehouse_id],
+                ['shelf_id', $request->shelf_id], ['supplier_id', $request->supplier_id]
+            ])
             ->get();
         $item = DB::table('items')
             ->where('id', $detail_item[0]->item_id)
@@ -82,12 +88,13 @@ class ExportController extends Controller
         if ($count_item > 0) {
             if ($request->amount <= $detail_item[0]->amount) {
                 $newExport = new Export();
-                $newExport->item_id =$request->item_id;
+                $newExport->item_id = $request->item_id;
                 $newExport->code = $request->code;
                 $newExport->amount = $request->amount;
                 $newExport->price = $request->price;
                 $newExport->warehouse_id = $request->warehouse_id;
                 $newExport->shelf_id = $request->shelf_id;
+                $newExport->supplier_id = $request->supplier_id;
                 $newExport->name = $item[0]->name;
                 $newExport->unit = $request->unit;
                 $newExport->created_by = $request->created_by;
@@ -98,35 +105,7 @@ class ExportController extends Controller
                     'message' => 'Data created successfully',
                     'status' => 'Add Export'
                 ], 201);
-            } else {
-                $newNotify = new Notification();
-                $newNotify->item_id = $detail_item[0]->item_id;
-                $newNotify->detail_item_id = $detail_item[0]->id;
-                $newNotify->title = 'Thiếu vật tư';
-                $newNotify->content = 'Cần nhập thêm';
-                $newNotify->amount = $request->amount - $detail_item[0]->amount;
-                $newNotify->unit = $request->unit;
-                $newNotify->created_by = '0';
-                $newNotify->save();
-                return response()->json([
-                    'message' => 'Data created successfully',
-                    'status' => 'Add Notify'
-                ], 201);
             }
-        } else {
-            $newNotify = new Notification();
-            $newNotify->item_id = $detail_item[0]->item_id;
-            $newNotify->detail_item_id = $detail_item[0]->id;
-            $newNotify->title = 'Thiếu vật tư';
-            $newNotify->content = 'Cần nhập thêm';
-            $newNotify->amount = $request->amount;
-            $newNotify->unit = $request->unit;
-            $newNotify->created_by = '0';
-            $newNotify->save();
-            return response()->json([
-                'message' => 'Data created successfully',
-                'status' => 'Add Notify'
-            ], 201);
         }
     }
 
@@ -181,12 +160,12 @@ class ExportController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
         $data = Export::where('id', $id)->update([
-            'shelf_id'=>$request->shelf_id,
-            'code'=>$request->code,
+            'shelf_id' => $request->shelf_id,
+            'code' => $request->code,
             'detail_item_id' => $request->detail_item_id,
             'warehouse_id' => $request->warehouse_id,
             'amount' => $request->amount,
-            'price'=> $request->price,
+            'price' => $request->price,
             'unit' => $request->unit,
             'status' => $request->status,
             'created_by' => $request->created_by
@@ -217,14 +196,15 @@ class ExportController extends Controller
     }
     public function updateStatus($id)
     {
-        $export_item = DB::table('exports')
+        $export = DB::table('exports')
             ->where('id', $id)
             ->get();
         $detail_item = DB::table('detail_items')
-            ->where('item_id', $export_item[0]->item_id)
+            ->where(['item_id', $export[0]->item_id], ['warehouse_id', $export[0]->warehouse_id], ['shelf_id', $export[0]->shelf_id], ['supplier_id', $export[0]->supplier_id])
             ->get();
         Export::where('id', $id)->update(['status' => '2']);
-        DetailItem::where('item_id', $export_item[0]->item_id)->update(['amount' => $detail_item[0]->amount - $export_item[0]->amount]);
+        DetailItem::where(['item_id', $export[0]->item_id], ['warehouse_id', $export[0]->warehouse_id], ['shelf_id', $export[0]->shelf_id], ['supplier_id', $export[0]->supplier_id])
+            ->update(['amount' => $detail_item[0]->amount - $export[0]->amount], ['warehouse_id', $export[0]->warehouse_id], ['shelf_id', $export[0]->shelf_id]);
         return response()->json([
             'message' => 'Data Export successfully changed',
             'status' => 'Changed Status',

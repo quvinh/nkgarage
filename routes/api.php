@@ -16,6 +16,7 @@ use App\Models\Suppliers;
 use App\Http\Controllers\CRUD\Detail_ItemController;
 use App\Http\Controllers\CRUD\InventoryController;
 use App\Http\Controllers\CRUD\NotificationController;
+use App\Http\Controllers\CRUD\TransferController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -49,15 +50,15 @@ Route::group([
     Route::post('/change-pass', [AuthController::class, 'changePassWord']);
 });
 
-Route::prefix('admin')->group(function() {
+Route::prefix('admin')->group(function () {
     Route::get('/');
 
     Route::get('/dashboard/tonKho', [DashBoardController::class, 'tonKho']);
     Route::get('/dashboard/solgKho', [DashBoardController::class, 'solgKho']);
     Route::get('/dashboard/export/{year}', [DashBoardController::class, 'export']);
     Route::get('/dashboard/import/{year}', [DashBoardController::class, 'import']);
-    Route::get('/dashboard/importCode', [DashBoardController::class, 'importCode']);
-    Route::get('/dashboard/exportCode', [DashBoardController::class, 'exportCode']);
+    Route::get('/dashboard/importCode/{month}/{year}', [DashBoardController::class, 'importCode']);
+    Route::get('/dashboard/exportCode/{month}/{year}', [DashBoardController::class, 'exportCode']);
 
     Route::get('/notification', [NotificationController::class, 'index']);
     Route::get('/notification/add', [NotificationController::class, 'create']);
@@ -74,8 +75,10 @@ Route::prefix('admin')->group(function() {
     Route::delete('/inventory/delete/{id}', [InventoryController::class, 'destroy']);
     Route::get('/inventory/showHistoryExport/{id}', [InventoryController::class, 'showHistoryExport']);
     Route::get('/inventory/showHistoryImport/{id}', [InventoryController::class, 'showHistoryImport']);
+    Route::get('/inventory/showHistoryTransfer/{id}', [InventoryController::class, 'showHistoryTransfer']);
     Route::get('/inventory/showCodeExport', [InventoryController::class, 'showCodeExport']);
     Route::get('/inventory/showCodeImport', [InventoryController::class, 'showCodeImport']);
+    Route::get('/inventory/showCodeTransfer', [InventoryController::class, 'showCodeTransfer']);
 
     Route::get('/item', [ItemController::class, 'index']);
     Route::get('/item/add', [ItemController::class, 'create']);
@@ -83,6 +86,7 @@ Route::prefix('admin')->group(function() {
     Route::get('/item/show/{id}', [ItemController::class, 'edit']);
     Route::put('/item/update/{id}', [ItemController::class, 'update']);
     Route::delete('/item/delete/{id}', [ItemController::class, 'destroy']);
+    Route::get('/items/searchItem/{id}', [ItemController::class, 'searchItem']);
 
 
     Route::get('/detail_item', [Detail_ItemController::class, 'index']);
@@ -117,6 +121,7 @@ Route::prefix('admin')->group(function() {
     Route::get('/warehouse/show/{id}', [WarehouseController::class, 'edit']);
     Route::put('/warehouse/update/{id}', [WarehouseController::class, 'update']);
     Route::delete('/warehouse/delete/{id}', [WarehouseController::class, 'destroy']);
+    Route::get('/warehouse/shelfWarehouse/{id}', [WarehouseController::class, 'shelfWarehouse']);
 
 
     /*************Shelf*************/
@@ -128,8 +133,19 @@ Route::prefix('admin')->group(function() {
     Route::delete('/shelf/delete/{id}', [ShelvesController::class, 'destroy']);
 
 
+    /*************Transfer*************/
+    Route::get('/transfer', [TransferController::class, 'index']);
+    Route::get('/transfer/add', [TransferController::class, 'create']);
+    Route::post('/transfer/store', [TransferController::class, 'store']);
+    Route::get('/transfer/show/{id}', [TransferController::class, 'edit']);
+    Route::put('/transfer/update/{id}', [TransferController::class, 'update']);
+    Route::delete('/transfer/delete/{id}', [TransferController::class, 'destroy']);
+    Route::put('/transfer/updateStatus/{id}', [TransferController::class, 'updateStatus']);
+    Route::put('/transfer/dStatus/{id}', [TransferController::class, 'dStatus']);
+
+
     //**********Import**************/
-    Route::get('/import',[ImportController::class, 'index']);
+    Route::get('/import', [ImportController::class, 'index']);
     Route::get('/import/add', [ImportController::class, 'create']);
     Route::post('/import/store', [ImportController::class, 'store']);
     Route::get('/import/show/{id}', [ImportController::class, 'edit']);
@@ -142,7 +158,7 @@ Route::prefix('admin')->group(function() {
 
 
     /**************Item***************/
-    Route::get('/items',[ItemController::class, 'index']);
+    Route::get('/items', [ItemController::class, 'index']);
     Route::get('/items/add', [ItemController::class, 'create']);
     Route::post('/items/store', [ItemController::class, 'store']);
     Route::get('/items/show/{id}', [ItemController::class, 'edit']);
@@ -154,14 +170,14 @@ Route::prefix('admin')->group(function() {
 
 
     /****************Suppliers***************/
-    Route::get('/suppliers',[SuppliersController::class, 'index']);
+    Route::get('/suppliers', [SuppliersController::class, 'index']);
     Route::get('/suppliers/add', [SuppliersController::class, 'create']);
     Route::post('/suppliers/store', [SuppliersController::class, 'store']);
     Route::get('/suppliers/show/{id}', [SuppliersController::class, 'edit']);
     Route::put('/suppliers/update/{id}', [SuppliersController::class, 'update']);
     Route::delete('/suppliers/delete/{id}', [SuppliersController::class, 'destroy']);
 
-    Route::prefix('auth_model')->group(function() {
+    Route::prefix('auth_model')->group(function () {
 
         /************Permission*************/
         Route::get('/permission', [PermissionController::class, 'index']);
