@@ -173,6 +173,7 @@ class InventoryController extends Controller
     {
         $history = DB::table('imports')
             ->join('warehouses', 'warehouses.id', '=', 'imports.warehouse_id')
+            ->join('users', 'users.id', '=', 'imports.created_by') //join user -> get name
             ->select(
                 'imports.item_id',
                 'imports.name',
@@ -184,7 +185,8 @@ class InventoryController extends Controller
                 'imports.amount as luongNhap',
                 'imports.price',
                 'imports.created_at',
-                'imports.status'
+                'imports.status',
+                'users.fullname as fullname' //
             )
             ->where('code', $code)
             ->where('imports.deleted_at', null)
@@ -199,12 +201,14 @@ class InventoryController extends Controller
     {
         $history = DB::table('imports')
             ->join('warehouses', 'warehouses.id', '=', 'imports.warehouse_id')
+            ->join('users', 'users.id', '=', 'imports.created_by') //join user -> get name
             ->select(
                 'warehouses.name as tenKho',
                 'imports.code',
                 DB::raw('date_format(imports.created_at, "%d/%m/%Y %H:%i") as created_at'),
                 'imports.created_by',
-                'imports.status'
+                'imports.status',
+                'users.fullname as fullname' //
             )
             ->where('imports.deleted_at', null)
             ->groupBy('code')

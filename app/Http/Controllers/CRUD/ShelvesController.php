@@ -58,7 +58,7 @@ class ShelvesController extends Controller
             'name' => $request->name,
             'position' => $request->position,
             'warehouse_id' => $id,
-            'status' => '0',
+            'status' => true,
         ]);
 
         return response()->json([
@@ -168,7 +168,7 @@ class ShelvesController extends Controller
         ], 201);
     }
 
-    
+
     public function amountItem(){
         $count_item = DB::table('detail_items')
             ->join('shelves','shelves.id','=','detail_items.shelf_id')

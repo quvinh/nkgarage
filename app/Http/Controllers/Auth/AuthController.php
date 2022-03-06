@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class AuthController extends Controller
 {
@@ -113,9 +115,12 @@ class AuthController extends Controller
      */
     public function userProfile()
     {
+        $users = User::role('admin')->get();
+
         return response()->json([
             'status' => 'user profile',
             'data' => Auth::user(),
+            'user' => $users,
         ]);
     }
 
@@ -161,11 +166,11 @@ class AuthController extends Controller
     public function users() {
         $data = DB::table('users')
             ->leftJoin('detail_users', 'users.id', '=', 'detail_users.id')
-            ->leftJoin('role_users', 'users.id', '=', 'role_users.user_id')
+            ->leftJoin('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->select('users.id as id', 'users.username as username',
             'users.email as email', 'users.fullname', 'users.phone',
             'detail_users.address as address', 'detail_users.birthday as birthday',
-            'detail_users.gender', 'role_users.roles_id as roles_id')
+            'detail_users.gender', 'model_has_roles.model_id as roles_id')
             ->get();
         // dd($data);
 
@@ -177,6 +182,15 @@ class AuthController extends Controller
             'message' => 'All users',
             'data' => $data,
             'dataRoles' => $dataRoles,
+        ], 201);
+    }
+
+    public function getUser($id) {
+        $data = User::where('id', $id)->get();
+
+        return response()->json([
+            'message' => 'get user',
+            'data' => $data
         ], 201);
     }
 }

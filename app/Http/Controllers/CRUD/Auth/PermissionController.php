@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\CRUD\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Permissions;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,7 +17,7 @@ class PermissionController extends Controller
     public function index()
     {
         //
-        $data = Permissions::all();
+        $data = Permission::all();
 
         // return response()->json([,
         //     'status' => 'All permission',
@@ -45,20 +45,20 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
         //
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'name' => 'required|string|between:2,100',
+        // ]);
 
-        if($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
-        }
+        // if($validator->fails()) {
+        //     return response()->json($validator->errors()->toJson(), 400);
+        // }
 
-        $data = Permissions::create($request->all());
+        // $data = Permissions::create($request->all());
 
-        return response()->json([
-            'message' => 'Data created successfully',
-            'data' => $data
-        ], 201);
+        // return response()->json([
+        //     'message' => 'Data created successfully',
+        //     'data' => $data
+        // ], 201);
         // return $data;
     }
 
@@ -82,12 +82,12 @@ class PermissionController extends Controller
     public function edit($id)
     {
         //
-        $data = Permissions::find($id);
-        return response()->json([
-            'status' => 'Show form edit',
-            'message' => 'Show successfully',
-            'data' => $data,
-        ]);
+        // $data = Permissions::find($id);
+        // return response()->json([
+        //     'status' => 'Show form edit',
+        //     'message' => 'Show successfully',
+        //     'data' => $data,
+        // ]);
         // return $data;
     }
 
@@ -101,23 +101,23 @@ class PermissionController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'name' => 'required',
+        // ]);
 
-        if($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
-        }
+        // if($validator->fails()) {
+        //     return response()->json($validator->errors()->toJson(), 400);
+        // }
 
-        $data = Permissions::where('id', $id)->update([
-            'name' => $request->name,
-            'note' => $request->note
-        ]);
+        // $data = Permissions::where('id', $id)->update([
+        //     'name' => $request->name,
+        //     'note' => $request->note
+        // ]);
 
-        return response()->json([
-            'message' => 'Data Permissions successfully changed',
-            'data' => $data,
-        ], 201);
+        // return response()->json([
+        //     'message' => 'Data Permissions successfully changed',
+        //     'data' => $data,
+        // ], 201);
         // return $data;
     }
 
@@ -130,12 +130,12 @@ class PermissionController extends Controller
     public function destroy($id)
     {
         //
-        $data = Permissions::find($id);
-        $data->delete();
+        // $data = Permissions::find($id);
+        // $data->delete();
 
-        return response()->json([
-            'tatus' => 'Delete data Permissions',
-            'message' => 'Delete sucessfully',
-        ], 201);
+        // return response()->json([
+        //     'tatus' => 'Delete data Permissions',
+        //     'message' => 'Delete sucessfully',
+        // ], 201);
     }
 }

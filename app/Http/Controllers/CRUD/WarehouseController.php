@@ -168,7 +168,7 @@ class WarehouseController extends Controller
             ->select(
                 'detail_items.id as detail_item_id',
                 'detail_items.item_id as id',
-                'items.name as itemname',
+                'items.name as name_item',
                 'batch_code',
                 'categories.name as categoryname',
                 'amount',
@@ -224,7 +224,7 @@ class WarehouseController extends Controller
     //     ], 201);
     // }
 
-    // public function 
+    // public function
 
     public function itemWarehouse($id)
     {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\CRUD;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashBoardController extends Controller
@@ -87,7 +88,7 @@ class DashBoardController extends Controller
     {
         $export = DB::table('exports')
             ->select(DB::raw('sum(exports.amount) as exportAmount'), DB::raw('date_format(created_at, "%M") as month, year(created_at) as year'))
-            ->where('deleted_at', null)
+            // ->where('deleted_at', null)
             ->orderBy('created_at', 'asc')
             ->groupBy('month', 'status')
             ->having('status', 2)
@@ -104,7 +105,7 @@ class DashBoardController extends Controller
     {
         $import = DB::table('imports')
             ->select(DB::raw('sum(imports.amount) as importAmount'), DB::raw('date_format(created_at, "%M") as month, year(created_at) as year'))
-            ->where('deleted_at', null)
+            // ->where('deleted_at', null)
             ->orderBy('created_at', 'asc')
             ->groupBy('month', 'year', 'status')
             ->having('status', 2)
@@ -123,6 +124,7 @@ class DashBoardController extends Controller
             ->select(DB::raw('count(id) as solgKho'))
             ->where('status',true)
             ->get();
+
         return response()->json([
             'message' => 'Data DashBoard',
             'status' => 'DashBoard',

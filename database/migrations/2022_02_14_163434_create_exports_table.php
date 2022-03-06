@@ -19,6 +19,7 @@ class CreateExportsTable extends Migration
             $table->char('item_id',20);
             $table->bigInteger('warehouse_id');
             $table->bigInteger('shelf_id');
+            $table->bigInteger('supplier_id');
             $table->string('name');
             $table->integer('amount');
             $table->integer('price');

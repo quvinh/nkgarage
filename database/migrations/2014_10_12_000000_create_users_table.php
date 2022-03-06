@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('fullname', 100);
             $table->char('phone', 10);
+            $table->text('auth_token')->nullable();
             // $table->date('birthday');
             // $table->string('address');
             // $table->binary('gender');

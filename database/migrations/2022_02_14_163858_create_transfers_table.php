@@ -15,11 +15,16 @@ class CreateTransfersTable extends Migration
     {
         Schema::create('transfers', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('detail_item_id');
+            $table->char('code', 20);
+            $table->char('item_id', 20);
+            $table->bigInteger('supplier_id');
+            $table->string('name');
             $table->integer('amount');
             $table->string('unit', 10);
-            $table->bigInteger('from');//warehouse
-            $table->bigInteger('to');
+            $table->bigInteger('from_warehouse');
+            $table->bigInteger('from_shelf');
+            $table->bigInteger('to_warehouse');
+            $table->bigInteger('to_shelf');
             $table->text('note')->nullable();
             $table->char('status',1);
             $table->bigInteger('created_by');

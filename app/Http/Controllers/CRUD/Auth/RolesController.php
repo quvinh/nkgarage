@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\CRUD\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Roles;
-use App\Models\RoleUser;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -19,7 +18,7 @@ class RolesController extends Controller
     public function index()
     {
         //
-        $data = Roles::all();
+        $data = Role::all();
         return response()->json([
             'status' => 'get all roles',
             'data' => $data
@@ -46,20 +45,20 @@ class RolesController extends Controller
     public function store(Request $request)
     {
         //
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'name' => 'required|string|between:2,100',
+        // ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json($validator->errors()->toJson(), 400);
+        // }
 
-        $data = Roles::create($request->all());
+        // $data = Roles::create($request->all());
 
-        return response()->json([
-            'message' => 'Data created successfully',
-            'data' => $data
-        ], 201);
+        // return response()->json([
+        //     'message' => 'Data created successfully',
+        //     'data' => $data
+        // ], 201);
         // return $data;
     }
 
@@ -83,12 +82,12 @@ class RolesController extends Controller
     public function edit($id)
     {
         //
-        $data = Roles::find($id);
-        return response()->json([
-            'status' => 'Show form edit',
-            'message' => 'Show successfully',
-            'data' => $data,
-        ]);
+        // $data = Roles::find($id);
+        // return response()->json([
+        //     'status' => 'Show form edit',
+        //     'message' => 'Show successfully',
+        //     'data' => $data,
+        // ]);
     }
 
     /**
@@ -101,23 +100,23 @@ class RolesController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'name' => 'required|string|between:2,100',
+        // ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json($validator->errors()->toJson(), 400);
+        // }
 
-        $data = Roles::where('id', $id)->update([
-            'name' => $request->name,
-            'note' => $request->note
-        ]);
+        // $data = Roles::where('id', $id)->update([
+        //     'name' => $request->name,
+        //     'note' => $request->note
+        // ]);
 
-        return response()->json([
-            'message' => 'Data Roles successfully changed',
-            'data' => $data,
-        ], 201);
+        // return response()->json([
+        //     'message' => 'Data Roles successfully changed',
+        //     'data' => $data,
+        // ], 201);
     }
 
     /**
@@ -129,28 +128,29 @@ class RolesController extends Controller
     public function destroy($id)
     {
         //
-        $data = Roles::find($id);
-        $data->delete();
+        // $data = Roles::find($id);
+        // $data->delete();
 
-        return response()->json([
-            'tatus' => 'Delete data Roles',
-            'message' => 'Delete sucessfully',
-        ], 201);
+        // return response()->json([
+        //     'tatus' => 'Delete data Roles',
+        //     'message' => 'Delete sucessfully',
+        // ], 201);
     }
 
     public function detailRoles($id)
     {
-        $data = DB::table('permission_roles')
-            ->join('roles', 'roles.id', '=', 'permission_roles.roles_id')
-            ->join('permissions', 'permissions.id', '=', 'permission_roles.permission_id')
-            ->select(
-                'roles.id as roles_id',
-                'roles.name',
-                'permissions.id as permission_id',
-                'permissions.name as permission_name'
-            )
-            ->where('roles.id', $id)
-            ->get();
+        // $data = DB::table('role_has_permission')
+        //     ->join('roles', 'roles.id', '=', 'role_has_permission.role_id')
+        //     ->join('permissions', 'permissions.id', '=', 'role_has_permission.permission_id')
+        //     ->select(
+        //         'roles.id as role_id',
+        //         'roles.name',
+        //         'permissions.id as permission_id',
+        //         'permissions.name as permission_name'
+        //     )
+        //     ->where('roles.id', $id)
+        //     ->get();
+        $data = Role::findById($id)->permissions()->get();
 
         return response()->json([
             'message' => 'Data Roles - Permissions',
@@ -169,15 +169,15 @@ class RolesController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $checkUserId = RoleUser::where('user_id', $request->user_id)->count();
+        $checkUserId = DB::table('model_has_roles')->where('user_id', $request->user_id)->count();
 
         if ($checkUserId > 0) {
-            RoleUser::where('user_id', $request->user_id)->update([
-                'user_id' => $request->user_id,
-                'roles_id' => $request->roles_id
+            DB::table('model_has_roles')->where('user_id', $request->user_id)->update([
+                'model_id' => $request->user_id,
+                'role_id' => $request->roles_id
             ]);
         } else {
-            RoleUser::create($request->all());
+            DB::table('model_has_roles')->create($request->all());
         }
 
 

@@ -24,7 +24,7 @@ class Import extends Model
         'unit',
         'price',
         'status',
-        'suppliers_id',
+        'supplier_id',
         'created_by',
         'note'
     ];
@@ -33,7 +33,7 @@ class Import extends Model
         return $this->belongsTo(Item::class, 'item_id', 'id');
     }
 
-    public function suppliers() {
-        return $this->belongsTo(Suppliers::class, 'suppliers_id', 'id');
+    public function supplier() {
+        return $this->belongsTo(Suppliers::class, 'supplier_id', 'id');
     }
 }
