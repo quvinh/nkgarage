@@ -65,7 +65,7 @@ class ImportController extends Controller
             'amount' => 'required',
             'unit' => 'required',
             'price' => 'required',
-            'suppliers_id' => 'required',
+            'supplier_id' => 'required',
             'created_by' => 'required'
         ]);
         if($validator->fails()){
@@ -83,7 +83,7 @@ class ImportController extends Controller
             'unit' => $request->unit,
             'price' => $request->price,
             'status' => '0',
-            'suppliers_id' => $request ->suppliers_id,
+            'supplier_id' => $request ->supplier_id,
             'created_by' => $request->created_by,
             'note' => $request->note
         ]);
@@ -161,7 +161,7 @@ class ImportController extends Controller
             'amount' => 'required',
             'unit' => 'required',
             'price' => 'required',
-            'suppliers_id' => 'required',
+            'supplier_id' => 'required',
             'created_by' => 'required'
         ]);
 
@@ -209,50 +209,43 @@ class ImportController extends Controller
         $import = DB::table('imports')
             ->where('id',$id)
             ->get();
-        // $item = DB::table('imports')
-        //     ->join('items','imports.item_id','=','items.id')
-        //     ->join('detail_items','items.id','=','detail_items.item_id')
-        //     ->where('item_id', $import[0]->item_id)
-        //     ->get()
-        //     ->count();
-        $item_id1 = DB::table('items')->get('id');
 
         $countItem = DB::table('detail_items')
             ->where([['warehouse_id','=',$import[0]->warehouse_id],
                 ['shelf_id','=',$import[0]->shelf_id],
                 ['item_id','=',$import[0]->item_id],
-                ['batch_code','=',$import[0]->batch_code]])
+                ['batch_code','=',$import[0]->batch_code],
+                ['supplier_id','=',$import[0]->supplier_id]])
             ->get()
             ->count();
         $amountItem = DB::table('detail_items')->where([
             ['warehouse_id','=',$import[0]->warehouse_id],
             ['shelf_id','=',$import[0]->shelf_id],
             ['item_id','=',$import[0]->item_id],
-            ['batch_code','=',$import[0]->batch_code]
+            ['batch_code','=',$import[0]->batch_code],
+            ['supplier_id','=',$import[0]->supplier_id]
         ])->get('amount');
 
         if($import[0]->status==1){
-            
             if($countItem > 0) {
                 DetailItem::where([
                     ['warehouse_id','=',$import[0]->warehouse_id],
                     ['shelf_id','=',$import[0]->shelf_id],
                     ['item_id','=',$import[0]->item_id],
-                    ['batch_code','=',$import[0]->batch_code]
+                    ['batch_code','=',$import[0]->batch_code],
+                    ['supplier_id','=',$import[0]->supplier_id]
                     ])->update(['amount'=>$amountItem[0]->amount+$import[0]->amount]);
             }
-            // Item::where('id',$request->item_id)->update(['amount'=>++$itemA[0]->amount]);
             $item = new DetailItem();
-            // $item->detail_item_id = $import[0]->detail_item_id;
             $item->item_id = $import[0]->item_id;
             $item->category_id = $import[0]->category_id;
             $item->warehouse_id = $import[0]->warehouse_id;
             $item->shelf_id = $import[0]->shelf_id;
             $item->batch_code = $import[0]->batch_code;
-            // $item->name = $import[0]->name;
             $item->amount = $import[0]->amount;
             $item->unit = $import[0]->unit;
             $item->price = $import[0]->price;
+            $item->supplier_id = $import[0]->supplier_id;
             $item->status = 0;
             $item->save();
 

@@ -12,11 +12,15 @@ class Notification extends Model
     protected $table = 'notifications';
     protected $fillable = [
         'detail_item_id',
+        'item_id',
+        'item_name',
         'title',
         'content',
         'amount',
+        'warehouse_id',
         'unit',
         'created_by',
+        'code',
     ];
 
     public function detail_item() {

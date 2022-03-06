@@ -26,7 +26,7 @@ class CreateImportsTable extends Migration
             $table->string('unit', 10);
             $table->integer('price');
             $table->binary('status');
-            $table->char('suppliers_id', 20);
+            $table->bigInteger('supplier_id');
             $table->bigInteger('created_by');
             $table->text('note')->nullable();
             $table->timestamps();

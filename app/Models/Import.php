@@ -24,11 +24,16 @@ class Import extends Model
         'unit',
         'price',
         'status',
-        'suppliers_id',
+        'supplier_id',
         'created_by',
         'note'
     ];
+    
     public function item() {
         return $this->belongsTo(Item::class, 'item_id', 'id');
+    }
+
+    public function suppliers() {
+        return $this->belongsTo(Suppliers::class, 'supplier_id', 'id');
     }
 }

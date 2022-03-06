@@ -22,7 +22,7 @@ class DetailItem extends Model
         'amount',
         'unit',
         'price',
-        'suppliers_id',
+        'supplier_id',
         'status',
     ];
 

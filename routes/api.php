@@ -8,6 +8,7 @@ use App\Http\Controllers\CRUD\DetailitemController;
 use App\Http\Controllers\CRUD\ExportController;
 use App\Http\Controllers\CRUD\ImportController;
 use App\Http\Controllers\CRUD\ItemController;
+use App\Http\Controllers\CRUD\NotificationController;
 use App\Http\Controllers\CRUD\ShelvesController;
 use App\Http\Controllers\CRUD\SuppliersController;
 use App\Http\Controllers\CRUD\WarehouseController;
@@ -62,6 +63,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/warehouse/amountShelf/{id}', [WarehouseController::class, 'amountShelf']);
     Route::get('/warehouse/sumAmountItem/{id}', [WarehouseController::class, 'sumAmountItem']);
     Route::get('/warehouse/searchItems/{name}/{id}',[WarehouseController::class, 'searchItems']);
+    Route::get('/warehouse/amountItemKKD/{id}',[WarehouseController::class, 'amountItemKKD']);
+    Route::get('/warehouse/detailItemId/{id}/{shelfid}/{warehouseid}',[WarehouseController::class, 'detailItemId']);
     // Route::get('/warehouse/warehouseShow', [WarehouseController::class, 'warehouseShow']);
 
 
@@ -132,6 +135,12 @@ Route::prefix('admin')->group(function () {
     Route::put('/export/updateStatus/{id}', [ExportController::class, 'updateStatus']);
     Route::put('/export/dStatus/{id}', [ExportController::class, 'dStatus']);
     Route::delete('/export/delete/{id}', [ExportController::class, 'destroy']);
+
+    /**************Notification************/
+    Route::get('/notification', [NotificationController::class, 'index']);
+    Route::get('/notification/showNotification/{id}', [NotificationController::class, 'showNotification']);
+    Route::get('/notification/showListItemById/{id}', [NotificationController::class, 'showListItemById']);
+    Route::post('/notification/store', [NotificationController::class, 'store']);
 
     Route::prefix('auth_model')->group(function () {
 
