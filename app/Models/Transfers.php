@@ -13,11 +13,16 @@ class Transfers extends Model
 
     protected $table = 'transfers';
     protected $fillable = [
-        'detail_item_id',
+        'item_id',
+        'code',
         'amount',
         'unit',
-        'from',
-        'to',
+        'category_id',
+        'supplier_id',
+        'from_warehouse',
+        'to_warehouse',
+        'from_shelf',
+        'to_shelf',
         'note',
         'status',
         'created_by',

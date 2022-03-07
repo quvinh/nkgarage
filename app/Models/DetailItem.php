@@ -20,6 +20,7 @@ class DetailItem extends Model
         'category_id',
         'warehouse_id',
         'shelf_id',
+        'supplier_id',
         'batch_code',
         'amount',
         'unit',

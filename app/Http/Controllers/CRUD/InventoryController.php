@@ -239,4 +239,39 @@ class InventoryController extends Controller
             'data' => $history
         ], 201);
     }
+    public function showCodeTransfer()
+    {
+        $data = DB::table('transfers')
+            ->select(
+                'transfers.from_warehouse',
+                'transfers.from_shelf',
+                'transfers.to_warehouse',
+                'transfers.to_shelf',
+                'transfers.code',
+                DB::raw('date_format(transfers.created_at, "%d/%m/%Y %H:%i") as created_at'),
+                'transfers.created_by',
+                'transfers.status'
+            )
+            ->where('transfers.deleted_at', null)
+            ->groupBy('transfers.code')
+            ->get();
+        return response()->json([
+            'message' => 'Show transfer data',
+            'status' => 'History transfer',
+            'data' => $data
+        ], 201);
+    }
+    public function showHistoryTransfer($code){
+        $data = DB::table('transfers')
+        ->join('items','items.id','=','transfers.item_id')
+        ->select('transfers.*','items.name')
+        ->where('deleted_at', null)
+        ->where('code', $code)
+        ->get();
+        return response()->json([
+            'message' => 'Show transfer data',
+            'status' => 'History Transfer',
+            'data' => $data
+        ], 201);
+    }
 }

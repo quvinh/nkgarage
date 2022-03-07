@@ -63,28 +63,29 @@ class ExportController extends Controller
             'warehouse_id' => 'required',
             'amount' => 'required',
             'unit' => 'required',
-            'created_by' => 'required'
+            'created_by' => 'required',
+            'supplier_id' => 'required',
+            'shelf_id' => 'required',
+            'price' => 'required',
+            'code' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
-        $count_item = DB::table('detail_items')
-            ->where(['status' => '2']);
-        DetailItem::where([
+        $count_item = DetailItem::where([
             ['warehouse_id', '=', $request->warehouse_id],
             ['shelf_id', '=', $request->shelf_id],
             ['item_id', '=', $request->item_id],
-            ['supplier_id', '=', $request->supplier_id]
         ])
             ->get()
             ->count();
+            // dd($count_item);
         $detail_item = DB::table('detail_items')
             ->where([
                 ['warehouse_id', '=', $request->warehouse_id],
                 ['shelf_id', '=', $request->shelf_id],
                 ['item_id', '=', $request->item_id],
-                ['supplier_id', '=', $request->supplier_id]
             ])
             ->get();
         $item = DB::table('items')
@@ -99,6 +100,7 @@ class ExportController extends Controller
                 $newExport->price = $request->price;
                 $newExport->warehouse_id = $request->warehouse_id;
                 $newExport->shelf_id = $request->shelf_id;
+                $newExport->supplier_id = $request->supplier_id;
                 $newExport->name = $item[0]->name;
                 $newExport->unit = $request->unit;
                 $newExport->created_by = $request->created_by;
@@ -109,35 +111,7 @@ class ExportController extends Controller
                     'message' => 'Data created successfully',
                     'status' => 'Add Export'
                 ], 201);
-            } else {
-                $newNotify = new Notification();
-                $newNotify->item_id = $detail_item[0]->item_id;
-                $newNotify->detail_item_id = $detail_item[0]->id;
-                $newNotify->title = 'Thiếu vật tư';
-                $newNotify->content = 'Cần nhập thêm';
-                $newNotify->amount = $request->amount - $detail_item[0]->amount;
-                $newNotify->unit = $request->unit;
-                $newNotify->created_by = '0';
-                $newNotify->save();
-                return response()->json([
-                    'message' => 'Data created successfully',
-                    'status' => 'Add Notify'
-                ], 201);
             }
-        } else {
-            $newNotify = new Notification();
-            $newNotify->item_id = $detail_item[0]->item_id;
-            $newNotify->detail_item_id = $detail_item[0]->id;
-            $newNotify->title = 'Thiếu vật tư';
-            $newNotify->content = 'Cần nhập thêm';
-            $newNotify->amount = $request->amount;
-            $newNotify->unit = $request->unit;
-            $newNotify->created_by = '0';
-            $newNotify->save();
-            return response()->json([
-                'message' => 'Data created successfully',
-                'status' => 'Add Notify'
-            ], 201);
         }
     }
 

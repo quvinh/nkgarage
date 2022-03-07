@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\CRUD\Auth;
 
 use App\Http\Controllers\Controller;
-use Spatie\Permission\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Permission as ModelsPermission;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class RolesController extends Controller
 {
@@ -169,17 +172,21 @@ class RolesController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $checkUserId = DB::table('model_has_roles')->where('user_id', $request->user_id)->count();
+        // $checkUserId = DB::table('model_has_roles')->where('user_id', $request->user_id)->count();
 
-        if ($checkUserId > 0) {
-            DB::table('model_has_roles')->where('user_id', $request->user_id)->update([
-                'model_id' => $request->user_id,
-                'role_id' => $request->roles_id
-            ]);
-        } else {
-            DB::table('model_has_roles')->create($request->all());
-        }
+        // if ($checkUserId > 0) {
+        //     DB::table('model_has_roles')->where('user_id', $request->user_id)->update([
+        //         'model_id' => $request->user_id,
+        //         'role_id' => $request->roles_id
+        //     ]);
+        // } else {
+        //     DB::table('model_has_roles')->create($request->all());
+        // }
 
+        $role = Role::findById($request->roles_id);
+        // dd($role->name);
+        $user = User::find($request->user_id);
+        $user->assignRole($role->name);
 
         return response()->json([
             'message' => 'Data updated successfully',
