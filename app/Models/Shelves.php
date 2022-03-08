@@ -11,12 +11,13 @@ class Shelves extends Model
     use HasFactory,
         Notifiable;
 
-    protected $table = 'items';
+    protected $table = 'shelves';
     protected $fillable = [
         'id',
         'name',
         'position',
-        'status'
+        'status',
+        'warehouse_id'
     ];
 
 

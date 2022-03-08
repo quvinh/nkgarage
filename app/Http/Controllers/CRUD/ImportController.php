@@ -229,13 +229,14 @@ class ImportController extends Controller
             ->get()
             ->count();
 
-        $amountItem = DB::table('detail_items')->where([
-            ['warehouse_id', '=', $import[0]->warehouse_id],
-            ['shelf_id', '=', $import[0]->shelf_id],
-            ['supplier_id', '=', $import[0]->supplier_id],
-            ['item_id', '=', $import[0]->item_id],
-            ['batch_code', '=', $import[0]->batch_code]
-        ])->get('amount');
+        $amountItem = DB::table('detail_items')
+            ->where([
+                ['warehouse_id', '=', $import[0]->warehouse_id],
+                ['shelf_id', '=', $import[0]->shelf_id],
+                ['supplier_id', '=', $import[0]->supplier_id],
+                ['item_id', '=', $import[0]->item_id],
+                ['batch_code', '=', $import[0]->batch_code]
+            ])->get('amount');
         if ($import[0]->status == 2) {
             if ($countItem > 0) {
                 DetailItem::where([

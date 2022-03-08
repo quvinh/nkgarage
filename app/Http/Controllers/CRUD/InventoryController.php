@@ -244,6 +244,11 @@ class InventoryController extends Controller
                 'transfers.to_warehouse',
                 'transfers.to_shelf',
                 'transfers.code',
+                'transfers.name_from_warehouse',
+                'transfers.name_from_shelf',
+                'transfers.name_to_warehouse',
+                'transfers.name_to_shelf',
+                'transfers.code',
                 DB::raw('date_format(transfers.created_at, "%d/%m/%Y %H:%i") as created_at'),
                 'transfers.created_by',
                 'transfers.status'

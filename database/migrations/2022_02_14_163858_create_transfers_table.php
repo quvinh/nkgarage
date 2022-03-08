@@ -25,6 +25,10 @@ class CreateTransfersTable extends Migration
             $table->bigInteger('to_warehouse');
             $table->bigInteger('to_shelf');
             $table->bigInteger('supplier_id');
+            $table->string('name_from_warehouse');
+            $table->string('name_from_shelf');
+            $table->string('name_to_warehouse');
+            $table->string('name_to_shelf');
             $table->text('note')->nullable();
             $table->char('status',1);
             $table->bigInteger('created_by');

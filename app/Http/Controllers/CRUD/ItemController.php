@@ -48,7 +48,11 @@ class ItemController extends Controller
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(),400);
         }
-        $data = Item::create($request->all());
+        dd($request->name);
+        $data = Item::create([
+            'name' => $request->name,
+            'id' => $request->id
+        ]);
 
         return response()->json([
             'message' => 'Data created successfully',

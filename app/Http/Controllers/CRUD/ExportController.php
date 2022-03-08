@@ -200,19 +200,46 @@ class ExportController extends Controller
             ->where('id', $id)
             ->get();
         $detail_item = DB::table('detail_items')
-            ->where(['item_id', $export[0]->item_id], ['warehouse_id', $export[0]->warehouse_id], ['shelf_id', $export[0]->shelf_id], ['supplier_id', $export[0]->supplier_id])
+            ->where([
+                ['item_id', $export[0]->item_id],
+                ['warehouse_id', $export[0]->warehouse_id],
+                ['shelf_id', $export[0]->shelf_id],
+                ['supplier_id', $export[0]->supplier_id]
+            ])
             ->get();
-        Export::where('id', $id)->update(['status' => '2']);
-        DetailItem::where(['item_id', $export[0]->item_id], ['warehouse_id', $export[0]->warehouse_id], ['shelf_id', $export[0]->shelf_id], ['supplier_id', $export[0]->supplier_id])
-            ->update(['amount' => $detail_item[0]->amount - $export[0]->amount], ['warehouse_id', $export[0]->warehouse_id], ['shelf_id', $export[0]->shelf_id]);
-        return response()->json([
-            'message' => 'Data Export successfully changed',
-            'status' => 'Changed Status',
-        ], 201);
+        if ($export[0]->amount <= $detail_item[0]->amount) {
+            Export::where('id', $id)->update(['status' => '2']);
+            DetailItem::where([
+                ['item_id', $export[0]->item_id],
+                ['warehouse_id', $export[0]->warehouse_id],
+                ['shelf_id', $export[0]->shelf_id],
+                ['supplier_id', $export[0]->supplier_id]
+            ])
+                ->update([
+                    ['amount' => $detail_item[0]->amount - $export[0]->amount],
+                ]);
+            return response()->json([
+                'message' => 'Data Export successfully changed',
+                'status' => 'Changed Status',
+            ], 201);
+        }
     }
     public function dStatus($id)
     {
-        $dStatus =  Export::where('id', $id)->update(['status' => '1']);
+        $export = DB::table('exports')
+            ->where('id', $id)
+            ->get();
+        $detail_item = DB::table('detail_items')
+            ->where([
+                ['item_id', $export[0]->item_id],
+                ['warehouse_id', $export[0]->warehouse_id],
+                ['shelf_id', $export[0]->shelf_id],
+                ['supplier_id', $export[0]->supplier_id]
+            ])
+            ->get();
+        if ($export[0]->amount <= $detail_item[0]->amount) {
+            $dStatus =  Export::where('id', $id)->update(['status' => '1']);
+        }
         return response()->json([
             'message' => 'Data Export successfully changed',
             'status' => 'Changed Status',

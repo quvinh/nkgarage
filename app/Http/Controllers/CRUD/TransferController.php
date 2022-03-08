@@ -57,7 +57,7 @@ class TransferController extends Controller
             'amount' => 'required',
             'unit' => 'required',
             'created_by' => 'required',
-            // 'status' => 'required'
+
 
         ]);
 
@@ -87,6 +87,10 @@ class TransferController extends Controller
                 $newTransfer->to_warehouse = $request->toWarehouse;
                 $newTransfer->from_shelf = $request->fromShelf;
                 $newTransfer->to_shelf = $request->toShelf;
+                $newTransfer->name_from_warehouse = $request->nameFromWarehouse;
+                $newTransfer->name_to_warehouse = $request->nameToWarehouse;
+                $newTransfer->name_from_shelf = $request->nameFromShelf;
+                $newTransfer->name_to_shelf = $request->nameToShelf;
                 $newTransfer->supplier_id = $request->supplier_id;
                 $newTransfer->created_by = $request->created_by;
                 $newTransfer->note = $request->note;
@@ -218,14 +222,16 @@ class TransferController extends Controller
                 ['supplier_id', $transfer[0]->supplier_id]
             ])
             ->get()->count();
-        Transfers::where('id', $id)->update(['status' => '2']);
-        DetailItem::where([
-            ['item_id', $transfer[0]->item_id],
-            ['warehouse_id', $transfer[0]->from_warehouse],
-            ['shelf_id', $transfer[0]->from_shelf],
-            ['supplier_id', $transfer[0]->supplier_id]
-        ])
-            ->update(['amount' => $detail_item_from[0]->amount - $transfer[0]->amount]);
+        if ($transfer[0]->amount <= $detail_item_from[0]->amount) {
+            Transfers::where('id', $id)->update(['status' => '2']);
+            DetailItem::where([
+                ['item_id', $transfer[0]->item_id],
+                ['warehouse_id', $transfer[0]->from_warehouse],
+                ['shelf_id', $transfer[0]->from_shelf],
+                ['supplier_id', $transfer[0]->supplier_id]
+            ])
+                ->update(['amount' => $detail_item_from[0]->amount - $transfer[0]->amount]);
+        }
 
         if ($count_to > 0) {
             DetailItem::where([
@@ -260,7 +266,21 @@ class TransferController extends Controller
     }
     public function dStatus($id)
     {
-        $dStatus =  Transfers::where('id', $id)->update(['status' => '1']);
+        $transfer = DB::table('transfers')
+            ->where('id', $id)
+            ->get();
+
+        $detail_item_from = DB::table('detail_items')
+            ->where([
+                ['item_id', $transfer[0]->item_id],
+                ['warehouse_id', $transfer[0]->from_warehouse],
+                ['shelf_id', $transfer[0]->from_shelf],
+                ['supplier_id', $transfer[0]->supplier_id]
+            ])
+            ->get();
+        if ($transfer[0]->amount <= $detail_item_from[0]->amount) {
+            $dStatus =  Transfers::where('id', $id)->update(['status' => '1']);
+        }
         return response()->json([
             'message' => 'Data Transfer successfully changed',
             'status' => 'Changed Status',
