@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\DetailUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);//except
+        $this->middleware('auth:api', ['except' => ['login', 'register']]); //except
     }
 
     /**
@@ -119,8 +120,8 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => 'user profile',
-            'data' => Auth::user(),
-            'user' => $users,
+            // 'data' => Auth::user(),
+            'data' => $users,
         ]);
     }
 
@@ -163,34 +164,96 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function users() {
+    public function users()
+    {
         $data = DB::table('users')
-            ->leftJoin('detail_users', 'users.id', '=', 'detail_users.id')
+            ->leftJoin('detail_users', 'users.id', '=', 'detail_users.user_id')
             ->leftJoin('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
-            ->select('users.id as id', 'users.username as username',
-            'users.email as email', 'users.fullname', 'users.phone',
-            'detail_users.address as address', 'detail_users.birthday as birthday',
-            'detail_users.gender', 'model_has_roles.model_id as roles_id')
+            ->select(
+                'users.id as id',
+                'users.username as username',
+                'users.email as email',
+                'users.fullname',
+                'users.phone',
+                'detail_users.address as address',
+                'detail_users.birthday as birthday',
+                'detail_users.gender',
+                'model_has_roles.role_id as roles_id'
+            )
             ->get();
-        // dd($data);
 
-        $dataRoles = DB::table('roles')
-            ->where('id', $data[0]->roles_id)
-            ->get();
+        // $dataRoles = DB::table('roles')
+        //     ->where('id', $data[0]->roles_id)
+        //     ->get();
 
         return response()->json([
             'message' => 'All users',
             'data' => $data,
-            'dataRoles' => $dataRoles,
+            // 'dataRoles' => $dataRoles,
         ], 201);
     }
 
-    public function getUser($id) {
-        $data = User::where('id', $id)->get();
+    public function getUser($id)
+    {
+        $data = DB::table('users')
+
+            ->leftJoin('detail_users', 'users.id', '=', 'detail_users.user_id')
+            ->where('users.id', $id)
+            ->select(
+                'users.id as id',
+                'users.username as username',
+                'users.email as email',
+                'users.fullname',
+                'users.phone',
+                'detail_users.address as address',
+                'detail_users.birthday as birthday',
+                'detail_users.gender',
+            )
+            ->get();
 
         return response()->json([
             'message' => 'get user',
             'data' => $data
+        ], 201);
+    }
+
+    public function updateUser(Request $request, $id) {
+        $validator = Validator::make($request->all(), [
+            'username' => 'required',
+            'email' => 'required|string|email',
+            'fullname' => 'required|string|between:2,100',
+            'phone' => 'required|max:10',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        DB::table('users')->where('id', $id)->update([
+            'fullname' => $request->fullname,
+            'phone' => $request->phone
+        ]);
+
+        $checkUser = DB::table('detail_users')->where('user_id', $id)->count();
+        if($checkUser>0){
+            DB::table('detail_users')->where('user_id', $id)->update([
+                'birthday' => $request->birthday,
+                'address' => $request->address,
+                'gender' => $request->gender,
+            ]);
+        } else {
+            $data = new DetailUser();
+            $data->user_id = $id;
+            $data->address = $request->address;
+            $data->birthday = $request->birthday;
+            $data->gender = $request->gender;
+            $data->save();
+
+        }
+
+        return response()->json([
+            'message' => 'updated user',
+            'status' => 'UPDATE'
         ], 201);
     }
 }

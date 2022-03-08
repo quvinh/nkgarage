@@ -56,6 +56,7 @@ Route::group([
     Route::post('/change-pass', [AuthController::class, 'changePassWord']);
     Route::get('/users', [AuthController::class, 'users']);
     Route::get('/get-user/{id}', [AuthController::class, 'getUser']);
+    Route::post('/update-user/{id}', [AuthController::class, 'updateUser']);
 });
 
 Route::prefix('admin')->middleware('checklogin')->group(function () {

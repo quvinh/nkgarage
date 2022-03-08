@@ -172,21 +172,27 @@ class RolesController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        // $checkUserId = DB::table('model_has_roles')->where('user_id', $request->user_id)->count();
+        // $checkUserId = DB::table('model_has_roles')->where('model_id', $request->user_id)->count();
 
         // if ($checkUserId > 0) {
         //     DB::table('model_has_roles')->where('user_id', $request->user_id)->update([
         //         'model_id' => $request->user_id,
-        //         'role_id' => $request->roles_id
+        //         'role_id' => $request->roles_id,
+        //         'model_type' => 'App\Models\User'
         //     ]);
         // } else {
-        //     DB::table('model_has_roles')->create($request->all());
+        //     DB::table('model_has_roles')->create([
+        //         'role_id' => $request->roles_id,
+        //         'model_id' => $request->user_id,
+        //         'model_type' => 'App\Models\User'
+        //     ]);
         // }
 
         $role = Role::findById($request->roles_id);
-        // dd($role->name);
+        // // dd($role->name);
         $user = User::find($request->user_id);
-        $user->assignRole($role->name);
+        // $user->assignRole($role->name);
+        $user->syncRoles($role->name);
 
         return response()->json([
             'message' => 'Data updated successfully',

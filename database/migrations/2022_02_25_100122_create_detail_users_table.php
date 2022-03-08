@@ -16,9 +16,9 @@ class CreateDetailUsersTable extends Migration
         Schema::create('detail_users', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id');
-            $table->date('birthday');
-            $table->string('address');
-            $table->boolean('gender');
+            $table->date('birthday')->nullable();
+            $table->string('address')->nullable();
+            $table->boolean('gender')->nullable();
             // $table->timestamps();
         });
     }
