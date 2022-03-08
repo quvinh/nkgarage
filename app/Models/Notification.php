@@ -21,6 +21,7 @@ class Notification extends Model
         'unit',
         'created_by',
         'code',
+        'status',
     ];
 
     public function detail_item() {
