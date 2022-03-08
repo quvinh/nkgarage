@@ -97,6 +97,12 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
         Route::get('/items/searchItem/{id}', [ItemController::class, 'searchItem']);
         Route::get('/warehouse', [WarehouseController::class, 'index']);
         Route::get('/suppliers', [SuppliersController::class, 'index']);
+
+        /**************Notification************/
+        Route::get('/notification', [NotificationController::class, 'index']);
+        Route::get('/notification/showNotification/{id}', [NotificationController::class, 'showNotification']);
+        Route::get('/notification/showListItemById/{id}', [NotificationController::class, 'showListItemById']);
+        Route::post('/notification/store', [NotificationController::class, 'store']);
     });
 
 
@@ -156,6 +162,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
 
         /*************Warehouse**************/
         // Route::get('/warehouse', [WarehouseController::class, 'index']);
+
         Route::get('/warehouse/add', [WarehouseController::class, 'create']);
         Route::post('/warehouse/store', [WarehouseController::class, 'store']);
         Route::get('/warehouse/show/{id}', [WarehouseController::class, 'edit']);
@@ -168,6 +175,9 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
         Route::get('/warehouse/amountShelf/{id}', [WarehouseController::class, 'amountShelf']);
         Route::get('/warehouse/sumAmountItem/{id}', [WarehouseController::class, 'sumAmountItem']);
         Route::get('/warehouse/searchItems/{name}/{id}', [WarehouseController::class, 'searchItems']);
+
+        Route::get('/warehouse/amountItemKKD/{id}', [WarehouseController::class, 'amountItemKKD']);
+        Route::get('/warehouse/detailItemId/{id}/{shelfid}/{warehouseid}', [WarehouseController::class, 'detailItemId']);
         // Route::get('/warehouse/warehouseShow', [WarehouseController::class, 'warehouseShow']);
 
 

@@ -22,6 +22,65 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Lọc điều hoà'],
         ]);
 
+        DB::table('items')->insert([
+            [
+                'id' => 'BDH8',
+                'category_id' => 1,
+                'name' => 'Bóng đèn H8',
+                'unit' => 'Cái',
+                'note' => ''
+            ],
+            [
+                'id' => 'BDH880',
+                'category_id' => 1,
+                'name' => 'Bóng đèn H880',
+                'unit' => 'Cái',
+                'note' => ''
+            ],
+            [
+                'id' => 'CBL4',
+                'category_id' => 2,
+                'name' => 'Cảm biến lùi 4 mắt',
+                'unit' => 'Bộ',
+                'note' => ''
+            ],
+            [
+                'id' => 'CBL6',
+                'category_id' => 2,
+                'name' => 'Cảm biến lùi 6 mắt',
+                'unit' => 'Bộ',
+                'note' => ''
+            ],
+            [
+                'id' => 'LOCDIno',
+                'category_id' => 3,
+                'name' => 'Lọc dầu Innova',
+                'unit' => 'Cái',
+                'note' => ''
+            ],
+            [
+                'id' => 'LOCDNis',
+                'category_id' => 3,
+                'name' => 'Lọc dầu Nissan',
+                'unit' => 'Cái',
+                'note' => ''
+            ],
+            [
+                'id' => 'LOCDHCam',
+                'category_id' => 4,
+                'name' => 'Lọc điều hoà Camry',
+                'unit' => 'Cái',
+                'note' => ''
+            ],
+            [
+                'id' => 'LOCDHMaz',
+                'category_id' => 4,
+                'name' => 'Lọc điều hoà Mazda',
+                'unit' => 'Cái',
+                'note' => ''
+            ],
+        ]);
+
         DB::table('warehouses')->insert([
             [
                 'name' => 'Nam Khánh Garage',
@@ -55,6 +114,13 @@ class DatabaseSeeder extends Seeder
                 'status' => true,
                 'position' => 'Garage'
             ]
+        ]);
+
+        DB::table('suppliers')->insert([
+            [
+                'code' => 'CODE001',
+                'name' => 'Cửa hàng vật tư/phụ tùng HP'
+            ],
         ]);
     }
 }

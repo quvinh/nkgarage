@@ -14,7 +14,9 @@ class Item extends Model
     protected $table = 'items';
     protected $fillable = [
        'id',
+       'category_id',
        'name',
+       'unit',
        'note'
     ];
 
