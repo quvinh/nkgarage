@@ -158,7 +158,8 @@ class InventoryController extends Controller
                 'exports.amount as luongXuat',
                 'exports.price',
                 'exports.created_at',
-                'exports.status'
+                'exports.status',
+                'exports.unit'
             )
             ->where('code', $code)
             ->where('exports.deleted_at', null)
@@ -186,6 +187,7 @@ class InventoryController extends Controller
                 'imports.price',
                 'imports.created_at',
                 'imports.status',
+                'imports.unit',
                 'users.fullname as fullname' //
             )
             ->where('code', $code)
@@ -243,10 +245,10 @@ class InventoryController extends Controller
     {
         $data = DB::table('transfers')
             ->select(
-                'transfers.from_warehouse',
-                'transfers.from_shelf',
-                'transfers.to_warehouse',
-                'transfers.to_shelf',
+                'transfers.name_from_warehouse',
+                'transfers.name_from_shelf',
+                'transfers.name_to_warehouse',
+                'transfers.name_to_shelf',
                 'transfers.code',
                 DB::raw('date_format(transfers.created_at, "%d/%m/%Y %H:%i") as created_at'),
                 'transfers.created_by',

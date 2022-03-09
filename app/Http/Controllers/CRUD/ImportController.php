@@ -230,6 +230,7 @@ class ImportController extends Controller
             ['batch_code', '=', $import[0]->batch_code],
             ['supplier_id', '=', $import[0]->supplier_id]
         ])->get('amount');
+
         if ($countItem > 0) {
             DetailItem::where([
                 ['warehouse_id', '=', $import[0]->warehouse_id],
@@ -239,7 +240,7 @@ class ImportController extends Controller
                 ['supplier_id', '=', $import[0]->supplier_id],
             ])->update(['amount' => $amountItem[0]->amount + $import[0]->amount]);
         } else {
-            // dd($import[0]);
+
             $item = new DetailItem();
 
             $item->item_id = $import[0]->item_id;
@@ -252,17 +253,8 @@ class ImportController extends Controller
             $item->unit = $import[0]->unit;
             $item->price = $import[0]->price;
             $item->status = 0;
-
-            $checkItem = Item::where('id', $import[0]->item_id)->get('id')->count();
-
-            if ($checkItem == 0) {
-
-                $it = new Item();
-                $it->id = $import[0]->item_id;
-                $it->name = $import[0]->name;
-                $it->save();
-            }
             $item->save();
+            dd($item);
         }
 
         return response()->json([

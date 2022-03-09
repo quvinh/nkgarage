@@ -166,19 +166,17 @@ class WarehouseController extends Controller
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
             ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
             ->select(
-                'detail_items.id as detail_item_id',
-                'detail_items.item_id as id',
+                'items.id as item_id',
                 'items.name as name_item',
+                'categories.id as category_id',
+                'warehouses.id as warehouse_id',
+                'warehouses.name as name_warehouse',
+                'shelves.id as shelf_id',
+                'shelves.name as shelf_name',
+                'supplier_id',
                 'batch_code',
-                'categories.name as categoryname',
                 'amount',
-                'unit',
-                'shelves.status as shelf_status',
-                'detail_items.status',
-                'detail_items.warehouse_id',
-                'warehouses.name as warehousename',
-                'shelf_id',
-                'shelves.name as shelfname',
+                'items.unit',
                 'price'
             )
             ->where('shelf_id', $shelf_id)
@@ -345,6 +343,30 @@ class WarehouseController extends Controller
             'data' => $search
         ], 201);
     }
+    public function kd($id, $w_id, $s_id)
+    {
+        $export=DB::table('exports')
+        ->where([['item_id',$id],['warehouse_id', $w_id],['shelf_id',$s_id],['status',1]])
+        ->selectRaw('sum(amount) as amount')
+        ->get();
+        $detail_item = DB::table('detail_items')
+        ->where([['item_id',$id],['warehouse_id', $w_id],['shelf_id',$s_id]])
+        ->get();
+        $transfer=DB::table('transfers')
+        ->where([['item_id',$id],['from_warehouse', $w_id],['from_shelf',$s_id],['status',1]])
+        ->selectRaw('sum(amount) as amount')
+        ->get();
+        if($export->count() >0) $ex = $export[0]->amount;
+        else $ex = 0;
+        if($transfer->count() >0) $tf = $transfer[0]->amount;
+        else $tf = 0;
 
+        $kd = $detail_item[0]->amount - $ex - $tf;
+        if($kd < 0) $kd = 0;
+        return response()->json([
+            'message' => 'Số lượng khả dụng của vật tư ',
+            'data' => $kd
+        ], 201);
+    }
 
 }

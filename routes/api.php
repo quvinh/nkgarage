@@ -159,6 +159,8 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
         Route::get('/category/show/{id}', [CategoryController::class, 'edit']);
         Route::put('/category/update/{id}', [CategoryController::class, 'update']);
         Route::delete('/category/delete/{id}', [CategoryController::class, 'destroy']);
+        Route::get('/category/itemCategory/{id}', [CategoryController::class, 'itemCategory']);
+        Route::get('/category/unitCategory/{id}', [CategoryController::class, 'unitCategory']);
 
         /*************Warehouse**************/
         // Route::get('/warehouse', [WarehouseController::class, 'index']);
@@ -175,6 +177,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
         Route::get('/warehouse/amountShelf/{id}', [WarehouseController::class, 'amountShelf']);
         Route::get('/warehouse/sumAmountItem/{id}', [WarehouseController::class, 'sumAmountItem']);
         Route::get('/warehouse/searchItems/{name}/{id}', [WarehouseController::class, 'searchItems']);
+        Route::get('/warehouse/kd/{id}/{w_id}/{s_id}', [WarehouseController::class, 'kd']);
 
         Route::get('/warehouse/amountItemKKD/{id}', [WarehouseController::class, 'amountItemKKD']);
         Route::get('/warehouse/detailItemId/{id}/{shelfid}/{warehouseid}', [WarehouseController::class, 'detailItemId']);
