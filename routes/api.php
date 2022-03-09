@@ -61,7 +61,7 @@ Route::group([
 
 Route::prefix('admin')->middleware('checklogin')->group(function () {
 
-    Route::group(['middleware' => ['role:admin|ceo|president|chiefAccountant|accountant|storeKeeper']], function () {
+    Route::group(['middleware' => ['role:admin|Tổng giám đốc|Giám đốc|Kế toán trưởng|Kế toán|Thủ kho']], function () {
         Route::get('/dashboard/tonKho', [DashBoardController::class, 'tonKho']);
         Route::get('/dashboard/solgKho', [DashBoardController::class, 'solgKho']);
         Route::get('/dashboard/export/{year}', [DashBoardController::class, 'export']);
@@ -121,6 +121,8 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
         Route::get('/notification/show/{id}', [NotificationController::class, 'edit']);
         Route::put('/notification/update/{id}', [NotificationController::class, 'update']);
         Route::delete('/notification/delete/{id}', [NotificationController::class, 'destroy']);
+        Route::get('/notification/notificationEvent/{typeE}', [NotificationController::class, 'notificationEvent']);
+        Route::get('/notification/notificationItem/{typeI}', [NotificationController::class, 'notificationItem']);
 
         Route::get('/inventory', [InventoryController::class, 'index']);
         Route::get('/inventory/add', [InventoryController::class, 'create']);
@@ -175,8 +177,10 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
         Route::get('/warehouse/amountShelf/{id}', [WarehouseController::class, 'amountShelf']);
         Route::get('/warehouse/sumAmountItem/{id}', [WarehouseController::class, 'sumAmountItem']);
         Route::get('/warehouse/searchItems/{name}/{id}', [WarehouseController::class, 'searchItems']);
+        Route::get('/warehouse/listItem/{id}', [WarehouseController::class, 'listItem']);
 
-        Route::get('/warehouse/amountItemKKD/{id}', [WarehouseController::class, 'amountItemKKD']);
+        Route::get('/warehouse/amountItemKKD/{id}/{shelfid}/{warehouseid}', [WarehouseController::class, 'amountItemKKD']);
+        // Route::get('/warehouse/amountItemKKDTransfer/{id}/{shelfid}/{warehouseid}', [WarehouseController::class, 'amountItemKKDTransfer']);
         Route::get('/warehouse/detailItemId/{id}/{shelfid}/{warehouseid}', [WarehouseController::class, 'detailItemId']);
         // Route::get('/warehouse/warehouseShow', [WarehouseController::class, 'warehouseShow']);
 
@@ -227,6 +231,8 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
         Route::get('/suppliers/show/{id}', [SuppliersController::class, 'edit']);
         Route::put('/suppliers/update/{id}', [SuppliersController::class, 'update']);
         Route::delete('/suppliers/delete/{id}', [SuppliersController::class, 'destroy']);
+        Route::get('/suppliers/listImport/{id}', [SuppliersController::class, 'listImport']);
+        Route::get('/suppliers/searchDate/{id}/{begin}/{end}', [SuppliersController::class, 'searchDate']);
 
 
 

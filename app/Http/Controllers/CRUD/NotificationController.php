@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class NotificationController extends Controller
 {
@@ -43,12 +44,10 @@ class NotificationController extends Controller
     {
         //
         $validator = Validator::make($request->all(), [
-            'detail_item_id' => 'required',
             'title' => 'required',
             'content' => 'required',
-            'amount' => 'required',
-            'unit' => 'required',
             'created_by' => 'required',
+            'type' => 'required',
         ]);
 
         if($validator->fails()) {
@@ -102,12 +101,10 @@ class NotificationController extends Controller
     {
         //
         $validator = Validator::make($request->all(), [
-            'detail_item_id' => 'required',
             'title' => 'required',
             'content' => 'required',
-            'amount' => 'required',
-            'unit' => 'required',
             'created_by' => 'required',
+            'type' => 'required',
         ]);
 
         if($validator->fails()) {
@@ -118,9 +115,14 @@ class NotificationController extends Controller
             'detail_item_id' => $request->detail_item_id,
             'title' => $request->title,
             'content' => $request->content,
+            'item_id' => $request->item_item,
             'amount' => $request->amount,
             'unit' => $request->unit,
-            'created_by' => $request->created_by
+            'created_by' => $request->created_by,
+            'status' => $request->status,
+            'begin_at' => $request->begin_at,
+            'end_at' => $request->end_at,
+            'type' => $request->type,
         ]);
 
         return response()->json([
@@ -145,6 +147,44 @@ class NotificationController extends Controller
         return response()->json([
             'status' => 'Delete data Category',
             'message' => 'Delete successfully',
+        ], 201);
+    }
+
+    public function notificationEvent($typeE) {
+        $eventN = DB::table('notifications')
+        ->select('title',
+        'content',
+        'created_by',
+        'begin_at',
+        'end_at',
+        'type'
+        )
+        ->where('type',$typeE)
+        ->get();
+
+        return response()->json([
+            'message' => 'Data Notification Event',
+            'data' => $eventN,
+        ], 201);
+    }
+
+    public function notificationItem($typeI) {
+        $itemN = DB::table('notifications')
+        ->select('title',
+        'content',
+        'created_by',
+        'item_id',
+        'amount',
+        'code',
+        'unit',
+        'status',
+        )
+        ->where('type',$typeI)
+        ->get();
+
+        return response()->json([
+            'message' => 'Data Notification Event',
+            'data' => $itemN,
         ], 201);
     }
 }

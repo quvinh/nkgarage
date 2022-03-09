@@ -252,16 +252,6 @@ class ImportController extends Controller
             $item->unit = $import[0]->unit;
             $item->price = $import[0]->price;
             $item->status = 0;
-
-            $checkItem = Item::where('id', $import[0]->item_id)->get('id')->count();
-
-            if ($checkItem == 0) {
-
-                $it = new Item();
-                $it->id = $import[0]->item_id;
-                $it->name = $import[0]->name;
-                $it->save();
-            }
             $item->save();
         }
 

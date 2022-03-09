@@ -13,7 +13,14 @@ class Suppliers extends Model
     protected $fillable = [
         'code',
         'name',
+        'supplier_initials',
+        'email',
+        'address',
+        'contact_person',
+        'phone',
+        'note',
     ];
 
     public $timestamps = false;
+    
 }

@@ -172,7 +172,7 @@ class WarehouseController extends Controller
                 'batch_code',
                 'categories.name as categoryname',
                 'amount',
-                'unit',
+                'detail_items.unit as unit',
                 'shelves.status as shelf_status',
                 'detail_items.status',
                 'detail_items.warehouse_id',
@@ -257,20 +257,6 @@ class WarehouseController extends Controller
             'data' => $item
         ], 201);
     }
-
-    // public function amountShelf()
-    // {
-    //     $countShelf = DB::table('shelves')
-    //         ->join('warehouses', 'warehouses.id', '=', 'shelves.warehouse_id')
-    //         ->select(DB::raw('count(id) as countShelf'))
-    //         ->groupBy('warehouse_id')
-    //         ->get();
-
-    //     return response()->json([
-    //         'message' => 'Data warehouse successfully',
-    //         'data' => $countShelf,
-    //     ], 201);
-    // }
     public function amountShelf($id)
     {
         $countShelf = DB::table('shelves')
@@ -278,24 +264,16 @@ class WarehouseController extends Controller
             ->where('warehouse_id', $id)
             ->get()
             ->count();
-
-        return response()->json([
-            'message' => 'Data warehouse successfully',
-            'data' => $countShelf,
-        ], 201);
-    }
-
-    public function sumAmountItem($id)
-    {
         $countItem = DB::table('detail_items')
-            ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
-            ->select(DB::raw('sum(amount) as amountItem'))
             ->where('warehouse_id', $id)
-            ->get();
+            ->groupBy('item_id')
+            ->get()
+            ->count();
 
         return response()->json([
-            'message' => 'Data warehouse successfully',
-            'data' => $countItem
+            'message' => 'Data amountShelf',
+            'data' => $countShelf,
+            'count' => $countItem,
         ], 201);
     }
 
@@ -336,7 +314,7 @@ class WarehouseController extends Controller
             )
             ->where([
                 ['items.name', 'like', '%' . $name . '%'],
-                ['warehouses.id','=',$id],
+                ['warehouses.id', '=', $id],
             ])
             ->get();
         // dd($search);
@@ -345,6 +323,145 @@ class WarehouseController extends Controller
             'data' => $search
         ], 201);
     }
+    public function detailItemId($id, $shelfid, $warehouseid)
+    {
+        $item = DB::table('detail_items')
+            ->join('items', 'items.id', '=', 'detail_items.item_id')
+            ->join('categories', 'categories.id', '=', 'detail_items.category_id')
+            ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
+            ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
+            ->select(
+                'detail_items.id as detail_item_id',
+                'detail_items.item_id as id',
+                'items.name as itemname',
+                'batch_code as batchcode',
+                'categories.name as categoryname',
+                'detail_items.category_id as categoryid',
+                'amount',
+                'detail_items.unit as unit',
+                'shelves.status as shelfstatus',
+                'detail_items.status',
+                'shelf_id as shelfid',
+                'shelves.name as shelfname',
+                'price',
+                'detail_items.warehouse_id as warehouseid',
+                'warehouses.name as warehousename',
+                'detail_items.status as itemstatus'
+            )
+            ->where('shelf_id', $shelfid)
+            ->where('detail_items.warehouse_id', $warehouseid)
+            ->where('detail_items.item_id', $id)
+            ->get();
+        return response()->json([
+            'message' => 'Data Import successfully changed',
+            'data' => $item
+        ], 201);
+    }
+    public function amountItemKKD($id, $shelfid, $warehouseid)
+    {
+        $count = DB::table('exports')
+            ->where('item_id', $id)
+            ->where('shelf_id', $shelfid)
+            ->where('warehouse_id', $warehouseid)
+            ->where('status', 1)
+            ->get()
+            ->count();
+        if ($count > 0) {
+            $kkdAmount = DB::table('exports')
+                ->select(DB::raw('sum(amount) as kkdAmount'))
+                ->where('status', 1)
+                ->where('item_id', $id)
+                ->where('shelf_id', $shelfid)
+                ->where('warehouse_id', $warehouseid)
+                ->groupBy('item_id')
+                ->get();
+            $result = $kkdAmount[0]->kkdAmount;
+        } else $result = 0;
 
+        // $countTransfer = DB::table('transfers')
+        //     ->where('item_id', $id)
+        //     ->where('from_shelf', $shelfid)
+        //     ->where('from_warehouse', $warehouseid)
+        //     ->where('status', 1)
+        //     ->get()
+        //     ->count();
+        // if ($countTransfer > 0) {
+        //     $kkdAmountTransfer = DB::table('transfers')
+        //         ->select(DB::raw('sum(amount) as kkdAmountTransfer'))
+        //         ->where('status', 1)
+        //         ->where('item_id', $id)
+        //         ->where('from_shelf', $shelfid)
+        //         ->where('from_warehouse', $warehouseid)
+        //         ->groupBy('item_id')
+        //         ->get();
+        //     $resultTransfer = $kkdAmountTransfer[0]->kkdAmountTransfer;
+        // } else $resultTransfer = 0;
+        
+        return response()->json([
+            'message' => 'Data amountItemKKD',
+            'data' => $result,
+            // 'valid' => $resultTransfer,
+        ], 201);
+    }
+    // $result = collect($kkdAmount)->pluck('exports')->toArray();
+    // public function amountItemKKDTransfer($id, $shelfid, $warehouseid)
+    // {
+    //     $countTransfer = DB::table('transfers')
+    //         ->where('item_id', $id)
+    //         ->where('from_shelf', $shelfid)
+    //         ->where('from_warehouse', $warehouseid)
+    //         ->where('status', 1)
+    //         ->get()
+    //         ->count();
+    //     if ($countTransfer > 0) {
+    //         $kkdAmountTransfer = DB::table('transfers')
+    //             ->select(DB::raw('sum(amount) as kkdAmountTransfer'))
+    //             ->where('status', 1)
+    //             ->where('item_id', $id)
+    //             ->where('from_shelf', $shelfid)
+    //             ->where('from_warehouse', $warehouseid)
+    //             ->groupBy('item_id')
+    //             ->get();
+    //         $resultTransfer = $kkdAmountTransfer[0]->kkdAmountTransfer;
+    //     } else $resultTransfer = 0;
+    //     // 
 
+    //     // $result = collect($kkdAmount)->pluck('exports')->toArray();
+    //     return response()->json([
+    //         'message' => 'Data amountItemKKD',
+    //         'valid' => $resultTransfer,
+    //     ], 201);
+    // }
+
+    public function listItem($id)
+    {
+        $list = DB::table('detail_items')
+            ->join('items', 'items.id', '=', 'detail_items.item_id')
+            ->join('categories', 'categories.id', '=', 'detail_items.category_id')
+            ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
+            ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
+            ->select(
+                'detail_items.id as detail_item_id',
+                'detail_items.item_id as id',
+                'items.name as name_item',
+                'batch_code',
+                'categories.name as categoryname',
+                'amount',
+                'detail_items.unit as unit',
+                'shelves.status as shelf_status',
+                'detail_items.status',
+                'detail_items.warehouse_id',
+                'warehouses.name as warehousename',
+                'shelf_id',
+                'shelves.name as shelfname',
+                'price'
+            )
+            ->where('detail_items.warehouse_id', $id)
+            ->get();
+
+        return response()->json([
+            'message' => 'Data Item Show',
+            'data' => $list
+        ], 201);
+    }
 }
