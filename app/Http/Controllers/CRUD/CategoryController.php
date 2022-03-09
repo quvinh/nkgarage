@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CRUD;
 use App\Http\Controllers\Controller;
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
@@ -132,5 +133,47 @@ class CategoryController extends Controller
             'status' => 'Delete data Category',
             'message' => 'Delete successfully',
         ], 201);
+    }
+
+    public function itemCategory($id)
+    {
+        $data = DB::table('detail_items')
+            ->join('items', 'items.id', '=', 'detail_items.item_id')
+            ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
+            ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
+            ->join('categories', 'categories.id', '=', 'detail_items.category_id')
+            ->join('suppliers', 'suppliers.id', '=', 'detail_items.supplier_id')
+            ->where('categories.id', $id)
+            ->select(
+                'items.id as item_id',
+                'items.name as name_item',
+                'categories.id as category_id',
+                'warehouses.id as warehouse_id',
+                'warehouses.name as name_warehouse',
+                'shelves.id as shelf_id',
+                'shelves.name as shelf_name',
+                'suppliers.id as supplier_id',
+                'batch_code',
+                'amount',
+                'items.unit',
+                'price'
+            )
+            ->get();
+        return response()->json([
+            'message' => 'Data Item in Category',
+            'data' => $data
+        ], 201);
+    }
+    public function unitCategory($id)
+    {
+        $data = DB::table('categories')
+            ->join('items', 'items.category_id', '=', 'categories.id')
+            ->where('categories.id', $id)
+            ->groupBy('categories.id')
+            ->get('items.unit');
+            return response()->json([
+                'message' => 'Data Item in Category',
+                'data' => $data
+            ], 201);
     }
 }

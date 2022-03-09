@@ -170,6 +170,8 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/category/show/{id}', [CategoryController::class, 'edit']);
     Route::put('/category/update/{id}', [CategoryController::class, 'update']);
     Route::delete('/category/delete/{id}', [CategoryController::class, 'destroy']);
+    Route::get('/category/itemCategory/{id}', [CategoryController::class, 'itemCategory']);
+    Route::get('/category/unitCategory/{id}', [CategoryController::class, 'unitCategory']);
 
     /*************Warehouse**************/
     // Route::get('/warehouse', [WarehouseController::class, 'index']);
@@ -187,6 +189,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/warehouse/sumAmountItem/{id}', [WarehouseController::class, 'sumAmountItem']);
     Route::get('/warehouse/searchItems/{name}/{id}', [WarehouseController::class, 'searchItems']);
 
+    Route::get('/warehouse/kd/{id}/{w_id}/{s_id}', [WarehouseController::class, 'kd']);
     Route::get('/warehouse/amountItemKKD/{id}', [WarehouseController::class, 'amountItemKKD']);
     Route::get('/warehouse/detailItemId/{id}/{shelfid}/{warehouseid}', [WarehouseController::class, 'detailItemId']);
     // Route::get('/warehouse/warehouseShow', [WarehouseController::class, 'warehouseShow']);
@@ -216,9 +219,8 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::put('/items/update/{id}', [ItemController::class, 'update']);
     Route::delete('/items/delete/{id}', [ItemController::class, 'destroy']);
     // Route::get('/items/searchItem/{id}', [ItemController::class, 'searchItem']);
-    Route::get('/items/itemInWarehouse/{id}', [ItemController::class, 'itemInWarehouse']);
+    Route::get('/items/itemInWarehouse', [ItemController::class, 'itemInWarehouse']);
 
-    Route::get('/items/searchItem/{name}/{id}', [ItemController::class, 'searchitem']);
     Route::get('/items/amountItem/{id}/{warehouse_id}/{shelf_id}', [ItemController::class, 'amountItemsplit']);
 
     /*************Detail_item**************/
