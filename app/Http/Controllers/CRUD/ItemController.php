@@ -152,7 +152,7 @@ class ItemController extends Controller
                 'suppliers.id as supplier_id',
                 'batch_code',
                 'amount',
-                'unit',
+                'items.unit as unit',
                 'price'
             )
             ->where([

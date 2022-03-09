@@ -7,6 +7,9 @@ use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Permission as ModelsPermission;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class WarehouseController extends Controller
 {
@@ -54,10 +57,82 @@ class WarehouseController extends Controller
 
         $data = Warehouse::create($request->all());
 
+        //Import
+        ModelsPermission::create(['name' => 'Thêm phiếu nhập '.$data->id]);
+        ModelsPermission::create(['name' => 'Sửa phiếu nhập '.$data->id]);
+        ModelsPermission::create(['name' => 'Xoá phiếu nhập '.$data->id]);
+        ModelsPermission::create(['name' => 'Xem phiếu nhập '.$data->id]);
+        ModelsPermission::create(['name' => 'Duyệt phiếu nhập '.$data->id]);
+
+        //Export
+        ModelsPermission::create(['name' => 'Thêm phiếu xuất '.$data->id]);
+        ModelsPermission::create(['name' => 'Sửa phiếu xuất '.$data->id]);
+        ModelsPermission::create(['name' => 'Xoá phiếu xuất '.$data->id]);
+        ModelsPermission::create(['name' => 'Xem phiếu xuất '.$data->id]);
+        ModelsPermission::create(['name' => 'Duyệt phiếu xuất '.$data->id]);
+
+        //Transfer
+        ModelsPermission::create(['name' => 'Thêm phiếu chuyển '.$data->id]);
+        ModelsPermission::create(['name' => 'Sửa phiếu chuyển '.$data->id]);
+        ModelsPermission::create(['name' => 'Xoá phiếu chuyển '.$data->id]);
+        ModelsPermission::create(['name' => 'Xem phiếu chuyển '.$data->id]);
+        ModelsPermission::create(['name' => 'Duyệt phiếu chuyển '.$data->id]);
+
+        //Inventory
+        ModelsPermission::create(['name' => 'Thêm phiếu kiểm kê '.$data->id]);
+        ModelsPermission::create(['name' => 'Sửa phiếu kiểm kê '.$data->id]);
+        ModelsPermission::create(['name' => 'Xoá phiếu kiểm kê '.$data->id]);
+        ModelsPermission::create(['name' => 'Xem phiếu kiểm kê '.$data->id]);
+        ModelsPermission::create(['name' => 'Duyệt phiếu kiểm kê '.$data->id]);
+
+        ModelsPermission::create(['name' => 'Thêm giá/kệ '.$data->id]);
+        ModelsPermission::create(['name' => 'Sửa giá/kệ '.$data->id]);
+        ModelsPermission::create(['name' => 'Xoá giá/kệ '.$data->id]);
+        ModelsPermission::create(['name' => 'Xem giá/kệ '.$data->id]);
+
+        $president = Role::create(['name' => 'Giám đốc '.$data->id]);
+        $accountant = Role::create(['name' => 'Kế toán '.$data->id]);
+        $storekeeper = Role::create(['name' => 'Thủ kho '.$data->id]);
+
+        $president->givePermissionTo(
+            'Thêm phiếu nhập '.$data->id, 'Sửa phiếu nhập '.$data->id, 'Xoá phiếu nhập '.$data->id, 'Xem phiếu nhập '.$data->id, 'Duyệt phiếu nhập '.$data->id,
+            'Thêm phiếu xuất '.$data->id, 'Sửa phiếu xuất '.$data->id, 'Xoá phiếu xuất '.$data->id, 'Xem phiếu xuất '.$data->id, 'Duyệt phiếu xuất '.$data->id,
+            'Thêm phiếu chuyển '.$data->id, 'Sửa phiếu chuyển '.$data->id, 'Xoá phiếu chuyển '.$data->id, 'Xem phiếu chuyển '.$data->id, 'Duyệt phiếu chuyển '.$data->id,
+            'Thêm phiếu kiểm kê '.$data->id, 'Sửa phiếu kiểm kê '.$data->id, 'Xoá phiếu kiểm kê '.$data->id, 'Xem phiếu kiểm kê '.$data->id, 'Duyệt phiếu kiểm kê '.$data->id,
+            'Thêm kho', 'Sửa kho', 'Xoá kho', 'Xem kho',
+            'Thêm giá/kệ '.$data->id, 'Sửa giá/kệ '.$data->id, 'Xoá giá/kệ '.$data->id, 'Xem giá/kệ '.$data->id,
+            'Thêm loại vật tư', 'Sửa loại vật tư', 'Xoá loại vật tư', 'Xem loại vật tư',
+            'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
+            'Thêm thông báo', 'Sửa thông báo', 'Xoá thông báo', 'Xem thông báo',
+            'Thêm báo cáo', 'Sửa báo cáo', 'Xoá báo cáo', 'Xem báo cáo',
+        );
+
+        $accountant->givePermissionTo(
+            'Thêm phiếu nhập '.$data->id, 'Sửa phiếu nhập '.$data->id, 'Xoá phiếu nhập '.$data->id, 'Xem phiếu nhập '.$data->id, 'Duyệt phiếu nhập '.$data->id,
+            'Thêm phiếu xuất '.$data->id, 'Sửa phiếu xuất '.$data->id, 'Xoá phiếu xuất '.$data->id, 'Xem phiếu xuất '.$data->id, 'Duyệt phiếu xuất '.$data->id,
+            'Thêm phiếu chuyển '.$data->id, 'Sửa phiếu chuyển '.$data->id, 'Xoá phiếu chuyển '.$data->id, 'Xem phiếu chuyển '.$data->id, 'Duyệt phiếu chuyển '.$data->id,
+            'Thêm phiếu kiểm kê '.$data->id, 'Sửa phiếu kiểm kê '.$data->id, 'Xoá phiếu kiểm kê '.$data->id, 'Xem phiếu kiểm kê '.$data->id, 'Duyệt phiếu kiểm kê '.$data->id,
+            'Thêm kho', 'Sửa kho', 'Xoá kho', 'Xem kho',
+            'Thêm giá/kệ '.$data->id, 'Sửa giá/kệ '.$data->id, 'Xoá giá/kệ '.$data->id, 'Xem giá/kệ '.$data->id,
+            'Thêm loại vật tư', 'Sửa loại vật tư', 'Xoá loại vật tư', 'Xem loại vật tư',
+            'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
+            'Thêm thông báo', 'Sửa thông báo', 'Xoá thông báo', 'Xem thông báo',
+            'Thêm báo cáo', 'Sửa báo cáo', 'Xoá báo cáo', 'Xem báo cáo',
+        );
+        $storekeeper->givePermissionTo(
+            'Thêm phiếu nhập '.$data->id, 'Sửa phiếu nhập '.$data->id, 'Xem phiếu nhập '.$data->id, 'Xem phiếu nhập '.$data->id, 'Duyệt phiếu nhập '.$data->id,
+            'Thêm phiếu xuất '.$data->id, 'Sửa phiếu xuất '.$data->id, 'Xem phiếu xuất '.$data->id, 'Xem phiếu xuất '.$data->id, 'Duyệt phiếu xuất '.$data->id,
+            'Thêm phiếu chuyển '.$data->id, 'Sửa phiếu chuyển '.$data->id, 'Xem phiếu chuyển '.$data->id, 'Xem phiếu chuyển '.$data->id, 'Duyệt phiếu chuyển '.$data->id,
+            'Thêm phiếu kiểm kê '.$data->id, 'Sửa phiếu kiểm kê '.$data->id, 'Xem phiếu kiểm kê '.$data->id,
+            'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
+            'Thêm thông báo', 'Xem thông báo',
+            'Thêm báo cáo', 'Sửa báo cáo', 'Xem báo cáo',
+        );
+
         return response()->json([
             'message' => 'Data created successfully',
             'status' => 'Created Data',
-            'data' => $data
+            'data' => $data,
         ], 201);
     }
 
@@ -336,7 +411,7 @@ class WarehouseController extends Controller
             )
             ->where([
                 ['items.name', 'like', '%' . $name . '%'],
-                ['warehouses.id','=',$id],
+                ['warehouses.id', '=', $id],
             ])
             ->get();
         // dd($search);
@@ -345,6 +420,4 @@ class WarehouseController extends Controller
             'data' => $search
         ], 201);
     }
-
-
 }
