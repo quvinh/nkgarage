@@ -147,6 +147,7 @@ class InventoryController extends Controller
     {
         $history = DB::table('exports')
             ->join('warehouses', 'warehouses.id', '=', 'exports.warehouse_id')
+            ->join('users', 'users.id','=','exports.created_by')
             ->select(
                 'exports.item_id',
                 'exports.id as id',
@@ -159,7 +160,8 @@ class InventoryController extends Controller
                 'exports.price',
                 'exports.created_at',
                 'exports.status',
-                'exports.unit'
+                'exports.unit',
+                'users.fullname as fullname'
             )
             ->where('code', $code)
             ->where('exports.deleted_at', null)
@@ -225,12 +227,14 @@ class InventoryController extends Controller
     {
         $history = DB::table('exports')
             ->join('warehouses', 'warehouses.id', '=', 'exports.warehouse_id')
+            ->join('users', 'users.id','=','exports.created_by')
             ->select(
                 'warehouses.name as tenKho',
                 'exports.code',
                 DB::raw('date_format(exports.created_at, "%d/%m/%Y %H:%i") as created_at'),
                 'exports.created_by',
-                'exports.status'
+                'exports.status',
+                'users.fullname as fullname'
             )
             ->where('exports.deleted_at', null)
             ->groupBy('code')
@@ -244,6 +248,7 @@ class InventoryController extends Controller
     public function showCodeTransfer()
     {
         $data = DB::table('transfers')
+        ->join('users', 'users.id','=','transfers.created_by')
             ->select(
                 'transfers.name_from_warehouse',
                 'transfers.name_from_shelf',
@@ -252,7 +257,8 @@ class InventoryController extends Controller
                 'transfers.code',
                 DB::raw('date_format(transfers.created_at, "%d/%m/%Y %H:%i") as created_at'),
                 'transfers.created_by',
-                'transfers.status'
+                'transfers.status',
+                'users.fullname as fullname'
             )
             ->where('transfers.deleted_at', null)
             ->groupBy('transfers.code')
@@ -266,7 +272,8 @@ class InventoryController extends Controller
     public function showHistoryTransfer($code){
         $data = DB::table('transfers')
         ->join('items','items.id','=','transfers.item_id')
-        ->select('transfers.*','items.name')
+        ->join('users','users.id','=','transfers.created_by')
+        ->select('transfers.*','items.name','users.fullname as fullname')
         ->where('deleted_at', null)
         ->where('code', $code)
         ->get();

@@ -254,7 +254,6 @@ class ImportController extends Controller
             $item->price = $import[0]->price;
             $item->status = 0;
             $item->save();
-            dd($item);
         }
 
         return response()->json([
@@ -279,8 +278,8 @@ class ImportController extends Controller
         $data->delete();
 
         return response()->json([
-            'tatus' => 'Delete data Imports',
-            'message' => 'Delete sucessfully',
+            'status' => 'Delete data Imports',
+            'message' => 'Delete successfully',
         ], 201);
     }
 }
