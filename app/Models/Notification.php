@@ -16,12 +16,15 @@ class Notification extends Model
         'item_name',
         'title',
         'content',
+        'item_id',
         'amount',
-        'warehouse_id',
+        'code',
         'unit',
         'created_by',
-        'code',
         'status',
+        'type',
+        'begin_at',
+        'end_at',
     ];
 
     public function detail_item() {

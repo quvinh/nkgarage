@@ -192,6 +192,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/warehouse/kd/{id}/{w_id}/{s_id}', [WarehouseController::class, 'kd']);
     Route::get('/warehouse/amountItemKKD/{id}', [WarehouseController::class, 'amountItemKKD']);
     Route::get('/warehouse/detailItemId/{id}/{shelfid}/{warehouseid}', [WarehouseController::class, 'detailItemId']);
+    Route::get('/warehouse/listItem/{id}', [WarehouseController::class, 'listItem']);
     // Route::get('/warehouse/warehouseShow', [WarehouseController::class, 'warehouseShow']);
 
 

@@ -272,14 +272,14 @@ class TransferController extends Controller
 
         ///số lượng khả dụng của vật tư
         $export = DB::table('exports')
-            ->where([['item_id', $transfer_item[0]->item_id], ['warehouse_id', $transfer_item[0]->warehouse_id], ['shelf_id', $transfer_item[0]->shelf_id], ['status', 1]])
+            ->where([['item_id', $transfer_item[0]->item_id], ['warehouse_id', $transfer_item[0]->from_warehouse], ['shelf_id', $transfer_item[0]->from_shelf], ['status', 1]])
             ->selectRaw('sum(amount) as amount')
             ->get();
         $detail_item = DB::table('detail_items')
-            ->where([['item_id', $transfer_item[0]->item_id], ['warehouse_id', $transfer_item[0]->warehouse_id], ['shelf_id', $transfer_item[0]->shelf_id]])
+            ->where([['item_id', $transfer_item[0]->item_id], ['warehouse_id', $transfer_item[0]->from_warehouse], ['shelf_id', $transfer_item[0]->from_shelf]])
             ->get();
         $transfer = DB::table('transfers')
-            ->where([['item_id', $transfer_item[0]->item_id], ['from_warehouse', $transfer_item[0]->warehouse_id], ['from_shelf', $transfer_item[0]->shelf_id], ['status', 1]])
+            ->where([['item_id', $transfer_item[0]->item_id], ['from_warehouse', $transfer_item[0]->from_warehouse], ['from_shelf', $transfer_item[0]->from_shelf], ['status', 1]])
             ->selectRaw('sum(amount) as amount')
             ->get();
         if ($export->count() > 0) $ex = $export[0]->amount;

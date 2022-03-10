@@ -42,10 +42,10 @@ class SuppliersController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            // 'code' => 'required',
+            'code' => 'required',
             'name' => 'required',
             // 'supplier_initials' => 'required',
-            // 'email' => 'required',
+            'email' => 'required',
             // 'address' => 'required',
             'contact_person' => 'required',
             'phone' => 'required',
@@ -99,10 +99,10 @@ class SuppliersController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            // 'code' => 'required',
+            'code' => 'required',
             'name' => 'required',
             // 'supplier_initials' => 'required',
-            // 'email' => 'required',
+            'email' => 'required',
             // 'address' => 'required',
             'contact_person' => 'required',
             'phone' => 'required',
@@ -156,18 +156,65 @@ class SuppliersController extends Controller
     //     ], 201);
     // }
 
-    public function totalPrice($id) {
+    public function totalPrice($id)
+    {
         $totalPrice = DB::table('imports')
-        ->join('suppliers', 'suppliers.id','=','imports.supplier_id')
-        ->select(DB::raw('sum(amount * price) as total'))
-        ->groupBy('supplier_id')
-        ->where('supplier_id',$id)
-        ->where('status',1)
-        ->get();
+            ->join('suppliers', 'suppliers.id', '=', 'imports.supplier_id')
+            ->select(DB::raw('sum(amount * price) as total'))
+            ->groupBy('supplier_id')
+            ->where('supplier_id', $id)
+            ->where('status', 1)
+            ->get();
 
         return response()->json([
             'message' => 'Total Price',
             'data' => $totalPrice,
+        ], 201);
+    }
+
+    public function listImport($id)
+    {
+        $list = DB::table('imports')
+            ->join('suppliers', 'suppliers.id', '=', 'imports.supplier_id')
+            ->select(
+                'imports.id as id',
+                'imports.code as code',
+                'amount',
+                'price',
+                'created_at',
+                'imports.note as note',
+                'created_by',
+                'status',
+            )
+            ->where('supplier_id', $id)
+            ->groupBy('imports.code')
+            ->get();
+        return response()->json([
+            'message' => 'Data Import',
+            'list' => $list,
+        ], 201);
+    }
+
+    public function searchDate($id,$begin,$end) {
+        $list = DB::table('imports')
+        ->join('suppliers', 'suppliers.id', '=', 'imports.supplier_id')
+            ->select(
+                'imports.id as id',
+                'amount',
+                'price',
+                'created_at',
+                'imports.note as note',
+                'created_by',
+                'status',
+            )
+            ->where('supplier_id', $id)
+            ->where('created_at >', $begin)
+            ->where('created_at <', $end)
+            ->groupBy('imports.code')
+            ->get();
+        return response()->json([
+            'message' => 'Data Import',
+            'list' => $list,
         ], 201);
     }
 }

@@ -66,14 +66,10 @@ class NotificationController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            // 'detail_item_id' => 'required',
-            'item_id' => 'required',
             'title' => 'required',
             'content' => 'required',
-            'amount' => 'required',
-            'unit' => 'required',
-            'warehouse_id' => 'required',
             'created_by' => 'required',
+            'type' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
@@ -134,15 +130,10 @@ class NotificationController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            // 'detail_item_id' => 'required',
-            'item_id' => 'required',
-            'item_name' => 'required',
             'title' => 'required',
             'content' => 'required',
-            'amount' => 'required',
-            'unit' => 'required',
-            'warehouse_id' => 'required',
             'created_by' => 'required',
+            'type' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -154,10 +145,14 @@ class NotificationController extends Controller
             'item_name' => $request->item_name,
             'title' => $request->title,
             'content' => $request->content,
+            'item_id' => $request->item_item,
             'amount' => $request->amount,
             'unit' => $request->unit,
-            'warehouse_id' => $request->warehouse_id,
-            'created_by' => $request->create_by,
+            'created_by' => $request->created_by,
+            'status' => $request->status,
+            'begin_at' => $request->begin_at,
+            'end_at' => $request->end_at,
+            'type' => $request->type,
         ]);
 
         return response()->json([
@@ -232,6 +227,44 @@ class NotificationController extends Controller
         return response()->json([
             'message' => 'Data listItem',
             'data' => $listItem
+        ], 201);
+    }
+
+    public function notificationEvent($typeE) {
+        $eventN = DB::table('notifications')
+        ->select('title',
+        'content',
+        'created_by',
+        'begin_at',
+        'end_at',
+        'type'
+        )
+        ->where('type',$typeE)
+        ->get();
+
+        return response()->json([
+            'message' => 'Data Notification Event',
+            'data' => $eventN,
+        ], 201);
+    }
+
+    public function notificationItem($typeI) {
+        $itemN = DB::table('notifications')
+        ->select('title',
+        'content',
+        'created_by',
+        'item_id',
+        'amount',
+        'code',
+        'unit',
+        'status',
+        )
+        ->where('type',$typeI)
+        ->get();
+
+        return response()->json([
+            'message' => 'Data Notification Event',
+            'data' => $itemN,
         ], 201);
     }
 }

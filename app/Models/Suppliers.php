@@ -22,4 +22,5 @@ class Suppliers extends Model
     ];
 
     public $timestamps = false;
+    
 }
