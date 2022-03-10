@@ -247,6 +247,12 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     // Route::get('/category', [CategoryController::class, 'index']);
     // Route::get('/category/show/{id}', [CategoryController::class, 'edit']);
 
+    /**************Notification************/
+    Route::get('/notification', [NotificationController::class, 'index']);
+    Route::get('/notification/showNotification/{id}', [NotificationController::class, 'showNotification']);
+    Route::get('/notification/showListItemById/{id}', [NotificationController::class, 'showListItemById']);
+    Route::post('/notification/store', [NotificationController::class, 'store']);
+
     Route::prefix('auth_model')->group(function () {
 
         /************Permission*************/

@@ -21,8 +21,6 @@ class Shelves extends Model
 
     public $timestamps = false;
 
-    public $incrementing = false;
-
     public function warehouseshelf() {
         return $this->belongsTo(Warehouse::class, 'warehouse_id', 'id');
     }

@@ -248,10 +248,10 @@ class ImportController extends Controller
             $item->warehouse_id = $import[0]->warehouse_id;
             $item->shelf_id = $import[0]->shelf_id;
             $item->batch_code = $import[0]->batch_code;
-            $item->supplier_id = $import[0]->supplier_id;
             $item->amount = $import[0]->amount;
             $item->unit = $import[0]->unit;
             $item->price = $import[0]->price;
+            $item->supplier_id = $import[0]->supplier_id;
             $item->status = 0;
             $item->save();
 
