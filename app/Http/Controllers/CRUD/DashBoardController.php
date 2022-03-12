@@ -118,22 +118,23 @@ class DashBoardController extends Controller
         ], 201);
     }
 
-    public function solgKho()
+    public function tonKho($id)
     {
-        $solgKho = DB::table('warehouses')
-            ->select(DB::raw('count(id) as solgKho'))
-            ->where('status',true)
+        $tonKho = DB::table('detail_items')
+            ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
+            ->select(DB::raw('sum(amount * price) as total,sum(amount) as tonKho'))
+            ->addSelect( 'warehouse_id', 'name', 'warehouses.status')
+            ->where('warehouses.id', $id)
             ->get();
-
         return response()->json([
             'message' => 'Data DashBoard',
             'status' => 'DashBoard',
-            'data' => $solgKho,
+            'data' => $tonKho,
         ], 201);
     }
-    public function tonKho()
+    public function tongTonKho()
     {
-        $tonKho = DB::table('detail_items')
+        $tongTonKho = DB::table('detail_items')
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
             ->select(DB::raw('sum(amount * price) as total,sum(amount) as tonKho'))
             ->addSelect( 'warehouse_id', 'name', 'warehouses.status')
@@ -142,37 +143,39 @@ class DashBoardController extends Controller
         return response()->json([
             'message' => 'Data DashBoard',
             'status' => 'DashBoard',
-            'data' => $tonKho,
+            'data' => $tongTonKho,
         ], 201);
     }
-    public function exportCode ($month, $year)
+    public function exportByWarehouse ($id, $year)
     {
-        $exportCode = DB::table('exports')
-        ->select(DB::raw('count(code) as exportCode, date_format(created_at, "%M") as month, day(created_at) as day'))
-        ->groupBy('month', 'day', 'status')
-        ->having('status', 2)
-        ->having('month',$month)
-        ->having('year', $year)
-        ->get();
+        $export = DB::table('exports')
+            ->select(DB::raw('sum(exports.amount) as exportAmount'), DB::raw('date_format(created_at, "%M") as month, year(created_at) as year'))
+            ->orderBy('created_at', 'asc')
+            ->groupBy('month', 'status')
+            ->having('status', 2)
+
+            ->having('year', $year)
+            ->get();
         return response()->json([
             'message' => 'Data DashBoard',
             'status' => 'DashBoard',
-            'data' => $exportCode,
+            'data' => $export,
         ], 201);
     }
-    public function importCode ($month, $year)
+    public function importByWarehouse ($id, $year)
     {
-        $importCode = DB::table('imports')
-        ->select(DB::raw('count(code) as importCode, date_format(created_at, "%M") as month, day(created_at) as day,year(created_at) as year'))
-        ->groupBy('month', 'day', 'status')
-        ->having('status', 2)
-        ->having('month',$month)
-        ->having('year', $year)
-        ->get();
+        $import = DB::table('imports')
+            ->select(DB::raw('sum(imports.amount) as importAmount'), DB::raw('date_format(created_at, "%M") as month, year(created_at) as year'))
+            ->orderBy('created_at', 'asc')
+            ->groupBy('month', 'year', 'status')
+            ->having('status', 2)
+            ->having('warehouses_id',$id)
+            ->having('year', $year)
+            ->get();
         return response()->json([
             'message' => 'Data DashBoard',
             'status' => 'DashBoard',
-            'data' => $importCode,
+            'data' => $import,
         ], 201);
     }
 

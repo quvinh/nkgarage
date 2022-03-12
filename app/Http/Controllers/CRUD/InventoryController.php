@@ -147,15 +147,15 @@ class InventoryController extends Controller
     {
         $history = DB::table('exports')
             ->join('warehouses', 'warehouses.id', '=', 'exports.warehouse_id')
+            ->join('shelves','shelves.id','=','exports.shelf_id')
             ->join('users', 'users.id','=','exports.created_by')
             ->select(
                 'exports.item_id',
                 'exports.id as id',
-                'exports.shelf_id',
+                'shelves.name as tenKe',
                 'exports.name',
                 'warehouses.name as tenKho',
                 'exports.code',
-                'exports.created_by',
                 'exports.amount as luongXuat',
                 'exports.price',
                 'exports.created_at',
@@ -176,11 +176,12 @@ class InventoryController extends Controller
     {
         $history = DB::table('imports')
             ->join('warehouses', 'warehouses.id', '=', 'imports.warehouse_id')
+            ->join('shelves','shelves.id','=','imports.shelf_id')
             ->join('users', 'users.id', '=', 'imports.created_by') //join user -> get name
             ->select(
                 'imports.item_id',
                 'imports.name',
-                'imports.shelf_id',
+                'shelves.name as tenKe',
                 'imports.id as id',
                 'warehouses.name as tenKho',
                 'imports.code',
