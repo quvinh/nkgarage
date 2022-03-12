@@ -11,23 +11,11 @@ class Notification extends Model
 
     protected $table = 'notifications';
     protected $fillable = [
-        'detail_item_id',
-        'item_id',
-        'item_name',
         'title',
         'content',
-        'item_id',
-        'amount',
-        'code',
-        'unit',
         'created_by',
+        'warehouse_id',
         'status',
-        'type',
-        'begin_at',
-        'end_at',
+        // 'type',
     ];
-
-    public function detail_item() {
-        return $this->belongsTo(DetailItem::class, 'detail_item_id', 'id');
-    }
 }

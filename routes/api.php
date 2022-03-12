@@ -103,6 +103,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/notification/showNotification/{id}', [NotificationController::class, 'showNotification']);
     Route::get('/notification/showListItemById/{id}', [NotificationController::class, 'showListItemById']);
     Route::post('/notification/store', [NotificationController::class, 'store']);
+    Route::post('/notification/store', [NotificationController::class, 'store']);
 
     /*************Transfer*************/
     Route::get('/transfer', [TransferController::class, 'index']);
@@ -131,13 +132,15 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::put('/detail_user/update/{id}', [DetailUserController::class, 'update']);
     Route::delete('/detail_user/delete/{id}', [DetailUserController::class, 'destroy']);
 
-
+    /**************Notification************/
     Route::get('/notification', [NotificationController::class, 'index']);
     Route::get('/notification/add', [NotificationController::class, 'create']);
-    Route::post('/notification/store', [NotificationController::class, 'store']);
     Route::get('/notification/show/{id}', [NotificationController::class, 'edit']);
     Route::put('/notification/update/{id}', [NotificationController::class, 'update']);
     Route::delete('/notification/delete/{id}', [NotificationController::class, 'destroy']);
+    Route::get('/notification/showNotification/{id}', [NotificationController::class, 'showNotification']);
+    Route::get('/notification/showListItemById/{id}', [NotificationController::class, 'showListItemById']);
+    Route::get('/notification/updateStatus/{id}', [NotificationController::class, 'updateStatus']);
 
     Route::get('/inventory', [InventoryController::class, 'index']);
     Route::get('/inventory/add', [InventoryController::class, 'create']);
@@ -190,7 +193,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/warehouse/searchItems/{name}/{id}', [WarehouseController::class, 'searchItems']);
 
     Route::get('/warehouse/kd/{id}/{w_id}/{s_id}', [WarehouseController::class, 'kd']);
-    Route::get('/warehouse/amountItemKKD/{id}', [WarehouseController::class, 'amountItemKKD']);
+    Route::get('/warehouse/amountItemKKD/{id}/{shelfid}/{warehouseid}', [WarehouseController::class, 'amountItemKKD']);
     Route::get('/warehouse/detailItemId/{id}/{shelfid}/{warehouseid}', [WarehouseController::class, 'detailItemId']);
     Route::get('/warehouse/listItem/{id}', [WarehouseController::class, 'listItem']);
     // Route::get('/warehouse/warehouseShow', [WarehouseController::class, 'warehouseShow']);
@@ -241,6 +244,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/suppliers/show/{id}', [SuppliersController::class, 'edit']);
     Route::put('/suppliers/update/{id}', [SuppliersController::class, 'update']);
     Route::delete('/suppliers/delete/{id}', [SuppliersController::class, 'destroy']);
+    Route::get('/suppliers/listImport/{id}', [SuppliersController::class, 'listImport']);
 
 
 
@@ -248,11 +252,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     // Route::get('/category', [CategoryController::class, 'index']);
     // Route::get('/category/show/{id}', [CategoryController::class, 'edit']);
 
-    /**************Notification************/
-    Route::get('/notification', [NotificationController::class, 'index']);
-    Route::get('/notification/showNotification/{id}', [NotificationController::class, 'showNotification']);
-    Route::get('/notification/showListItemById/{id}', [NotificationController::class, 'showListItemById']);
-    Route::post('/notification/store', [NotificationController::class, 'store']);
+
 
     Route::prefix('auth_model')->group(function () {
 
