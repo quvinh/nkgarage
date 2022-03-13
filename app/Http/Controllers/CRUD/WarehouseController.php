@@ -398,14 +398,14 @@ class WarehouseController extends Controller
     public function kd($id, $w_id, $s_id)
     {
         $export = DB::table('exports')
-            ->where([['item_id', $id], ['warehouse_id', $w_id], ['shelf_id', $s_id], ['status', 1]])
+            ->where([['item_id', $id], ['warehouse_id', $w_id], ['shelf_id', $s_id], ['status', 1],['deleted_at', null]])
             ->selectRaw('sum(amount) as amount')
             ->get();
         $detail_item = DB::table('detail_items')
             ->where([['item_id', $id], ['warehouse_id', $w_id], ['shelf_id', $s_id]])
             ->get();
         $transfer = DB::table('transfers')
-            ->where([['item_id', $id], ['from_warehouse', $w_id], ['from_shelf', $s_id], ['status', 1]])
+            ->where([['item_id', $id], ['from_warehouse', $w_id], ['from_shelf', $s_id], ['status', 1],['deleted_at', null]])
             ->selectRaw('sum(amount) as amount')
             ->get();
         if ($export->count() > 0) $ex = $export[0]->amount;

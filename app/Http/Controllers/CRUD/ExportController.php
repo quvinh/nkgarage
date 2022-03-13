@@ -243,14 +243,14 @@ class ExportController extends Controller
 
         ///số lượng khả dụng của vật tư
         $export=DB::table('exports')
-        ->where([['item_id',$export_item[0]->item_id],['warehouse_id', $export_item[0]->warehouse_id],['shelf_id',$export_item[0]->shelf_id],['status',1]])
+        ->where([['item_id',$export_item[0]->item_id],['warehouse_id', $export_item[0]->warehouse_id],['shelf_id',$export_item[0]->shelf_id],['status',1],['deleted_at', null]])
         ->selectRaw('sum(amount) as amount')
         ->get();
         $detail_item = DB::table('detail_items')
         ->where([['item_id',$export_item[0]->item_id],['warehouse_id', $export_item[0]->warehouse_id],['shelf_id',$export_item[0]->shelf_id]])
         ->get();
         $transfer=DB::table('transfers')
-        ->where([['item_id',$export_item[0]->item_id],['from_warehouse', $export_item[0]->warehouse_id],['from_shelf',$export_item[0]->shelf_id],['status',1]])
+        ->where([['item_id',$export_item[0]->item_id],['from_warehouse', $export_item[0]->warehouse_id],['from_shelf',$export_item[0]->shelf_id],['status',1],['deleted_at', null]])
         ->selectRaw('sum(amount) as amount')
         ->get();
 

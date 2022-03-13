@@ -301,8 +301,8 @@ class ImportController extends Controller
         $data->delete();
 
         return response()->json([
-            'tatus' => 'Delete data Imports',
-            'message' => 'Delete sucessfully',
+            'status' => 'Delete data Imports',
+            'message' => 'Delete successfully',
         ], 201);
     }
 }

@@ -62,12 +62,12 @@ Route::group([
 Route::prefix('admin')->middleware('checklogin')->group(function () {
 
     // Route::group(['middleware' => ['role:admin|Tổng giám đốc|Giám đốc|Trưởng kế toán|Kế toán|Thủ kho']], function () {
-    Route::get('/dashboard/tonKho', [DashBoardController::class, 'tonKho']);
-    Route::get('/dashboard/solgKho', [DashBoardController::class, 'solgKho']);
+    Route::get('/dashboard/tonKho/{id}', [DashBoardController::class, 'tonKho']);
+    Route::get('/dashboard/tongTonKho', [DashBoardController::class, 'tongTonKho']);
     Route::get('/dashboard/export/{year}', [DashBoardController::class, 'export']);
     Route::get('/dashboard/import/{year}', [DashBoardController::class, 'import']);
-    Route::get('/dashboard/importCode', [DashBoardController::class, 'importCode']);
-    Route::get('/dashboard/exportCode', [DashBoardController::class, 'exportCode']);
+    Route::get('/dashboard/importByWarehouse/{id}/{year}', [DashBoardController::class, 'importByWarehouse']);
+    Route::get('/dashboard/exportByWarehouse/{id}/{year}', [DashBoardController::class, 'exportByWarehouse']);
 
     Route::get('/export', [ExportController::class, 'index']);
     Route::get('/export/indexStatus', [ExportController::class, 'indexStatus']);
@@ -145,6 +145,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/inventory/show/{id}', [InventoryController::class, 'edit']);
     Route::put('/inventory/update/{id}', [InventoryController::class, 'update']);
     Route::delete('/inventory/delete/{id}', [InventoryController::class, 'destroy']);
+
 
     // Route::get('/item', [ItemController::class, 'index']);
     // Route::get('/item/add', [ItemController::class, 'create']);
