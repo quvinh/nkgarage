@@ -69,82 +69,82 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/dashboard/importByWarehouse/{id}/{year}', [DashBoardController::class, 'importByWarehouse']);
     Route::get('/dashboard/exportByWarehouse/{id}/{year}', [DashBoardController::class, 'exportByWarehouse']);
 
-    Route::get('/export', [ExportController::class, 'index']);
-    Route::get('/export/indexStatus', [ExportController::class, 'indexStatus']);
-    Route::get('/export/add', [ExportController::class, 'create']);
-    Route::post('/export/store', [ExportController::class, 'store']);
-    Route::get('/export/show/{id}', [ExportController::class, 'edit']);
-    Route::put('/export/update/{id}', [ExportController::class, 'update']);
-    Route::put('/export/updateStatus/{id}', [ExportController::class, 'updateStatus']);
-    Route::put('/export/dStatus/{id}', [ExportController::class, 'dStatus']);
-    Route::delete('/export/delete/{id}', [ExportController::class, 'destroy']);
+    Route::get('/export', [ExportController::class, 'index'])->middleware(['permission:Xem phiếu xuất']);
+    Route::get('/export/indexStatus', [ExportController::class, 'indexStatus'])->middleware(['permission:Xem phiếu xuất']);
+    Route::get('/export/add', [ExportController::class, 'create'])->middleware(['permission:Xem phiếu xuất']);
+    Route::post('/export/store', [ExportController::class, 'store'])->middleware(['permission:Thêm phiếu xuất']);
+    Route::get('/export/show/{id}', [ExportController::class, 'edit'])->middleware(['permission:Xem phiếu xuất|Sửa phiếu xuất']);
+    Route::put('/export/update/{id}', [ExportController::class, 'update'])->middleware(['permission:Sửa phiếu xuất']);
+    Route::put('/export/updateStatus/{id}', [ExportController::class, 'updateStatus'])->middleware(['permission:Sửa phiếu xuất|Duyệt phiếu xuất']);
+    Route::put('/export/dStatus/{id}', [ExportController::class, 'dStatus'])->middleware(['permission:Xoá phiếu xuất']);
+    Route::delete('/export/delete/{id}', [ExportController::class, 'destroy'])->middleware(['permission:Xoá phiếu xuất']);
 
-    Route::get('/import', [ImportController::class, 'index']);
-    Route::get('/import/indexStatus', [ImportController::class, 'indexStatus']);
-    Route::get('/import/add', [ImportController::class, 'create']);
-    Route::post('/import/store', [ImportController::class, 'store']);
-    Route::get('/import/show/{id}', [ImportController::class, 'edit']);
-    Route::put('/import/update/{id}', [ImportController::class, 'update']);
-    Route::get('/import/indexStatus', [ExportController::class, 'indexStatus']);
-    Route::put('/import/updateStatus/{id}', [ImportController::class, 'updateStatus']);
-    Route::put('/import/dStatus/{id}', [ImportController::class, 'dStatus']);
-    Route::post('/import/updateAmountItem/{id}', [ImportController::class, 'updateAmountItem']);
-    Route::delete('/import/delete/{id}', [ImportController::class, 'destroy']);
-    Route::delete('/import/deleteCode/{code}', [ImportController::class, 'deleteCode']);
+    Route::get('/import', [ImportController::class, 'index'])->middleware(['permission:Xem phiếu nhập']);
+    Route::get('/import/indexStatus', [ImportController::class, 'indexStatus'])->middleware(['permission:Xem phiếu nhập']);
+    Route::get('/import/add', [ImportController::class, 'create'])->middleware(['permission:Thêm phiếu nhập']);
+    Route::post('/import/store', [ImportController::class, 'store'])->middleware(['permission:Thêm phiếu nhập']);
+    Route::get('/import/show/{id}', [ImportController::class, 'edit'])->middleware(['permission:Xem phiếu nhập']);
+    Route::put('/import/update/{id}', [ImportController::class, 'update'])->middleware(['permission:Sửa phiếu nhập']);
+    Route::get('/import/indexStatus', [ExportController::class, 'indexStatus'])->middleware(['permission:Xem phiếu nhập']);
+    Route::put('/import/updateStatus/{id}', [ImportController::class, 'updateStatus'])->middleware(['permission:Sửa phiếu nhập']);
+    Route::put('/import/dStatus/{id}', [ImportController::class, 'dStatus'])->middleware(['permission:Sửa phiếu nhập']);
+    Route::post('/import/updateAmountItem/{id}', [ImportController::class, 'updateAmountItem'])->middleware(['permission:Sửa phiếu nhập']);
+    Route::delete('/import/delete/{id}', [ImportController::class, 'destroy'])->middleware(['permission:Xóa phiếu nhập']);
+    Route::delete('/import/deleteCode/{code}', [ImportController::class, 'deleteCode'])->middleware(['permission:Xóa phiếu nhập']);
 
-    Route::get('/category', [CategoryController::class, 'index']);
-    Route::get('/shelf', [ShelvesController::class, 'index']);
+    Route::get('/category', [CategoryController::class, 'index'])->middleware(['permission:Xem loại vật tư']);
+    Route::get('/shelf', [ShelvesController::class, 'index'])->middleware(['permission:Xem giá/kệ']);
     Route::get('/items/searchItem/{id}', [ItemController::class, 'searchItem']);
-    Route::get('/warehouse', [WarehouseController::class, 'index']);
-    Route::get('/suppliers', [SuppliersController::class, 'index']);
+    Route::get('/warehouse', [WarehouseController::class, 'index'])->middleware(['permission:Xem kho']);
+    Route::get('/suppliers', [SuppliersController::class, 'index'])->middleware(['permission:Xem nhà cung cấp']);
 
     /**************Notification************/
     Route::get('/notification', [NotificationController::class, 'index']);
     Route::get('/notification/showNotification/{id}', [NotificationController::class, 'showNotification']);
     Route::get('/notification/showListItemById/{id}', [NotificationController::class, 'showListItemById']);
     Route::post('/notification/store', [NotificationController::class, 'store']);
+    Route::post('/notification/store', [NotificationController::class, 'store']);
 
     /*************Transfer*************/
-    Route::get('/transfer', [TransferController::class, 'index']);
-    Route::get('/transfer/add', [TransferController::class, 'create']);
-    Route::post('/transfer/store', [TransferController::class, 'store']);
-    Route::get('/transfer/show/{id}', [TransferController::class, 'edit']);
-    Route::put('/transfer/update/{id}', [TransferController::class, 'update']);
-    Route::delete('/transfer/delete/{id}', [TransferController::class, 'destroy']);
-    Route::put('/transfer/updateStatus/{id}', [TransferController::class, 'updateStatus']);
-    Route::put('/transfer/dStatus/{id}', [TransferController::class, 'dStatus']);
+    Route::get('/transfer', [TransferController::class, 'index'])->middleware(['permission:Xem phiếu chuyển']);
+    Route::get('/transfer/add', [TransferController::class, 'create'])->middleware(['permission:Xem phiếu chuyển']);
+    Route::post('/transfer/store', [TransferController::class, 'store'])->middleware(['permission:Thêm phiếu chuyển']);
+    Route::get('/transfer/show/{id}', [TransferController::class, 'edit'])->middleware(['permission:Xem phiếu chuyển']);
+    Route::put('/transfer/update/{id}', [TransferController::class, 'update'])->middleware(['permission:Sửa phiếu chuyển']);
+    Route::delete('/transfer/delete/{id}', [TransferController::class, 'destroy'])->middleware(['permission:Xoá phiếu chuyển']);
+    Route::put('/transfer/updateStatus/{id}', [TransferController::class, 'updateStatus'])->middleware(['permission:Sửa phiếu chuyển|Duyệt phiếu chuyển']);
+    Route::put('/transfer/dStatus/{id}', [TransferController::class, 'dStatus'])->middleware(['permission:Sửa phiếu chuyển|Duyệt phiếu chuyển']);
 
-    Route::get('/inventory/showHistoryExport/{id}', [InventoryController::class, 'showHistoryExport']);
-    Route::get('/inventory/showHistoryImport/{id}', [InventoryController::class, 'showHistoryImport']);
-    Route::get('/inventory/showHistoryTransfer/{id}', [InventoryController::class, 'showHistoryTransfer']);
-    Route::get('/inventory/showCodeExport', [InventoryController::class, 'showCodeExport']);
-    Route::get('/inventory/showCodeImport', [InventoryController::class, 'showCodeImport']);
-    Route::get('/inventory/showCodeTransfer', [InventoryController::class, 'showCodeTransfer']);
+    Route::get('/inventory/showHistoryExport/{id}', [InventoryController::class, 'showHistoryExport'])->middleware(['permission:Xem phiếu xuất']);
+    Route::get('/inventory/showHistoryImport/{id}', [InventoryController::class, 'showHistoryImport'])->middleware(['permission:Xem phiếu nhập']);
+    Route::get('/inventory/showHistoryTransfer/{id}', [InventoryController::class, 'showHistoryTransfer'])->middleware(['permission:Xem phiếu chuyển']);
+    Route::get('/inventory/showCodeExport', [InventoryController::class, 'showCodeExport'])->middleware(['permission:Xem phiếu xuất']);
+    Route::get('/inventory/showCodeImport', [InventoryController::class, 'showCodeImport'])->middleware(['permission:Xem phiếu nhập']);
+    Route::get('/inventory/showCodeTransfer', [InventoryController::class, 'showCodeTransfer'])->middleware(['permission:Xem phiếu chuyển']);
     // });
 
 
     // Route::group(['middleware' => ['role:admin|ceo|president|chiefAccountant']], function () {
     // Route::get('/');
 
-    Route::post('/detail_user/store/{id}', [DetailUserController::class, 'store']);
-    Route::get('/detail_user/show/{id}', [DetailUserController::class, 'edit']);
-    Route::put('/detail_user/update/{id}', [DetailUserController::class, 'update']);
-    Route::delete('/detail_user/delete/{id}', [DetailUserController::class, 'destroy']);
+    Route::post('/detail_user/store/{id}', [DetailUserController::class, 'store'])->middleware(['permission:Thêm tài khoản']);
+    Route::get('/detail_user/show/{id}', [DetailUserController::class, 'edit'])->middleware(['permission:Xem tài khoản']);
+    Route::put('/detail_user/update/{id}', [DetailUserController::class, 'update'])->middleware(['permission:Sửa tài khoản']);
+    Route::delete('/detail_user/delete/{id}', [DetailUserController::class, 'destroy'])->middleware(['permission:Xoá tài khoản']);
 
-
+    /**************Notification************/
     Route::get('/notification', [NotificationController::class, 'index']);
     Route::get('/notification/add', [NotificationController::class, 'create']);
-    Route::post('/notification/store', [NotificationController::class, 'store']);
     Route::get('/notification/show/{id}', [NotificationController::class, 'edit']);
     Route::put('/notification/update/{id}', [NotificationController::class, 'update']);
     Route::delete('/notification/delete/{id}', [NotificationController::class, 'destroy']);
 
-    Route::get('/inventory', [InventoryController::class, 'index']);
-    Route::get('/inventory/add', [InventoryController::class, 'create']);
-    Route::post('/inventory/store', [InventoryController::class, 'store']);
-    Route::get('/inventory/show/{id}', [InventoryController::class, 'edit']);
-    Route::put('/inventory/update/{id}', [InventoryController::class, 'update']);
-    Route::delete('/inventory/delete/{id}', [InventoryController::class, 'destroy']);
+    Route::get('/inventory', [InventoryController::class, 'index'])->middleware(['permission:Xem phiếu kiểm kê']);
+    Route::get('/inventory/add', [InventoryController::class, 'create'])->middleware(['permission:Thêm phiếu kiểm kê']);
+    Route::post('/inventory/store', [InventoryController::class, 'store'])->middleware(['permission:Thêm phiếu kiểm kê']);
+    Route::get('/inventory/show/{id}', [InventoryController::class, 'edit'])->middleware(['permission:Xem phiếu kiểm kê']);
+    Route::put('/inventory/update/{id}', [InventoryController::class, 'update'])->middleware(['permission:Sửa phiếu kiểm kê']);
+    Route::delete('/inventory/delete/{id}', [InventoryController::class, 'destroy'])->middleware(['permission:Xóa phiếu kiểm kê']);
 
 
     // Route::get('/item', [ItemController::class, 'index']);
@@ -155,57 +155,63 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     // Route::delete('/item/delete/{id}', [ItemController::class, 'destroy']);
 
 
-    Route::get('/detail_item', [Detail_ItemController::class, 'index']);
-    Route::get('/detail_item/add', [Detail_ItemController::class, 'create']);
-    Route::post('/detail_item/store', [Detail_ItemController::class, 'store']);
-    Route::get('/detail_item/show/{id}', [Detail_ItemController::class, 'edit']);
-    Route::put('/detail_item/update/{id}', [Detail_ItemController::class, 'update']);
-    Route::delete('/detail_item/delete/{id}', [Detail_ItemController::class, 'destroy']);
+    // Route::get('/detail_item', [Detail_ItemController::class, 'index']);
+    // Route::get('/detail_item/add', [Detail_ItemController::class, 'create']);
+    // Route::post('/detail_item/store', [Detail_ItemController::class, 'store']);
+    // Route::get('/detail_item/show/{id}', [Detail_ItemController::class, 'edit']);
+    // Route::put('/detail_item/update/{id}', [Detail_ItemController::class, 'update']);
+    // Route::delete('/detail_item/delete/{id}', [Detail_ItemController::class, 'destroy']);
 
-
+    /*************Detail_item**************/
+    Route::get('/detail_item', [DetailitemController::class, 'index'])->middleware(['permission:Xem chi tiết vật tư']);
+    Route::get('/detail_item/add', [DetailitemController::class, 'create'])->middleware(['permission:Thêm chi tiết vật tư']);
+    Route::post('/detail_item/store', [DetailitemController::class, 'store'])->middleware(['permission:Thêm chi tiết vật tư']);
+    Route::get('/detail_item/show/{id}', [DetailitemController::class, 'edit'])->middleware(['permission:Xem chi tiết vật tư']);
+    Route::put('/detail_item/update/{id}', [DetailitemController::class, 'update'])->middleware(['permission:Sửa chi tiết vật tư']);
+    Route::delete('/detail_item/delete/{id}', [DetailitemController::class, 'destroy'])->middleware(['permission:Xóa chi tiết vật tư']);
 
 
     // Route::get('/category', [CategoryController::class, 'index']);
-    Route::get('/category/add', [CategoryController::class, 'create']);
-    Route::post('/category/store', [CategoryController::class, 'store']);
-    Route::get('/category/show/{id}', [CategoryController::class, 'edit']);
-    Route::put('/category/update/{id}', [CategoryController::class, 'update']);
-    Route::delete('/category/delete/{id}', [CategoryController::class, 'destroy']);
-    Route::get('/category/itemCategory/{id}', [CategoryController::class, 'itemCategory']);
-    Route::get('/category/unitCategory/{id}', [CategoryController::class, 'unitCategory']);
+    Route::get('/category/add', [CategoryController::class, 'create'])->middleware(['permission:Xem loại vật tư']);
+    Route::post('/category/store', [CategoryController::class, 'store'])->middleware(['permission:Thêm loại vật tư']);
+    Route::get('/category/show/{id}', [CategoryController::class, 'edit'])->middleware(['permission:Xem loại vật tư']);
+    Route::put('/category/update/{id}', [CategoryController::class, 'update'])->middleware(['permission:Sửa loại vật tư']);
+    Route::delete('/category/delete/{id}', [CategoryController::class, 'destroy'])->middleware(['permission:Xoá loại vật tư']);
+    Route::get('/category/itemCategory/{id}', [CategoryController::class, 'itemCategory'])->middleware(['permission:Xem loại vật tư']);
+    Route::get('/category/unitCategory/{id}', [CategoryController::class, 'unitCategory'])->middleware(['permission:Xem loại vật tư']);
 
     /*************Warehouse**************/
     // Route::get('/warehouse', [WarehouseController::class, 'index']);
 
-    Route::get('/warehouse/add', [WarehouseController::class, 'create']);
-    Route::post('/warehouse/store', [WarehouseController::class, 'store']);
-    Route::get('/warehouse/show/{id}', [WarehouseController::class, 'edit']);
-    Route::put('/warehouse/update/{id}', [WarehouseController::class, 'update']);
-    Route::delete('/warehouse/delete/{id}', [WarehouseController::class, 'destroy']);
-    Route::get('/warehouse/shelfWarehouse/{id}', [WarehouseController::class, 'shelfWarehouse']);
-    Route::get('/warehouse/itemShelf/{id}/{shelf_id}', [WarehouseController::class, 'itemShelf']);
-    Route::get('/warehouse/itemWarehouse/{id}', [WarehouseController::class, 'itemWarehouse']);
-    Route::get('/warehouse/countWarehouse', [WarehouseController::class, 'countWarehouse']);
-    Route::get('/warehouse/amountShelf/{id}', [WarehouseController::class, 'amountShelf']);
-    Route::get('/warehouse/sumAmountItem/{id}', [WarehouseController::class, 'sumAmountItem']);
-    Route::get('/warehouse/searchItems/{name}/{id}', [WarehouseController::class, 'searchItems']);
+    Route::get('/warehouse/add', [WarehouseController::class, 'create'])->middleware(['permission:Xem kho']);
+    Route::post('/warehouse/store', [WarehouseController::class, 'store'])->middleware(['permission:Thêm kho']);
+    Route::get('/warehouse/show/{id}', [WarehouseController::class, 'edit'])->middleware(['permission:Xem kho|Thêm kho']);
+    Route::put('/warehouse/update/{id}', [WarehouseController::class, 'update'])->middleware(['permission:Sửa kho']);
+    Route::delete('/warehouse/delete/{id}', [WarehouseController::class, 'destroy'])->middleware(['permission:Xoá kho']);
+    Route::get('/warehouse/shelfWarehouse/{id}', [WarehouseController::class, 'shelfWarehouse'])->middleware(['permission:Xem kho|Xem giá/kệ']);
+    Route::get('/warehouse/itemShelf/{id}/{shelf_id}', [WarehouseController::class, 'itemShelf'])->middleware(['permission:Xem kho']);
+    Route::get('/warehouse/itemWarehouse/{id}', [WarehouseController::class, 'itemWarehouse'])->middleware(['permission:Xem kho']);
+    Route::get('/warehouse/countWarehouse', [WarehouseController::class, 'countWarehouse'])->middleware(['permission:Xem kho']);
+    Route::get('/warehouse/amountShelf/{id}', [WarehouseController::class, 'amountShelf'])->middleware(['permission:Xem kho']);
+    Route::get('/warehouse/sumAmountItem/{id}', [WarehouseController::class, 'sumAmountItem'])->middleware(['permission:Xem kho']);
+    Route::get('/warehouse/searchItems/{name}/{id}', [WarehouseController::class, 'searchItems'])->middleware(['permission:Xem kho']);
 
-    Route::get('/warehouse/kd/{id}/{w_id}/{s_id}', [WarehouseController::class, 'kd']);
-    Route::get('/warehouse/amountItemKKD/{id}', [WarehouseController::class, 'amountItemKKD']);
-    Route::get('/warehouse/detailItemId/{id}/{shelfid}/{warehouseid}', [WarehouseController::class, 'detailItemId']);
-    Route::get('/warehouse/listItem/{id}', [WarehouseController::class, 'listItem']);
+    Route::get('/warehouse/kd/{id}/{w_id}/{s_id}', [WarehouseController::class, 'kd'])->middleware(['permission:Xem kho']);
+    Route::get('/warehouse/amountItemKKD/{id}', [WarehouseController::class, 'amountItemKKD'])->middleware(['permission:Xem kho']);
+    Route::get('/warehouse/detailItemId/{id}/{shelfid}/{warehouseid}', [WarehouseController::class, 'detailItemId'])->middleware(['permission:Xem kho']);
+    Route::get('/warehouse/listItem/{id}', [WarehouseController::class, 'listItem'])->middleware(['permission:Xem kho']);
     // Route::get('/warehouse/warehouseShow', [WarehouseController::class, 'warehouseShow']);
 
 
     /*************Shelf*************/
     // Route::get('/shelf', [ShelvesController::class, 'index']);
-    Route::get('/shelf/add', [ShelvesController::class, 'create']);
-    Route::post('/shelf/store/{id}', [ShelvesController::class, 'store']);
-    Route::get('/shelf/show/{id}', [ShelvesController::class, 'edit']);
-    Route::put('/shelf/update/{id}', [ShelvesController::class, 'update']);
-    Route::delete('/shelf/delete/{id}', [ShelvesController::class, 'destroy']);
-    Route::delete('/shelf/delete-item/{id}', [ShelvesController::class, 'destroyItem']);
-    Route::get('/shelf/amountItem/{id}', [ShelvesController::class, 'amountItem']);
+    Route::get('/shelf/add', [ShelvesController::class, 'create'])->middleware(['permission:Thêm giá/kệ']);
+    Route::post('/shelf/store/{id}', [ShelvesController::class, 'store'])->middleware(['permission:Thêm giá/kệ']);
+    Route::get('/shelf/show/{id}', [ShelvesController::class, 'edit'])->middleware(['permission:Xem giá/kệ']);
+    Route::put('/shelf/update/{id}', [ShelvesController::class, 'update'])->middleware(['permission:Sửa giá/kệ']);
+    Route::delete('/shelf/delete/{id}', [ShelvesController::class, 'destroy'])->middleware(['permission:Xoá giá/kệ']);
+    Route::delete('/shelf/delete-item/{id}', [ShelvesController::class, 'destroyItem'])->middleware(['permission:Xoá giá/kệ']);
+    Route::get('/shelf/amountItem/{id}', [ShelvesController::class, 'amountItem'])->middleware(['permission:Xem giá/kệ']);
 
 
     //**********Import**************/
@@ -214,46 +220,38 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     // });
 
     /**************Item***************/
-    Route::get('/items', [ItemController::class, 'index']);
-    Route::get('/items/add', [ItemController::class, 'create']);
-    Route::post('/items/store', [ItemController::class, 'store']);
-    Route::get('/items/show/{id}', [ItemController::class, 'edit']);
-    Route::put('/items/update/{id}', [ItemController::class, 'update']);
-    Route::delete('/items/delete/{id}', [ItemController::class, 'destroy']);
+    Route::get('/items', [ItemController::class, 'index'])->middleware(['permission:Xem vật tư']);
+    Route::get('/items/add', [ItemController::class, 'create'])->middleware(['permission:Thêm vật tư']);
+    Route::post('/items/store', [ItemController::class, 'store'])->middleware(['permission:Thêm vật tư']);
+    Route::get('/items/show/{id}', [ItemController::class, 'edit'])->middleware(['permission:Xem vật tư']);
+    Route::put('/items/update/{id}', [ItemController::class, 'update'])->middleware(['permission:Sửa vật tư']);
+    Route::delete('/items/delete/{id}', [ItemController::class, 'destroy'])->middleware(['permission:Xóa vật tư']);
     // Route::get('/items/searchItem/{id}', [ItemController::class, 'searchItem']);
     Route::get('/items/itemInWarehouse', [ItemController::class, 'itemInWarehouse']);
 
     Route::get('/items/amountItem/{id}/{warehouse_id}/{shelf_id}', [ItemController::class, 'amountItemsplit']);
 
-    /*************Detail_item**************/
-    Route::get('/detail_item', [DetailitemController::class, 'index']);
-    Route::get('/detail_item/add', [DetailitemController::class, 'create']);
-    Route::post('/detail_item/store', [DetailitemController::class, 'store']);
-    Route::get('/detail_item/show/{id}', [DetailitemController::class, 'edit']);
-    Route::put('/detail_item/update/{id}', [DetailitemController::class, 'update']);
-    Route::delete('/detail_item/delete/{id}', [DetailitemController::class, 'destroy']);
-
 
 
     /****************Suppliers***************/
     // Route::get('/suppliers', [SuppliersController::class, 'index']);
-    Route::get('/suppliers/add', [SuppliersController::class, 'create']);
-    Route::post('/suppliers/store', [SuppliersController::class, 'store']);
-    Route::get('/suppliers/show/{id}', [SuppliersController::class, 'edit']);
-    Route::put('/suppliers/update/{id}', [SuppliersController::class, 'update']);
-    Route::delete('/suppliers/delete/{id}', [SuppliersController::class, 'destroy']);
-
+    Route::get('/suppliers/add', [SuppliersController::class, 'create'])->middleware(['permission:Xem nhà cung cấp']);
+    Route::post('/suppliers/store', [SuppliersController::class, 'store'])->middleware(['permission:Thêm nhà cung cấp']);
+    Route::get('/suppliers/show/{id}', [SuppliersController::class, 'edit'])->middleware(['permission:Xem nhà cung cấp']);
+    Route::put('/suppliers/update/{id}', [SuppliersController::class, 'update'])->middleware(['permission:Sửa nhà cung cấp']);
+    Route::delete('/suppliers/delete/{id}', [SuppliersController::class, 'destroy'])->middleware(['permission:Xoá nhà cung cấp']);
+    Route::get('/suppliers/listImport/{id}', [SuppliersController::class, 'listImport']);
 
 
     /**************Category****************/
     // Route::get('/category', [CategoryController::class, 'index']);
     // Route::get('/category/show/{id}', [CategoryController::class, 'edit']);
 
-    /**************Notification************/
-    Route::get('/notification', [NotificationController::class, 'index']);
-    Route::get('/notification/showNotification/{id}', [NotificationController::class, 'showNotification']);
-    Route::get('/notification/showListItemById/{id}', [NotificationController::class, 'showListItemById']);
-    Route::post('/notification/store', [NotificationController::class, 'store']);
+    // /**************Notification************/
+    // Route::get('/notification', [NotificationController::class, 'index']);
+    // Route::get('/notification/showNotification/{id}', [NotificationController::class, 'showNotification']);
+    // Route::get('/notification/showListItemById/{id}', [NotificationController::class, 'showListItemById']);
+    // Route::post('/notification/store', [NotificationController::class, 'store']);
 
     Route::prefix('auth_model')->group(function () {
 
