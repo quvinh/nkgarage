@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CRUD;
 use App\Http\Controllers\Controller;
 use App\Models\DetailItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class DetailitemController extends Controller
@@ -16,10 +17,31 @@ class DetailitemController extends Controller
      */
     public function index()
     {
-        $data = DetailItem::All();
+        // $data = DetailItem::All();
+        $data = DB::table('detail_items')
+            ->join('items', 'items.id', '=', 'detail_items.item_id')
+            ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
+            ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
+            ->join('categories', 'categories.id', '=', 'detail_items.category_id')
+            ->join('suppliers', 'suppliers.id', '=', 'detail_items.supplier_id')
+            ->select(
+                'items.id as item_id',
+                'items.name as name_item',
+                'categories.id as category_id',
+                'warehouses.id as warehouse_id',
+                'warehouses.name as name_warehouse',
+                'shelves.id as shelf_id',
+                'shelves.name as shelf_name',
+                'suppliers.id as supplier_id',
+                'batch_code',
+                'amount',
+                'items.unit as unit',
+                'price'
+            )
+            ->get();
         return response()->json([
             'data' => $data
-        ],201);
+        ], 201);
     }
 
     /**
@@ -50,15 +72,15 @@ class DetailitemController extends Controller
             'unit' => 'required',
             'price' => 'required'
         ]);
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(),400);
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
         }
         $data = DetailItem::create($request->all());
 
         return response()->json([
             'message' => 'Data created successfully',
             'data' => $data
-        ],201);
+        ], 201);
     }
 
     /**
@@ -81,7 +103,7 @@ class DetailitemController extends Controller
     public function edit($id)
     {
         $data = DetailItem::find($id);
-        
+
         return response()->json([
             'status' => 'show form edit',
             'message' => 'show successfully',
@@ -98,28 +120,29 @@ class DetailitemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(),[
-            'shelf_id' => 'required',
+        $validator = Validator::make($request->all(), [
+            // 'shelf_id' => 'required',
             'amount' => 'required',
             'price' => 'required',
             'status' => 'required',
         ]);
 
-        if($validator -> fails()) {
-            return response()->json($validator->errors()->toJson(),400);
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
         }
-
+        
         $data = DetailItem::where('id', $id)->update([
-            'shelf_id' => $request->shelf_id,
+            // 'shelf_id' => $request->shelf_id,
             'amount' => $request->amount,
-            'price'=>$request->price,
-            'status' =>$request->status
+            'price' => $request->price,
+            'status' => $request->status,
         ]);
+
 
         return response()->json([
             'message' => 'Data Import successfully changed',
-            'data' =>$data
-        ],201);
+            'data' => $data
+        ], 201);
     }
 
     /**
@@ -138,6 +161,4 @@ class DetailitemController extends Controller
             'message' => 'Delete sucessfully',
         ], 201);
     }
-
-    
 }

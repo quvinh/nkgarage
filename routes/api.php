@@ -103,6 +103,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/notification/showNotification/{id}', [NotificationController::class, 'showNotification']);
     Route::get('/notification/showListItemById/{id}', [NotificationController::class, 'showListItemById']);
     Route::post('/notification/store', [NotificationController::class, 'store']);
+    Route::post('/notification/store', [NotificationController::class, 'store']);
 
     /*************Transfer*************/
     Route::get('/transfer', [TransferController::class, 'index'])->middleware(['permission:Xem phiếu chuyển']);
@@ -131,10 +132,9 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::put('/detail_user/update/{id}', [DetailUserController::class, 'update'])->middleware(['permission:Sửa tài khoản']);
     Route::delete('/detail_user/delete/{id}', [DetailUserController::class, 'destroy'])->middleware(['permission:Xoá tài khoản']);
 
-
+    /**************Notification************/
     Route::get('/notification', [NotificationController::class, 'index']);
     Route::get('/notification/add', [NotificationController::class, 'create']);
-    Route::post('/notification/store', [NotificationController::class, 'store']);
     Route::get('/notification/show/{id}', [NotificationController::class, 'edit']);
     Route::put('/notification/update/{id}', [NotificationController::class, 'update']);
     Route::delete('/notification/delete/{id}', [NotificationController::class, 'destroy'])->middleware(['permission:Xoá thông báo']);
@@ -240,7 +240,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/suppliers/show/{id}', [SuppliersController::class, 'edit'])->middleware(['permission:Xem nhà cung cấp']);
     Route::put('/suppliers/update/{id}', [SuppliersController::class, 'update'])->middleware(['permission:Sửa nhà cung cấp']);
     Route::delete('/suppliers/delete/{id}', [SuppliersController::class, 'destroy'])->middleware(['permission:Xoá nhà cung cấp']);
-
+    Route::get('/suppliers/listImport/{id}', [SuppliersController::class, 'listImport']);
 
 
     /**************Category****************/

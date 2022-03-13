@@ -175,110 +175,40 @@ class WarehouseController extends Controller
             ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
             ->select(
-                'items.id as item_id',
-                'items.name as name_item',
+                'items.id as id',
+                'items.name as itemname',
                 'categories.id as category_id',
+                'categories.name as categoryname',
                 'warehouses.id as warehouse_id',
                 'warehouses.name as name_warehouse',
                 'shelves.id as shelf_id',
-                'shelves.name as shelf_name',
+                'shelves.name as shelfname',
                 'supplier_id',
                 'batch_code',
                 'amount',
                 'items.unit',
-                'price'
-                // 'unit',
-                // 'shelves.status as shelf_status',
-                // 'detail_items.status',
-                // 'shelf_id',
-                // 'shelves.name as shelfname',
-                // 'price',
-                // 'detail_items.warehouse_id as warehouseid',
-                // 'warehouses.name as warehousename'
+                'price',
+
             )
             ->where('shelf_id', $shelf_id)
             ->where('detail_items.warehouse_id', $id)
             ->get();
-        // $KKD = DB::table('exports')
-        //     ->select(DB::raw('sum(amount)'))
-        //     ->where('status',1)
-        //     ->groupBy('item_id')
-        //     ->get();
+
+        $count = DB::table('detail_items')
+            ->where('shelf_id', $shelf_id)
+            ->where('detail_items.warehouse_id', $id)
+            ->get()
+            ->count();
+
 
         return response()->json([
             'message' => 'Data itemShelf',
             'data' => $item,
+            'count' => $count,
             // 'KKD' => $KKD,
         ], 201);
     }
-    // public function amountItemKKD($id)
-    // {
-    //     $count = DB::table('exports')
-    //         ->where('item_id', $id)
-    //         ->where('status', 1)
-    //         ->get()
-    //         ->count();
-    //     if ($count > 0) {
-    //         $kkdAmount = DB::table('exports')
-    //             ->select(DB::raw('sum(amount) as kkdAmount'))
-    //             ->where('status', 1)
-    //             ->where('item_id', $id)
-    //             ->groupBy('item_id')
-    //             ->get();
-    //         $result = $kkdAmount[0]->kkdAmount;
-    //     } else $result = 0;
-    //     //
 
-    //     // $result = collect($kkdAmount)->pluck('exports')->toArray();
-    //     return response()->json([
-    //         'message' => 'Data amountItemKKD',
-    //         'data' => $result,
-    //     ], 201);
-    // }
-    // public function itemShelf($id, $shelf_id)
-    // {
-    //     $item = DB::table('detail_items')
-    //         ->join('items', 'items.id', '=', 'detail_items.item_id')
-    //         ->join('categories', 'categories.id', '=', 'detail_items.category_id')
-    //         ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
-    //         ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
-    //         ->join('exports', 'exports.item_id' ,'=','detail_items.item_id')
-    //         ->select(
-    //             'detail_items.id as detail_item_id',
-    //             'detail_items.item_id as itemid',
-    //             'items.name as itemname',
-    //             'position',
-    //             'categories.name as categoryname',
-    //             'detail_items.amount as itemamount',
-    //             'detail_items.unit as unit',
-    //             'shelves.status as shelf_status',
-    //             'detail_items.status',
-    //             'detail_items.warehouse_id',
-    //             'warehouses.name as warehousename',
-    //             'detail_items.shelf_id as shelfid',
-    //             'shelves.name as shelfname',
-    //             'detail_items.price',
-    //             DB::raw('sum(exports.item_id) as KKD')
-    //         )
-    //         ->where('detail_items.shelf_id', $shelf_id)
-    //         ->where('detail_items.warehouse_id', $id)
-    //         ->where('exports.status',1)
-    //         ->groupBy('exports.item_id')
-    //         ->get();
-    //     $KKD = DB::table('exports')
-    //     ->select(DB::raw('sum(amount)'))
-    //     ->where('status',1)
-    //     ->groupBy('item_id')
-    //     ->get();
-    //     dd($item[0]->itemamount - $KKD);
-    //     return response()->json([
-    //         'message' => 'Data itemShelf',
-    //         'data' => $item,
-    //         'KKD' => $KKD,
-    //     ], 201);
-    // }
-
-    // public function
 
     public function itemWarehouse($id)
     {
@@ -331,24 +261,7 @@ class WarehouseController extends Controller
         ], 201);
     }
 
-    // public function sumAmountItem($id)
-    // {
-    //     $countItem = DB::table('detail_items')
-    //         ->where('warehouse_id', $id)
-    //         ->groupBy('item_id')
-    //         ->get()
-    //         ->count();
-    // $totalprice = DB::table('detail_items')
-    // ->select(DB::raw('sum(amount * price) as total'))
-    // ->where('warehouse_id',$id)
-    // ->get();
 
-    // return response()->json([
-    //     'message' => 'Data sumAmountItem',
-    //     'data' => $countItem,
-    // 'totalprice' => $totalprice
-    // ], 201);
-    // }
 
     public function warehouseShow()
     {
@@ -380,7 +293,7 @@ class WarehouseController extends Controller
                 'shelves.name as shelfname',
                 'batch_code',
                 'amount',
-                'unit',
+                'detail_items.unit as unit',
                 'price',
                 'detail_items.status'
             )
@@ -398,14 +311,14 @@ class WarehouseController extends Controller
     public function kd($id, $w_id, $s_id)
     {
         $export = DB::table('exports')
-            ->where([['item_id', $id], ['warehouse_id', $w_id], ['shelf_id', $s_id], ['status', 1],['deleted_at', null]])
+            ->where([['item_id', $id], ['warehouse_id', $w_id], ['shelf_id', $s_id], ['status', 1], ['deleted_at', null]])
             ->selectRaw('sum(amount) as amount')
             ->get();
         $detail_item = DB::table('detail_items')
             ->where([['item_id', $id], ['warehouse_id', $w_id], ['shelf_id', $s_id]])
             ->get();
         $transfer = DB::table('transfers')
-            ->where([['item_id', $id], ['from_warehouse', $w_id], ['from_shelf', $s_id], ['status', 1],['deleted_at', null]])
+            ->where([['item_id', $id], ['from_warehouse', $w_id], ['from_shelf', $s_id], ['status', 1], ['deleted_at', null]])
             ->selectRaw('sum(amount) as amount')
             ->get();
         if ($export->count() > 0) $ex = $export[0]->amount;
@@ -436,7 +349,7 @@ class WarehouseController extends Controller
                 'categories.name as categoryname',
                 'detail_items.category_id as categoryid',
                 'amount',
-                'unit',
+                'items.unit as unit',
                 'shelves.status as shelfstatus',
                 'detail_items.status',
                 'shelf_id as shelfid',
@@ -473,63 +386,36 @@ class WarehouseController extends Controller
                 ->where('warehouse_id', $warehouseid)
                 ->groupBy('item_id')
                 ->get();
-            $result = $kkdAmount[0]->kkdAmount;
-        } else $result = 0;
+            $resultExport = $kkdAmount[0]->kkdAmount;
+        } else $resultExport = 0;
 
-        // $countTransfer = DB::table('transfers')
-        //     ->where('item_id', $id)
-        //     ->where('from_shelf', $shelfid)
-        //     ->where('from_warehouse', $warehouseid)
-        //     ->where('status', 1)
-        //     ->get()
-        //     ->count();
-        // if ($countTransfer > 0) {
-        //     $kkdAmountTransfer = DB::table('transfers')
-        //         ->select(DB::raw('sum(amount) as kkdAmountTransfer'))
-        //         ->where('status', 1)
-        //         ->where('item_id', $id)
-        //         ->where('from_shelf', $shelfid)
-        //         ->where('from_warehouse', $warehouseid)
-        //         ->groupBy('item_id')
-        //         ->get();
-        //     $resultTransfer = $kkdAmountTransfer[0]->kkdAmountTransfer;
-        // } else $resultTransfer = 0;
+        $countTransfer = DB::table('transfers')
+            ->where('item_id', $id)
+            ->where('from_shelf', $shelfid)
+            ->where('from_warehouse', $warehouseid)
+            ->where('status', 1)
+            ->get()
+            ->count();
+        if ($countTransfer > 0) {
+            $kkdAmountTransfer = DB::table('transfers')
+                ->select(DB::raw('sum(amount) as kkdAmountTransfer'))
+                ->where('status', 1)
+                ->where('item_id', $id)
+                ->where('from_shelf', $shelfid)
+                ->where('from_warehouse', $warehouseid)
+                ->groupBy('item_id')
+                ->get();
+            $resultTransfer = $kkdAmountTransfer[0]->kkdAmountTransfer;
+        } else $resultTransfer = 0;
 
+        $result = $resultExport + $resultTransfer;
         return response()->json([
             'message' => 'Data amountItemKKD',
             'data' => $result,
             // 'valid' => $resultTransfer,
         ], 201);
     }
-    // $result = collect($kkdAmount)->pluck('exports')->toArray();
-    // public function amountItemKKDTransfer($id, $shelfid, $warehouseid)
-    // {
-    //     $countTransfer = DB::table('transfers')
-    //         ->where('item_id', $id)
-    //         ->where('from_shelf', $shelfid)
-    //         ->where('from_warehouse', $warehouseid)
-    //         ->where('status', 1)
-    //         ->get()
-    //         ->count();
-    //     if ($countTransfer > 0) {
-    //         $kkdAmountTransfer = DB::table('transfers')
-    //             ->select(DB::raw('sum(amount) as kkdAmountTransfer'))
-    //             ->where('status', 1)
-    //             ->where('item_id', $id)
-    //             ->where('from_shelf', $shelfid)
-    //             ->where('from_warehouse', $warehouseid)
-    //             ->groupBy('item_id')
-    //             ->get();
-    //         $resultTransfer = $kkdAmountTransfer[0]->kkdAmountTransfer;
-    //     } else $resultTransfer = 0;
-    //     //
 
-    //     // $result = collect($kkdAmount)->pluck('exports')->toArray();
-    //     return response()->json([
-    //         'message' => 'Data amountItemKKD',
-    //         'valid' => $resultTransfer,
-    //     ], 201);
-    // }
 
     public function listItem($id)
     {
@@ -541,7 +427,7 @@ class WarehouseController extends Controller
             ->select(
                 'detail_items.id as detail_item_id',
                 'detail_items.item_id as id',
-                'items.name as name_item',
+                'items.name as itemname',
                 'batch_code',
                 'categories.name as categoryname',
                 'amount',
