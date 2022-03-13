@@ -157,12 +157,20 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     // Route::delete('/item/delete/{id}', [ItemController::class, 'destroy']);
 
 
-    Route::get('/detail_item', [Detail_ItemController::class, 'index']);
-    Route::get('/detail_item/add', [Detail_ItemController::class, 'create']);
-    Route::post('/detail_item/store', [Detail_ItemController::class, 'store']);
-    Route::get('/detail_item/show/{id}', [Detail_ItemController::class, 'edit']);
-    Route::put('/detail_item/update/{id}', [Detail_ItemController::class, 'update']);
-    Route::delete('/detail_item/delete/{id}', [Detail_ItemController::class, 'destroy']);
+    // Route::get('/detail_item', [Detail_ItemController::class, 'index']);
+    // Route::get('/detail_item/add', [Detail_ItemController::class, 'create']);
+    // Route::post('/detail_item/store', [Detail_ItemController::class, 'store']);
+    // Route::get('/detail_item/show/{id}', [Detail_ItemController::class, 'edit']);
+    // Route::put('/detail_item/update/{id}', [Detail_ItemController::class, 'update']);
+    // Route::delete('/detail_item/delete/{id}', [Detail_ItemController::class, 'destroy']);
+
+    /*************Detail_item**************/
+    Route::get('/detail_item', [DetailitemController::class, 'index']);
+    Route::get('/detail_item/add', [DetailitemController::class, 'create']);
+    Route::post('/detail_item/store', [DetailitemController::class, 'store']);
+    Route::get('/detail_item/show/{id}', [DetailitemController::class, 'edit']);
+    Route::put('/detail_item/update/{id}', [DetailitemController::class, 'update']);
+    Route::delete('/detail_item/delete/{id}', [DetailitemController::class, 'destroy']);
 
 
 
@@ -227,13 +235,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
 
     Route::get('/items/amountItem/{id}/{warehouse_id}/{shelf_id}', [ItemController::class, 'amountItemsplit']);
 
-    /*************Detail_item**************/
-    Route::get('/detail_item', [DetailitemController::class, 'index']);
-    Route::get('/detail_item/add', [DetailitemController::class, 'create']);
-    Route::post('/detail_item/store', [DetailitemController::class, 'store']);
-    Route::get('/detail_item/show/{id}', [DetailitemController::class, 'edit']);
-    Route::put('/detail_item/update/{id}', [DetailitemController::class, 'update']);
-    Route::delete('/detail_item/delete/{id}', [DetailitemController::class, 'destroy']);
+    
 
 
 
