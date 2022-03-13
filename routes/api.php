@@ -272,7 +272,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
         Route::put('/roles/update/{id}', [RolesController::class, 'update']);
         Route::delete('/roles/delete/{id}', [RolesController::class, 'destroy']);
 
-        Route::get('/detail_roles/{id}', [RolesController::class, 'detailRoles']);
+        Route::get('/detail_roles/{id}/{role_id}', [RolesController::class, 'detailRoles']);
         Route::post('/user_roles', [RolesController::class, 'userRoles']);
     });
     // });

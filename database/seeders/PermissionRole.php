@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Manager;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission as ModelsPermission;
@@ -29,32 +30,32 @@ class PermissionRole extends Seeder
         ModelsPermission::create(['name' => 'Xem tài khoản']);
 
         //Import
-        ModelsPermission::create(['name' => 'Thêm phiếu nhập 1']);
-        ModelsPermission::create(['name' => 'Sửa phiếu nhập 1']);
-        ModelsPermission::create(['name' => 'Xoá phiếu nhập 1']);
-        ModelsPermission::create(['name' => 'Xem phiếu nhập 1']);
-        ModelsPermission::create(['name' => 'Duyệt phiếu nhập 1']);
+        ModelsPermission::create(['name' => 'Thêm phiếu nhập']);
+        ModelsPermission::create(['name' => 'Sửa phiếu nhập']);
+        ModelsPermission::create(['name' => 'Xoá phiếu nhập']);
+        ModelsPermission::create(['name' => 'Xem phiếu nhập']);
+        ModelsPermission::create(['name' => 'Duyệt phiếu nhập']);
 
         //Export
-        ModelsPermission::create(['name' => 'Thêm phiếu xuất 1']);
-        ModelsPermission::create(['name' => 'Sửa phiếu xuất 1']);
-        ModelsPermission::create(['name' => 'Xoá phiếu xuất 1']);
-        ModelsPermission::create(['name' => 'Xem phiếu xuất 1']);
-        ModelsPermission::create(['name' => 'Duyệt phiếu xuất 1']);
+        ModelsPermission::create(['name' => 'Thêm phiếu xuất']);
+        ModelsPermission::create(['name' => 'Sửa phiếu xuất']);
+        ModelsPermission::create(['name' => 'Xoá phiếu xuất']);
+        ModelsPermission::create(['name' => 'Xem phiếu xuất']);
+        ModelsPermission::create(['name' => 'Duyệt phiếu xuất']);
 
         //Transfer
-        ModelsPermission::create(['name' => 'Thêm phiếu chuyển 1']);
-        ModelsPermission::create(['name' => 'Sửa phiếu chuyển 1']);
-        ModelsPermission::create(['name' => 'Xoá phiếu chuyển 1']);
-        ModelsPermission::create(['name' => 'Xem phiếu chuyển 1']);
-        ModelsPermission::create(['name' => 'Duyệt phiếu chuyển 1']);
+        ModelsPermission::create(['name' => 'Thêm phiếu chuyển']);
+        ModelsPermission::create(['name' => 'Sửa phiếu chuyển']);
+        ModelsPermission::create(['name' => 'Xoá phiếu chuyển']);
+        ModelsPermission::create(['name' => 'Xem phiếu chuyển']);
+        ModelsPermission::create(['name' => 'Duyệt phiếu chuyển']);
 
         //Inventory
-        ModelsPermission::create(['name' => 'Thêm phiếu kiểm kê 1']);
-        ModelsPermission::create(['name' => 'Sửa phiếu kiểm kê 1']);
-        ModelsPermission::create(['name' => 'Xoá phiếu kiểm kê 1']);
-        ModelsPermission::create(['name' => 'Xem phiếu kiểm kê 1']);
-        ModelsPermission::create(['name' => 'Duyệt phiếu kiểm kê 1']);
+        ModelsPermission::create(['name' => 'Thêm phiếu kiểm kê']);
+        ModelsPermission::create(['name' => 'Sửa phiếu kiểm kê']);
+        ModelsPermission::create(['name' => 'Xoá phiếu kiểm kê']);
+        ModelsPermission::create(['name' => 'Xem phiếu kiểm kê']);
+        ModelsPermission::create(['name' => 'Duyệt phiếu kiểm kê']);
 
         //Warehouse
         ModelsPermission::create(['name' => 'Thêm kho']);
@@ -63,10 +64,10 @@ class PermissionRole extends Seeder
         ModelsPermission::create(['name' => 'Xem kho']);
 
         //Shelf
-        ModelsPermission::create(['name' => 'Thêm giá/kệ 1']);
-        ModelsPermission::create(['name' => 'Sửa giá/kệ 1']);
-        ModelsPermission::create(['name' => 'Xoá giá/kệ 1']);
-        ModelsPermission::create(['name' => 'Xem giá/kệ 1']);
+        ModelsPermission::create(['name' => 'Thêm giá/kệ']);
+        ModelsPermission::create(['name' => 'Sửa giá/kệ']);
+        ModelsPermission::create(['name' => 'Xoá giá/kệ']);
+        ModelsPermission::create(['name' => 'Xem giá/kệ']);
 
         //Category
         ModelsPermission::create(['name' => 'Thêm loại vật tư']);
@@ -95,59 +96,59 @@ class PermissionRole extends Seeder
         //create roles and assign
         $roleAdmin = Role::create(['name' => 'admin']);
         $roleCEO = Role::create(['name' => 'Tổng giám đốc']);
-        $rolePresident = Role::create(['name' => 'Giám đốc 1']);
+        $rolePresident = Role::create(['name' => 'Giám đốc']);
         $roleChiefAccountant = Role::create(['name' => 'Kế toán trưởng']);
-        $roleAccountant = Role::create(['name' => 'Kế toán 1']);
-        $roleStoreKeeper = Role::create(['name' => 'Thủ kho 1']);
+        $roleAccountant = Role::create(['name' => 'Kế toán']);
+        $roleStoreKeeper = Role::create(['name' => 'Thủ kho']);
 
         $roleAdmin->givePermissionTo(ModelsPermission::all());
 
         $roleCEO->givePermissionTo(ModelsPermission::all());
 
-        $rolePresident->givePermissionTo(
-            'Thêm phiếu nhập 1', 'Sửa phiếu nhập 1', 'Xoá phiếu nhập 1', 'Xem phiếu nhập 1', 'Duyệt phiếu nhập 1',
-            'Thêm phiếu xuất 1', 'Sửa phiếu xuất 1', 'Xoá phiếu xuất 1', 'Xem phiếu xuất 1', 'Duyệt phiếu xuất 1',
-            'Thêm phiếu chuyển 1', 'Sửa phiếu chuyển 1', 'Xoá phiếu chuyển 1', 'Xem phiếu chuyển 1', 'Duyệt phiếu chuyển 1',
-            'Thêm phiếu kiểm kê 1', 'Sửa phiếu kiểm kê 1', 'Xoá phiếu kiểm kê 1', 'Xem phiếu kiểm kê 1', 'Duyệt phiếu kiểm kê 1',
-            'Thêm kho', 'Sửa kho', 'Xoá kho', 'Xem kho',
-            'Thêm giá/kệ 1', 'Sửa giá/kệ 1', 'Xoá giá/kệ 1', 'Xem giá/kệ 1',
-            'Thêm loại vật tư', 'Sửa loại vật tư', 'Xoá loại vật tư', 'Xem loại vật tư',
-            'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
-            'Thêm thông báo', 'Sửa thông báo', 'Xoá thông báo', 'Xem thông báo',
-            'Thêm báo cáo', 'Sửa báo cáo', 'Xoá báo cáo', 'Xem báo cáo',
-        );
+        // $rolePresident->givePermissionTo(
+        //     'Thêm phiếu nhập', 'Sửa phiếu nhập', 'Xoá phiếu nhập', 'Xem phiếu nhập', 'Duyệt phiếu nhập',
+        //     'Thêm phiếu xuất', 'Sửa phiếu xuất', 'Xoá phiếu xuất', 'Xem phiếu xuất', 'Duyệt phiếu xuất',
+        //     'Thêm phiếu chuyển', 'Sửa phiếu chuyển', 'Xoá phiếu chuyển', 'Xem phiếu chuyển', 'Duyệt phiếu chuyển',
+        //     'Thêm phiếu kiểm kê', 'Sửa phiếu kiểm kê', 'Xoá phiếu kiểm kê', 'Xem phiếu kiểm kê', 'Duyệt phiếu kiểm kê',
+        //     'Thêm kho', 'Sửa kho', 'Xoá kho', 'Xem kho',
+        //     'Thêm giá/kệ', 'Sửa giá/kệ', 'Xoá giá/kệ', 'Xem giá/kệ',
+        //     'Thêm loại vật tư', 'Sửa loại vật tư', 'Xoá loại vật tư', 'Xem loại vật tư',
+        //     'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
+        //     'Thêm thông báo', 'Sửa thông báo', 'Xoá thông báo', 'Xem thông báo',
+        //     'Thêm báo cáo', 'Sửa báo cáo', 'Xoá báo cáo', 'Xem báo cáo',
+        // );
 
-        $roleChiefAccountant->givePermissionTo(
-            'Thêm phiếu nhập 1', 'Sửa phiếu nhập 1', 'Xoá phiếu nhập 1', 'Xem phiếu nhập 1', 'Duyệt phiếu nhập 1',
-            'Thêm phiếu xuất 1', 'Sửa phiếu xuất 1', 'Xoá phiếu xuất 1', 'Xem phiếu xuất 1', 'Duyệt phiếu xuất 1',
-            'Thêm phiếu chuyển 1', 'Sửa phiếu chuyển 1', 'Xoá phiếu chuyển 1', 'Xem phiếu chuyển 1', 'Duyệt phiếu chuyển 1',
-            'Thêm phiếu kiểm kê 1', 'Sửa phiếu kiểm kê 1', 'Xoá phiếu kiểm kê 1', 'Xem phiếu kiểm kê 1', 'Duyệt phiếu kiểm kê 1',
-            'Thêm kho', 'Sửa kho', 'Xoá kho', 'Xem kho',
-            'Thêm giá/kệ 1', 'Sửa giá/kệ 1', 'Xoá giá/kệ 1', 'Xem giá/kệ 1',
-            'Thêm loại vật tư', 'Sửa loại vật tư', 'Xoá loại vật tư', 'Xem loại vật tư',
-            'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
-            'Thêm thông báo', 'Sửa thông báo', 'Xoá thông báo', 'Xem thông báo',
-            'Thêm báo cáo', 'Sửa báo cáo', 'Xoá báo cáo', 'Xem báo cáo',
-        );
+        // $roleChiefAccountant->givePermissionTo(
+        //     'Thêm phiếu nhập', 'Sửa phiếu nhập', 'Xoá phiếu nhập', 'Xem phiếu nhập', 'Duyệt phiếu nhập',
+        //     'Thêm phiếu xuất', 'Sửa phiếu xuất', 'Xoá phiếu xuất', 'Xem phiếu xuất', 'Duyệt phiếu xuất',
+        //     'Thêm phiếu chuyển', 'Sửa phiếu chuyển', 'Xoá phiếu chuyển', 'Xem phiếu chuyển', 'Duyệt phiếu chuyển',
+        //     'Thêm phiếu kiểm kê', 'Sửa phiếu kiểm kê', 'Xoá phiếu kiểm kê', 'Xem phiếu kiểm kê', 'Duyệt phiếu kiểm kê',
+        //     'Thêm kho', 'Sửa kho', 'Xoá kho', 'Xem kho',
+        //     'Thêm giá/kệ', 'Sửa giá/kệ', 'Xoá giá/kệ', 'Xem giá/kệ',
+        //     'Thêm loại vật tư', 'Sửa loại vật tư', 'Xoá loại vật tư', 'Xem loại vật tư',
+        //     'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
+        //     'Thêm thông báo', 'Sửa thông báo', 'Xoá thông báo', 'Xem thông báo',
+        //     'Thêm báo cáo', 'Sửa báo cáo', 'Xoá báo cáo', 'Xem báo cáo',
+        // );
 
-        $roleAccountant->givePermissionTo(
-            'Thêm phiếu nhập 1', 'Sửa phiếu nhập 1', 'Xem phiếu nhập 1', 'Xem phiếu nhập 1', 'Duyệt phiếu nhập 1',
-            'Thêm phiếu xuất 1', 'Sửa phiếu xuất 1', 'Xem phiếu xuất 1', 'Xem phiếu xuất 1', 'Duyệt phiếu xuất 1',
-            'Thêm phiếu chuyển 1', 'Sửa phiếu chuyển 1', 'Xem phiếu chuyển 1', 'Xem phiếu chuyển 1', 'Duyệt phiếu chuyển 1',
-            'Thêm phiếu kiểm kê 1', 'Sửa phiếu kiểm kê 1', 'Xem phiếu kiểm kê 1',
-            'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
-            'Thêm thông báo', 'Xem thông báo',
-            'Thêm báo cáo', 'Sửa báo cáo', 'Xem báo cáo',
-        );
+        // $roleAccountant->givePermissionTo(
+        //     'Thêm phiếu nhập', 'Sửa phiếu nhập', 'Xem phiếu nhập', 'Xem phiếu nhập', 'Duyệt phiếu nhập',
+        //     'Thêm phiếu xuất', 'Sửa phiếu xuất', 'Xem phiếu xuất', 'Xem phiếu xuất', 'Duyệt phiếu xuất',
+        //     'Thêm phiếu chuyển', 'Sửa phiếu chuyển', 'Xem phiếu chuyển', 'Xem phiếu chuyển', 'Duyệt phiếu chuyển',
+        //     'Thêm phiếu kiểm kê', 'Sửa phiếu kiểm kê', 'Xem phiếu kiểm kê',
+        //     'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
+        //     'Thêm thông báo', 'Xem thông báo',
+        //     'Thêm báo cáo', 'Sửa báo cáo', 'Xem báo cáo',
+        // );
 
-        $roleStoreKeeper->givePermissionTo(
-            'Thêm phiếu nhập 1', 'Sửa phiếu nhập 1', 'Xem phiếu nhập 1',
-            'Thêm phiếu xuất 1', 'Sửa phiếu xuất 1', 'Xem phiếu xuất 1',
-            'Thêm phiếu chuyển 1', 'Sửa phiếu chuyển 1', 'Xem phiếu chuyển 1',
-            'Thêm phiếu kiểm kê 1', 'Sửa phiếu kiểm kê 1', 'Xem phiếu kiểm kê 1',
-            'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
-            'Thêm thông báo', 'Xem thông báo',
-        );
+        // $roleStoreKeeper->givePermissionTo(
+        //     'Thêm phiếu nhập', 'Sửa phiếu nhập', 'Xem phiếu nhập',
+        //     'Thêm phiếu xuất', 'Sửa phiếu xuất', 'Xem phiếu xuất',
+        //     'Thêm phiếu chuyển', 'Sửa phiếu chuyển', 'Xem phiếu chuyển',
+        //     'Thêm phiếu kiểm kê', 'Sửa phiếu kiểm kê', 'Xem phiếu kiểm kê',
+        //     'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
+        //     'Thêm thông báo', 'Xem thông báo',
+        // );
 
         //create admin
         $admin = User::create([
@@ -161,5 +162,10 @@ class PermissionRole extends Seeder
             'email_verified_at' => now()
         ]);
         $admin->assignRole($roleAdmin);
+
+        Manager::create([
+            'user_id' => 1,
+            'warehouse_id' => 1,
+        ]);
     }
 }

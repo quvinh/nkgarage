@@ -17,13 +17,13 @@ class PermissionController extends Controller
     public function index()
     {
         //
+        // $data = Permission::all();
         $data = Permission::all();
 
-        // return response()->json([,
-        //     'status' => 'All permission',
-        //     'data' => $data
-        // ], 201);
-        return $data;
+        return response()->json([
+            'status' => 'All permission',
+            'data' => $data
+        ], 201);
     }
 
     /**

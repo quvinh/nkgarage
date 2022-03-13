@@ -5,25 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RoleUser extends Model
+class Manager extends Model
 {
     use HasFactory;
 
-    protected $table = 'role_users';
+    protected $table = 'managers';
     protected $primary_key = null;
     public $incrementing = false;
+    public $timestamps = false;
     protected $fillable = [
         'user_id',
-        'roles_id',
+        'warehouse_id'
     ];
-
-    public $timestamps = false;
 
     public function user() {
         return $this->belongsTo(User::class);
     }
 
-    public function roles() {
-        return $this->belongsTo(Roles::class);
+    public function warehouse() {
+        return $this->belongsTo(Warehouse::class);
     }
 }
