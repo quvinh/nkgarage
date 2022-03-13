@@ -151,9 +151,9 @@ class DashBoardController extends Controller
         $export = DB::table('exports')
             ->select(DB::raw('sum(exports.amount) as exportAmount'), DB::raw('date_format(created_at, "%M") as month, year(created_at) as year'))
             ->orderBy('created_at', 'asc')
-            ->groupBy('month', 'status')
+            ->groupBy('month', 'year', 'status', 'warehouse_id')
             ->having('status', 2)
-
+            ->having('warehouse_id',$id)
             ->having('year', $year)
             ->get();
         return response()->json([
@@ -167,9 +167,9 @@ class DashBoardController extends Controller
         $import = DB::table('imports')
             ->select(DB::raw('sum(imports.amount) as importAmount'), DB::raw('date_format(created_at, "%M") as month, year(created_at) as year'))
             ->orderBy('created_at', 'asc')
-            ->groupBy('month', 'year', 'status')
+            ->groupBy('month', 'year', 'status', 'warehouse_id')
             ->having('status', 2)
-            ->having('warehouses_id',$id)
+            ->having('warehouse_id',$id)
             ->having('year', $year)
             ->get();
         return response()->json([

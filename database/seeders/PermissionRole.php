@@ -29,6 +29,18 @@ class PermissionRole extends Seeder
         ModelsPermission::create(['name' => 'Xoá tài khoản']);
         ModelsPermission::create(['name' => 'Xem tài khoản']);
 
+        //Warehouse
+        ModelsPermission::create(['name' => 'Thêm kho']);
+        ModelsPermission::create(['name' => 'Sửa kho']);
+        ModelsPermission::create(['name' => 'Xoá kho']);
+        ModelsPermission::create(['name' => 'Xem kho']);
+
+        //Item
+        ModelsPermission::create(['name' => 'Thêm vật tư']);
+        ModelsPermission::create(['name' => 'Sửa vật tư']);
+        ModelsPermission::create(['name' => 'Xoá vật tư']);
+        ModelsPermission::create(['name' => 'Xem vật tư']);
+
         //Import
         ModelsPermission::create(['name' => 'Thêm phiếu nhập']);
         ModelsPermission::create(['name' => 'Sửa phiếu nhập']);
@@ -49,19 +61,6 @@ class PermissionRole extends Seeder
         ModelsPermission::create(['name' => 'Xoá phiếu chuyển']);
         ModelsPermission::create(['name' => 'Xem phiếu chuyển']);
         ModelsPermission::create(['name' => 'Duyệt phiếu chuyển']);
-
-        //Inventory
-        ModelsPermission::create(['name' => 'Thêm phiếu kiểm kê']);
-        ModelsPermission::create(['name' => 'Sửa phiếu kiểm kê']);
-        ModelsPermission::create(['name' => 'Xoá phiếu kiểm kê']);
-        ModelsPermission::create(['name' => 'Xem phiếu kiểm kê']);
-        ModelsPermission::create(['name' => 'Duyệt phiếu kiểm kê']);
-
-        //Warehouse
-        ModelsPermission::create(['name' => 'Thêm kho']);
-        ModelsPermission::create(['name' => 'Sửa kho']);
-        ModelsPermission::create(['name' => 'Xoá kho']);
-        ModelsPermission::create(['name' => 'Xem kho']);
 
         //Shelf
         ModelsPermission::create(['name' => 'Thêm giá/kệ']);
@@ -92,6 +91,13 @@ class PermissionRole extends Seeder
         ModelsPermission::create(['name' => 'Sửa báo cáo']);
         ModelsPermission::create(['name' => 'Xoá báo cáo']);
         ModelsPermission::create(['name' => 'Xem báo cáo']);
+
+        //Inventory
+        ModelsPermission::create(['name' => 'Thêm phiếu kiểm kê']);
+        ModelsPermission::create(['name' => 'Sửa phiếu kiểm kê']);
+        ModelsPermission::create(['name' => 'Xoá phiếu kiểm kê']);
+        ModelsPermission::create(['name' => 'Xem phiếu kiểm kê']);
+        ModelsPermission::create(['name' => 'Duyệt phiếu kiểm kê']);
 
         //create roles and assign
         $roleAdmin = Role::create(['name' => 'admin']);

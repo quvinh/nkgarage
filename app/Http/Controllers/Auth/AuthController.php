@@ -139,7 +139,8 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60,
             'user' => auth()->user(),
-            'role' => auth()->user()->getAllPermissions()
+            'role' => auth()->user()->getAllPermissions(),
+            'warehouse_id' => DB::table('managers')->where('user_id', auth()->user()->id)->get('warehouse_id'),
         ]);
     }
 
@@ -197,7 +198,6 @@ class AuthController extends Controller
     public function getUser($id)
     {
         $data = DB::table('users')
-
             ->leftJoin('detail_users', 'users.id', '=', 'detail_users.user_id')
             ->where('users.id', $id)
             ->select(
@@ -212,9 +212,12 @@ class AuthController extends Controller
             )
             ->get();
 
+        $warehouse_id = DB::table('managers')->where('user_id', $id)->get('warehouse_id');
+
         return response()->json([
             'message' => 'get user',
-            'data' => $data
+            'data' => $data,
+            'warehouse_id' => $warehouse_id,
         ], 201);
     }
 
