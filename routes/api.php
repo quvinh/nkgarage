@@ -90,7 +90,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::put('/import/dStatus/{id}', [ImportController::class, 'dStatus']);
     Route::post('/import/updateAmountItem/{id}', [ImportController::class, 'updateAmountItem']);
     Route::delete('/import/delete/{id}', [ImportController::class, 'destroy']);
-
+    Route::delete('/import/deleteCode/{code}', [ImportController::class, 'deleteCode']);
 
     Route::get('/category', [CategoryController::class, 'index']);
     Route::get('/shelf', [ShelvesController::class, 'index']);

@@ -280,4 +280,12 @@ class ExportController extends Controller
             ], 201);
         }
     }
+    public function deleteCode($code)
+    {
+        $export = Export::where('code', $code)->delete();
+        return response()->json([
+            'status' => 'Delete data Imports by code',
+            'message' => 'Delete successfully',
+        ], 201);
+    }
 }
