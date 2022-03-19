@@ -36,10 +36,10 @@ class PermissionRole extends Seeder
         ModelsPermission::create(['name' => 'Xem kho']);
 
         //Item
-        ModelsPermission::create(['name' => 'Thêm vật tư']);
-        ModelsPermission::create(['name' => 'Sửa vật tư']);
-        ModelsPermission::create(['name' => 'Xoá vật tư']);
-        ModelsPermission::create(['name' => 'Xem vật tư']);
+        // ModelsPermission::create(['name' => 'Thêm vật tư']);
+        // ModelsPermission::create(['name' => 'Sửa vật tư']);
+        // ModelsPermission::create(['name' => 'Xoá vật tư']);
+        // ModelsPermission::create(['name' => 'Xem vật tư']);
 
         //Import
         ModelsPermission::create(['name' => 'Thêm phiếu nhập']);
@@ -87,10 +87,10 @@ class PermissionRole extends Seeder
         ModelsPermission::create(['name' => 'Xem thông báo']);
 
         //Report
-        ModelsPermission::create(['name' => 'Thêm báo cáo']);
-        ModelsPermission::create(['name' => 'Sửa báo cáo']);
-        ModelsPermission::create(['name' => 'Xoá báo cáo']);
-        ModelsPermission::create(['name' => 'Xem báo cáo']);
+        // ModelsPermission::create(['name' => 'Thêm báo cáo']);
+        // ModelsPermission::create(['name' => 'Sửa báo cáo']);
+        // ModelsPermission::create(['name' => 'Xoá báo cáo']);
+        // ModelsPermission::create(['name' => 'Xem báo cáo']);
 
         //Inventory
         ModelsPermission::create(['name' => 'Thêm phiếu kiểm kê']);
@@ -98,6 +98,10 @@ class PermissionRole extends Seeder
         ModelsPermission::create(['name' => 'Xoá phiếu kiểm kê']);
         ModelsPermission::create(['name' => 'Xem phiếu kiểm kê']);
         ModelsPermission::create(['name' => 'Duyệt phiếu kiểm kê']);
+
+        //Statistical
+        ModelsPermission::create(['name' => 'Thống kê']);
+
 
         //create roles and assign
         $roleAdmin = Role::create(['name' => 'admin']);
@@ -108,53 +112,56 @@ class PermissionRole extends Seeder
         $roleStoreKeeper = Role::create(['name' => 'Thủ kho']);
 
         $roleAdmin->givePermissionTo(ModelsPermission::all());
-
         $roleCEO->givePermissionTo(ModelsPermission::all());
 
-        // $rolePresident->givePermissionTo(
-        //     'Thêm phiếu nhập', 'Sửa phiếu nhập', 'Xoá phiếu nhập', 'Xem phiếu nhập', 'Duyệt phiếu nhập',
-        //     'Thêm phiếu xuất', 'Sửa phiếu xuất', 'Xoá phiếu xuất', 'Xem phiếu xuất', 'Duyệt phiếu xuất',
-        //     'Thêm phiếu chuyển', 'Sửa phiếu chuyển', 'Xoá phiếu chuyển', 'Xem phiếu chuyển', 'Duyệt phiếu chuyển',
-        //     'Thêm phiếu kiểm kê', 'Sửa phiếu kiểm kê', 'Xoá phiếu kiểm kê', 'Xem phiếu kiểm kê', 'Duyệt phiếu kiểm kê',
-        //     'Thêm kho', 'Sửa kho', 'Xoá kho', 'Xem kho',
-        //     'Thêm giá/kệ', 'Sửa giá/kệ', 'Xoá giá/kệ', 'Xem giá/kệ',
-        //     'Thêm loại vật tư', 'Sửa loại vật tư', 'Xoá loại vật tư', 'Xem loại vật tư',
-        //     'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
-        //     'Thêm thông báo', 'Sửa thông báo', 'Xoá thông báo', 'Xem thông báo',
-        //     'Thêm báo cáo', 'Sửa báo cáo', 'Xoá báo cáo', 'Xem báo cáo',
-        // );
+        $rolePresident->givePermissionTo(
+            'Thêm phiếu nhập', 'Sửa phiếu nhập', 'Xoá phiếu nhập', 'Xem phiếu nhập', 'Duyệt phiếu nhập',
+            'Thêm phiếu xuất', 'Sửa phiếu xuất', 'Xoá phiếu xuất', 'Xem phiếu xuất', 'Duyệt phiếu xuất',
+            'Thêm phiếu chuyển', 'Sửa phiếu chuyển', 'Xoá phiếu chuyển', 'Xem phiếu chuyển', 'Duyệt phiếu chuyển',
+            'Thêm phiếu kiểm kê', 'Sửa phiếu kiểm kê', 'Xoá phiếu kiểm kê', 'Xem phiếu kiểm kê', 'Duyệt phiếu kiểm kê',
+            'Thêm kho', 'Sửa kho', 'Xoá kho', 'Xem kho',
+            'Thêm giá/kệ', 'Sửa giá/kệ', 'Xoá giá/kệ', 'Xem giá/kệ',
+            'Thêm loại vật tư', 'Sửa loại vật tư', 'Xoá loại vật tư', 'Xem loại vật tư',
+            'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
+            'Thêm thông báo', 'Sửa thông báo', 'Xoá thông báo', 'Xem thông báo',
+            'Thống kê'
+            // 'Thêm báo cáo', 'Sửa báo cáo', 'Xoá báo cáo', 'Xem báo cáo',
+        );
 
-        // $roleChiefAccountant->givePermissionTo(
-        //     'Thêm phiếu nhập', 'Sửa phiếu nhập', 'Xoá phiếu nhập', 'Xem phiếu nhập', 'Duyệt phiếu nhập',
-        //     'Thêm phiếu xuất', 'Sửa phiếu xuất', 'Xoá phiếu xuất', 'Xem phiếu xuất', 'Duyệt phiếu xuất',
-        //     'Thêm phiếu chuyển', 'Sửa phiếu chuyển', 'Xoá phiếu chuyển', 'Xem phiếu chuyển', 'Duyệt phiếu chuyển',
-        //     'Thêm phiếu kiểm kê', 'Sửa phiếu kiểm kê', 'Xoá phiếu kiểm kê', 'Xem phiếu kiểm kê', 'Duyệt phiếu kiểm kê',
-        //     'Thêm kho', 'Sửa kho', 'Xoá kho', 'Xem kho',
-        //     'Thêm giá/kệ', 'Sửa giá/kệ', 'Xoá giá/kệ', 'Xem giá/kệ',
-        //     'Thêm loại vật tư', 'Sửa loại vật tư', 'Xoá loại vật tư', 'Xem loại vật tư',
-        //     'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
-        //     'Thêm thông báo', 'Sửa thông báo', 'Xoá thông báo', 'Xem thông báo',
-        //     'Thêm báo cáo', 'Sửa báo cáo', 'Xoá báo cáo', 'Xem báo cáo',
-        // );
+        $roleChiefAccountant->givePermissionTo(
+            'Thêm phiếu nhập', 'Sửa phiếu nhập', 'Xoá phiếu nhập', 'Xem phiếu nhập', 'Duyệt phiếu nhập',
+            'Thêm phiếu xuất', 'Sửa phiếu xuất', 'Xoá phiếu xuất', 'Xem phiếu xuất', 'Duyệt phiếu xuất',
+            'Thêm phiếu chuyển', 'Sửa phiếu chuyển', 'Xoá phiếu chuyển', 'Xem phiếu chuyển', 'Duyệt phiếu chuyển',
+            'Thêm phiếu kiểm kê', 'Sửa phiếu kiểm kê', 'Xoá phiếu kiểm kê', 'Xem phiếu kiểm kê', 'Duyệt phiếu kiểm kê',
+            'Thêm kho', 'Sửa kho', 'Xoá kho', 'Xem kho',
+            'Thêm giá/kệ', 'Sửa giá/kệ', 'Xoá giá/kệ', 'Xem giá/kệ',
+            'Thêm loại vật tư', 'Sửa loại vật tư', 'Xoá loại vật tư', 'Xem loại vật tư',
+            'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
+            'Thêm thông báo', 'Sửa thông báo', 'Xoá thông báo', 'Xem thông báo',
+            'Thống kê'
+            // 'Thêm báo cáo', 'Sửa báo cáo', 'Xoá báo cáo', 'Xem báo cáo',
+        );
 
-        // $roleAccountant->givePermissionTo(
-        //     'Thêm phiếu nhập', 'Sửa phiếu nhập', 'Xem phiếu nhập', 'Xem phiếu nhập', 'Duyệt phiếu nhập',
-        //     'Thêm phiếu xuất', 'Sửa phiếu xuất', 'Xem phiếu xuất', 'Xem phiếu xuất', 'Duyệt phiếu xuất',
-        //     'Thêm phiếu chuyển', 'Sửa phiếu chuyển', 'Xem phiếu chuyển', 'Xem phiếu chuyển', 'Duyệt phiếu chuyển',
-        //     'Thêm phiếu kiểm kê', 'Sửa phiếu kiểm kê', 'Xem phiếu kiểm kê',
-        //     'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
-        //     'Thêm thông báo', 'Xem thông báo',
-        //     'Thêm báo cáo', 'Sửa báo cáo', 'Xem báo cáo',
-        // );
+        $roleAccountant->givePermissionTo(
+            'Thêm phiếu nhập', 'Sửa phiếu nhập', 'Xem phiếu nhập', 'Xem phiếu nhập', 'Duyệt phiếu nhập',
+            'Thêm phiếu xuất', 'Sửa phiếu xuất', 'Xem phiếu xuất', 'Xem phiếu xuất', 'Duyệt phiếu xuất',
+            'Thêm phiếu chuyển', 'Sửa phiếu chuyển', 'Xem phiếu chuyển', 'Xem phiếu chuyển', 'Duyệt phiếu chuyển',
+            'Thêm phiếu kiểm kê', 'Sửa phiếu kiểm kê', 'Xem phiếu kiểm kê',
+            'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xem nhà cung cấp',
+            'Thêm thông báo', 'Xem thông báo',
+            'Thống kê'
+            // 'Thêm báo cáo', 'Sửa báo cáo', 'Xem báo cáo',
+        );
 
-        // $roleStoreKeeper->givePermissionTo(
-        //     'Thêm phiếu nhập', 'Sửa phiếu nhập', 'Xem phiếu nhập',
-        //     'Thêm phiếu xuất', 'Sửa phiếu xuất', 'Xem phiếu xuất',
-        //     'Thêm phiếu chuyển', 'Sửa phiếu chuyển', 'Xem phiếu chuyển',
-        //     'Thêm phiếu kiểm kê', 'Sửa phiếu kiểm kê', 'Xem phiếu kiểm kê',
-        //     'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
-        //     'Thêm thông báo', 'Xem thông báo',
-        // );
+        $roleStoreKeeper->givePermissionTo(
+            'Thêm phiếu nhập', 'Sửa phiếu nhập', 'Xem phiếu nhập',
+            'Thêm phiếu xuất', 'Sửa phiếu xuất', 'Xem phiếu xuất',
+            'Thêm phiếu chuyển', 'Sửa phiếu chuyển', 'Xem phiếu chuyển',
+            'Thêm phiếu kiểm kê', 'Sửa phiếu kiểm kê', 'Xem phiếu kiểm kê',
+            'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
+            'Thêm thông báo', 'Xem thông báo',
+            'Thống kê'
+        );
 
         //create admin
         $admin = User::create([
