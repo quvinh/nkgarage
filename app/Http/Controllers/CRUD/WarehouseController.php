@@ -93,7 +93,7 @@ class WarehouseController extends Controller
         $data = DB::table('managers')
         ->join('warehouses', 'warehouses.id','=','managers.warehouse_id')
         ->where('managers.user_id',$id)
-        ->select('warehouses.name as name', 'warehouses.id as id')
+        ->select('warehouses.name as name', 'warehouses.location as location', 'warehouses.status as status', 'warehouses.id as id')
         ->get();
         return response()->json([
             'status' => 'Show Warehouse By User_id',

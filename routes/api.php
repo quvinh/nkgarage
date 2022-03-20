@@ -181,7 +181,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/detail_item/add', [DetailitemController::class, 'create'])->middleware(['permission:Thêm chi tiết vật tư']);
     Route::post('/detail_item/store', [DetailitemController::class, 'store'])->middleware(['permission:Thêm chi tiết vật tư']);
     Route::get('/detail_item/show/{id}', [DetailitemController::class, 'edit'])->middleware(['permission:Xem chi tiết vật tư']);
-    Route::put('/detail_item/update/{id}', [DetailitemController::class, 'update'])->middleware(['permission:Sửa chi tiết vật tư']);
+    Route::put('/detail_item/update/{id}', [DetailitemController::class, 'update']);
     Route::delete('/detail_item/delete/{id}', [DetailitemController::class, 'destroy'])->middleware(['permission:Xóa chi tiết vật tư']);
 
 
