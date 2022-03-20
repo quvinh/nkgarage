@@ -123,7 +123,7 @@ class DetailitemController extends Controller
         $validator = Validator::make($request->all(), [
             // 'shelf_id' => 'required',
             'amount' => 'required',
-            'price' => 'required',
+            // 'price' => 'required',
             'status' => 'required',
         ]);
 
@@ -134,7 +134,7 @@ class DetailitemController extends Controller
         $data = DetailItem::where('id', $id)->update([
             // 'shelf_id' => $request->shelf_id,
             'amount' => $request->amount,
-            'price' => $request->price,
+            // 'price' => $request->price,
             'status' => $request->status,
         ]);
 

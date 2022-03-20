@@ -90,13 +90,13 @@ class DashBoardController extends Controller
             ->select(DB::raw('sum(exports.amount) as exportAmount'), DB::raw('date_format(created_at, "%M") as month, year(created_at) as year'))
             // ->where('deleted_at', null)
             ->orderBy('created_at', 'asc')
-            ->groupBy('month', 'status')
+            ->groupBy('month', 'year', 'status')
             ->having('status', 2)
             ->having('year', $year)
             ->get();
         return response()->json([
             'message' => 'Data DashBoard',
-            'status' => 'DashBoard',
+            // 'status' => 'DashBoard',
             'data' => $export,
         ], 201);
     }
@@ -111,11 +111,14 @@ class DashBoardController extends Controller
             ->having('status', 2)
             ->having('year', $year)
             ->get();
+        // dd($import = $import->toArray());
         return response()->json([
-            'message' => 'Data DashBoard',
-            'status' => 'DashBoard',
             'data' => $import,
+            'message' => 'Data DashBoard',
+            // 'status' => 'DashBoard',
+            
         ], 201);
+
     }
 
     public function tonKho($id)
@@ -123,7 +126,7 @@ class DashBoardController extends Controller
         $tonKho = DB::table('detail_items')
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
             ->select(DB::raw('sum(amount * price) as total,sum(amount) as tonKho'))
-            ->addSelect( 'warehouse_id', 'name', 'warehouses.status')
+            ->addSelect( 'warehouse_id', 'name', 'warehouses.status as status')
             ->where('warehouses.id', $id)
             ->get();
         return response()->json([
@@ -176,6 +179,23 @@ class DashBoardController extends Controller
             'message' => 'Data DashBoard',
             'status' => 'DashBoard',
             'data' => $import,
+        ], 201);
+    }
+
+    public function listInWarehouse($id)
+    {
+        $tongTonKho = DB::table('detail_items')
+            ->join('items', 'items.id', '=', 'detail_items.item_id')
+            ->select(DB::raw('sum(amount * price) as total,sum(amount) as tonKho, name, item_id'))
+            ->orderBy('total','desc')
+            // ->addSelect( 'warehouse_id', 'name', 'warehouses.status')
+            ->where('warehouse_id',$id)
+            ->groupBy('item_id')
+            ->get();
+        return response()->json([
+            'message' => 'Data DashBoard',
+            'status' => 'DashBoard',
+            'data' => $tongTonKho,
         ], 201);
     }
 
