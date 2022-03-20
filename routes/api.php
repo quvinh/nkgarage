@@ -18,6 +18,7 @@ use App\Models\Suppliers;
 use App\Http\Controllers\CRUD\Detail_ItemController;
 use App\Http\Controllers\CRUD\InventoryController;
 use App\Http\Controllers\CRUD\NotificationController;
+use App\Http\Controllers\CRUD\StatisticController;
 use App\Http\Controllers\CRUD\TransferController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -78,6 +79,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::put('/export/updateStatus/{id}', [ExportController::class, 'updateStatus'])->middleware(['permission:Sửa phiếu xuất|Duyệt phiếu xuất']);
     Route::put('/export/dStatus/{id}', [ExportController::class, 'dStatus'])->middleware(['permission:Xoá phiếu xuất']);
     Route::delete('/export/delete/{id}', [ExportController::class, 'destroy'])->middleware(['permission:Xoá phiếu xuất']);
+    Route::delete('/export/deleteCode/{id}', [ExportController::class, 'deleteCode'])->middleware(['permission:Xoá phiếu xuất']);
 
     Route::get('/import', [ImportController::class, 'index'])->middleware(['permission:Xem phiếu nhập']);
     Route::get('/import/indexStatus', [ImportController::class, 'indexStatus'])->middleware(['permission:Xem phiếu nhập']);
@@ -113,6 +115,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::delete('/transfer/delete/{id}', [TransferController::class, 'destroy'])->middleware(['permission:Xoá phiếu chuyển']);
     Route::put('/transfer/updateStatus/{id}', [TransferController::class, 'updateStatus'])->middleware(['permission:Sửa phiếu chuyển|Duyệt phiếu chuyển']);
     Route::put('/transfer/dStatus/{id}', [TransferController::class, 'dStatus'])->middleware(['permission:Sửa phiếu chuyển|Duyệt phiếu chuyển']);
+    Route::delete('/transfer/deleteCode/{id}', [TransferController::class, 'deleteCode'])->middleware(['permission:Xóa phiếu chuyển']);
 
     Route::get('/inventory/showHistoryExport/{id}', [InventoryController::class, 'showHistoryExport'])->middleware(['permission:Xem phiếu xuất']);
     Route::get('/inventory/showHistoryImport/{id}', [InventoryController::class, 'showHistoryImport'])->middleware(['permission:Xem phiếu nhập']);
@@ -121,6 +124,16 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/inventory/showCodeImport', [InventoryController::class, 'showCodeImport'])->middleware(['permission:Xem phiếu nhập']);
     Route::get('/inventory/showCodeTransfer', [InventoryController::class, 'showCodeTransfer'])->middleware(['permission:Xem phiếu chuyển']);
     // });
+    /************Statistic*************/
+    Route::post('/statistic/importByDay', [StatisticController::class, 'importByDay']);
+    Route::post('/statistic/importByMonth', [StatisticController::class, 'importByMonth']);
+    Route::post('/statistic/importByYear', [StatisticController::class, 'importByYear']);
+    Route::post('/statistic/exportByDay', [StatisticController::class, 'exportByDay']);
+    Route::post('/statistic/exportByMonth', [StatisticController::class, 'exportByMonth']);
+    Route::post('/statistic/exportByYear', [StatisticController::class, 'exportByYear']);
+    Route::post('/statistic/transferByDay', [StatisticController::class, 'transferByDay']);
+    Route::post('/statistic/transferByMonth', [StatisticController::class, 'transferByMonth']);
+    Route::post('/statistic/transferByYear', [StatisticController::class, 'transferByYear']);
 
 
     // Route::group(['middleware' => ['role:admin|ceo|president|chiefAccountant']], function () {

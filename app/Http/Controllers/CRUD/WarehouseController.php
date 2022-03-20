@@ -90,9 +90,13 @@ class WarehouseController extends Controller
     public function edit($id)
     {
         //
-        $data = Warehouse::find($id);
+        $data = DB::table('managers')
+        ->join('warehouses', 'warehouses.id','=','managers.warehouse_id')
+        ->where('managers.user_id',$id)
+        ->select('warehouses.name as name', 'warehouses.id as id')
+        ->get();
         return response()->json([
-            'status' => 'Show form edit',
+            'status' => 'Show Warehouse By User_id',
             'message' => 'Show successfully',
             'data' => $data,
         ]);
@@ -175,8 +179,8 @@ class WarehouseController extends Controller
             ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
             ->select(
-                'items.id as item_id',
-                'items.name as name_item',
+                'items.id as item_id', //vvuong fix
+                'items.name as itemname',
                 'categories.id as category_id',
                 'categories.name as categoryname',
                 'warehouses.id as warehouse_id',
