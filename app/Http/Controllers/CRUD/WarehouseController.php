@@ -176,7 +176,9 @@ class WarehouseController extends Controller
             ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
             ->select(
-                'detail_items.id as detail_item_id',
+                // 'detail_items.id as detail_item_id',
+                // 'items.id as item_id',
+                // 'items.name as itemname',
                 'items.id as item_id',
                 'items.name as itemname',
                 'categories.id as category_id',

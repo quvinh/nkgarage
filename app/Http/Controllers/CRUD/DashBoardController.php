@@ -152,7 +152,7 @@ class DashBoardController extends Controller
     public function exportByWarehouse ($id, $year)
     {
         $export = DB::table('exports')
-            ->select(DB::raw('sum(exports.amount) as exportAmount'), DB::raw('date_format(created_at, "%M") as month, year(created_at) as year'))
+            ->select(DB::raw('sum(exports.amount) as exportAmount'), DB::raw('date_format(created_at, "%M") as month, year(created_at) as year'),)
             ->orderBy('created_at', 'asc')
             ->groupBy('month', 'year', 'status', 'warehouse_id')
             ->having('status', 2)

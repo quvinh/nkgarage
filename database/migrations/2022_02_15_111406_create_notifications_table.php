@@ -19,6 +19,7 @@ class CreateNotificationsTable extends Migration
             $table->text('content');
             $table->bigInteger('created_by');
             $table->bigInteger('warehouse_id');
+            $table->bigInteger('send_to');
             $table->char('status',2)->nullable();
             // $table->char('type',1);
             $table->timestamps();

@@ -20,9 +20,28 @@ class PermissionController extends Controller
         // $data = Permission::all();
         $data = Permission::all();
 
+        $roleWarehouse = ['Thêm kho', 'Sửa kho', 'Xoá kho', 'Xem kho'];
+        $roleShelf = ['Thêm giá/kệ', 'Sửa giá/kệ', 'Xoá giá/kệ', 'Xem giá/kệ'];
+        $roleCategory = ['Thêm loại vật tư', 'Sửa loại vật tư', 'Xoá loại vật tư', 'Xem loại vật tư'];
+        $roleImport = ['Thêm phiếu nhập', 'Sửa phiếu nhập', 'Xoá phiếu nhập', 'Xem phiếu nhập', 'Duyệt phiếu nhập'];
+        $roleExport = ['Thêm phiếu xuất', 'Sửa phiếu xuất', 'Xoá phiếu xuất', 'Xem phiếu xuất', 'Duyệt phiếu xuất'];
+        $roleTransfer = ['Thêm phiếu chuyển', 'Sửa phiếu chuyển', 'Xoá phiếu chuyển', 'Xem phiếu chuyển', 'Duyệt phiếu chuyển'];
+        $roleInventory = ['Thêm phiếu kiểm kê', 'Sửa phiếu kiểm kê', 'Xoá phiếu kiểm kê', 'Xem phiếu kiểm kê', 'Duyệt phiếu kiểm kê'];
+        $roleNotification = ['Thêm thông báo', 'Sửa thông báo', 'Xoá thông báo', 'Xem thông báo'];
+        $roleSupplier = ['Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp'];
+
         return response()->json([
             'status' => 'All permission',
-            'data' => $data
+            'data' => $data,
+            'dataWarehouse' => $roleWarehouse,
+            'dataShelf' => $roleShelf,
+            'dataCategory' => $roleCategory,
+            'dataImport' => $roleImport,
+            'dataExport' => $roleExport,
+            'dataTransfer' => $roleTransfer,
+            'dataInventory' => $roleInventory,
+            'dataNotification' => $roleNotification,
+            'dataSupplier' => $roleSupplier,
         ], 201);
     }
 

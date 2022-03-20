@@ -60,6 +60,15 @@ class RolesController extends Controller
 
         // $data = Roles::create($request->all());
         $data = Role::create(['name' => $request->name]);
+        $data->givePermissionTo(
+            'Thêm phiếu nhập', 'Sửa phiếu nhập', 'Xem phiếu nhập',
+            'Thêm phiếu xuất', 'Sửa phiếu xuất', 'Xem phiếu xuất',
+            'Thêm phiếu chuyển', 'Sửa phiếu chuyển', 'Xem phiếu chuyển',
+            'Thêm phiếu kiểm kê', 'Sửa phiếu kiểm kê', 'Xem phiếu kiểm kê',
+            'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
+            'Thêm thông báo', 'Xem thông báo',
+            'Thống kê',
+        );
 
         return response()->json([
             'message' => 'Data created successfully',
@@ -90,7 +99,7 @@ class RolesController extends Controller
         $data = Role::findById($id)->getAllPermissions();
 
         return response()->json([
-            'status' => 'Show form edit',
+            'status' => 'Show role - permission',
             'message' => 'Show successfully',
             'data' => $data,
         ]);
@@ -105,21 +114,22 @@ class RolesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'name' => 'required|string|between:2,100',
+        // ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json($validator->errors()->toJson(), 400);
+        // }
 
-        $data = Role::where('id', $id)->update([
-            'name' => $request->name
-        ]);
+        // $data = Role::where('id', $id)->update([
+        //     'name' => $request->name
+        // ]);
+        Role::findById($id)->syncPermissions();
+        Role::findById($id)->givePermissionTo($request->permission);
 
         return response()->json([
             'message' => 'Data Roles successfully changed',
-            'data' => $data,
         ], 201);
     }
 
@@ -135,6 +145,7 @@ class RolesController extends Controller
         // $data = Role::findById($id)->revokePermissionTo("Thêm nhà cung cấp");
         // $data->delete();
         DB::table('role_has_permissions')->where('role_id', $id)->delete();
+        DB::table('model_has_roles')->where('role_id', $id)->delete();
         DB::table('roles')->where('id', $id)->delete();
 
         return response()->json([
@@ -173,7 +184,7 @@ class RolesController extends Controller
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
             'roles_id' => 'required',
-            'permission' => 'required',
+            // 'permission' => 'required',
             'warehouse_id' => 'required'
         ]);
 
@@ -196,7 +207,7 @@ class RolesController extends Controller
         //         'model_type' => 'App\Models\User'
         //     ]);
         // }
-        DB::table('role_has_permissions')->where('role_id', $request->roles_id)->delete();
+        // DB::table('role_has_permissions')->where('role_id', $request->roles_id)->delete();
         DB::table('model_has_roles')->where('model_id', $request->user_id)->delete();
         DB::table('managers')->where('user_id', $request->user_id)->delete();
 
@@ -209,7 +220,7 @@ class RolesController extends Controller
         }
 
         $role = Role::findById($request->roles_id);
-        $role->givePermissionTo($request->permission);
+        // $role->givePermissionTo($request->permission);
         $user = User::find($request->user_id);
         $user->assignRole($role->name);
         // $user->syncRoles($role->name);

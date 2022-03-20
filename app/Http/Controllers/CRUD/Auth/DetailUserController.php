@@ -101,10 +101,13 @@ class DetailUserController extends Controller
         $data = DB::table('detail_users')
             ->where('user_id', $id)
             ->get();
+
+        $permission = User::find($id)->getAllPermissions();
         return response()->json([
             'status' => 'Show form edit',
             'message' => 'Show successfully',
             'data' => $data,
+            'permission' => $permission
         ]);
     }
 

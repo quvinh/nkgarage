@@ -305,4 +305,12 @@ class ImportController extends Controller
             'message' => 'Delete successfully',
         ], 201);
     }
+    public function deleteCode($code)
+    {
+        $import = Import::where('code', $code)->delete();
+        return response()->json([
+            'status' => 'Delete data Imports by code',
+            'message' => 'Delete successfully',
+        ], 201);
+    }
 }
