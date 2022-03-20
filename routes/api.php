@@ -17,6 +17,7 @@ use App\Models\Import;
 use App\Models\Suppliers;
 use App\Http\Controllers\CRUD\Detail_ItemController;
 use App\Http\Controllers\CRUD\InventoryController;
+use App\Http\Controllers\CRUD\ManagerController;
 use App\Http\Controllers\CRUD\NotificationController;
 use App\Http\Controllers\CRUD\TransferController;
 use Illuminate\Http\Request;
@@ -63,13 +64,14 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
 
     // Route::group(['middleware' => ['role:admin|Tổng giám đốc|Giám đốc|Trưởng kế toán|Kế toán|Thủ kho']], function () {
     Route::get('/dashboard/tonKho/{id}', [DashBoardController::class, 'tonKho']);
+    Route::get('/dashboard/listWarehouse/{id}', [DashBoardController::class, 'listInWarehouse']);
     Route::get('/dashboard/tongTonKho', [DashBoardController::class, 'tongTonKho']);
     Route::get('/dashboard/export/{year}', [DashBoardController::class, 'export']);
     Route::get('/dashboard/import/{year}', [DashBoardController::class, 'import']);
     Route::get('/dashboard/importByWarehouse/{id}/{year}', [DashBoardController::class, 'importByWarehouse']);
     Route::get('/dashboard/exportByWarehouse/{id}/{year}', [DashBoardController::class, 'exportByWarehouse']);
 
-    Route::get('/export', [ExportController::class, 'index'])->middleware(['permission:Xem phiếu xuất']);
+    Route::get('/export', [ExportController::class, 'index']);
     Route::get('/export/indexStatus', [ExportController::class, 'indexStatus'])->middleware(['permission:Xem phiếu xuất']);
     Route::get('/export/add', [ExportController::class, 'create'])->middleware(['permission:Xem phiếu xuất']);
     Route::post('/export/store', [ExportController::class, 'store'])->middleware(['permission:Thêm phiếu xuất']);
@@ -197,10 +199,16 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/warehouse/searchItems/{name}/{id}', [WarehouseController::class, 'searchItems'])->middleware(['permission:Xem kho']);
 
     Route::get('/warehouse/kd/{id}/{w_id}/{s_id}', [WarehouseController::class, 'kd'])->middleware(['permission:Xem kho']);
-    Route::get('/warehouse/amountItemKKD/{id}', [WarehouseController::class, 'amountItemKKD'])->middleware(['permission:Xem kho']);
+    Route::get('/warehouse/amountItemKKD/{id}/{shelfid}/{warehouseid}', [WarehouseController::class, 'amountItemKKD'])->middleware(['permission:Xem kho']); ///sỬA  
     Route::get('/warehouse/detailItemId/{id}/{shelfid}/{warehouseid}', [WarehouseController::class, 'detailItemId'])->middleware(['permission:Xem kho']);
     Route::get('/warehouse/listItem/{id}', [WarehouseController::class, 'listItem'])->middleware(['permission:Xem kho']);
+    Route::get('/warehouse/managerShow/{id}', [WarehouseController::class, 'managerShow'])->middleware(['permission:Xem kho']);
+    Route::put('/warehouse/statusWarehouse/{id}', [WarehouseController::class, 'statusWarehouse'])->middleware(['permission:Sửa kho']);
     // Route::get('/warehouse/warehouseShow', [WarehouseController::class, 'warehouseShow']);
+
+
+    /****************Manager*************** */
+    
 
 
     /*************Shelf*************/
