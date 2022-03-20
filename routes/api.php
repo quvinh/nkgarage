@@ -103,7 +103,6 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/notification/showNotification/{id}', [NotificationController::class, 'showNotification']);
     Route::get('/notification/showListItemById/{id}', [NotificationController::class, 'showListItemById']);
     Route::post('/notification/store', [NotificationController::class, 'store']);
-    Route::post('/notification/store', [NotificationController::class, 'store']);
 
     /*************Transfer*************/
     Route::get('/transfer', [TransferController::class, 'index'])->middleware(['permission:Xem phiếu chuyển']);

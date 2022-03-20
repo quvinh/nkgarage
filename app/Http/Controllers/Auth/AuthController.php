@@ -212,7 +212,9 @@ class AuthController extends Controller
             )
             ->get();
 
-        $warehouse_id = DB::table('managers')->where('user_id', $id)->get('warehouse_id');
+        $warehouse_id = DB::table('managers')->where('user_id', $id)
+            ->join('warehouses', 'warehouses.id', '=', 'managers.warehouse_id')
+            ->get();
         $checkRole = DB::table('model_has_roles')->where('model_id', $id)->count();
         $role = DB::table('model_has_roles')->where('model_id', $id)->get('role_id');
         $role_id = 0;
