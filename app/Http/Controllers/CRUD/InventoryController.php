@@ -147,8 +147,8 @@ class InventoryController extends Controller
     {
         $history = DB::table('exports')
             ->join('warehouses', 'warehouses.id', '=', 'exports.warehouse_id')
-            ->join('shelves','shelves.id','=','exports.shelf_id')
-            ->join('users', 'users.id','=','exports.created_by')
+            ->join('shelves', 'shelves.id', '=', 'exports.shelf_id')
+            ->join('users', 'users.id', '=', 'exports.created_by')
             ->select(
                 'exports.item_id',
                 'exports.id as id',
@@ -176,7 +176,7 @@ class InventoryController extends Controller
     {
         $history = DB::table('imports')
             ->join('warehouses', 'warehouses.id', '=', 'imports.warehouse_id')
-            ->join('shelves','shelves.id','=','imports.shelf_id')
+            ->join('shelves', 'shelves.id', '=', 'imports.shelf_id')
             ->join('users', 'users.id', '=', 'imports.created_by') //join user -> get name
             ->select(
                 'imports.item_id',
@@ -228,7 +228,7 @@ class InventoryController extends Controller
     {
         $history = DB::table('exports')
             ->join('warehouses', 'warehouses.id', '=', 'exports.warehouse_id')
-            ->join('users', 'users.id','=','exports.created_by')
+            ->join('users', 'users.id', '=', 'exports.created_by')
             ->select(
                 'warehouses.name as tenKho',
                 'exports.code',
@@ -249,7 +249,7 @@ class InventoryController extends Controller
     public function showCodeTransfer()
     {
         $data = DB::table('transfers')
-        ->join('users', 'users.id','=','transfers.created_by')
+            ->join('users', 'users.id', '=', 'transfers.created_by')
             ->select(
                 'transfers.name_from_warehouse',
                 'transfers.name_from_shelf',
@@ -270,14 +270,15 @@ class InventoryController extends Controller
             'data' => $data
         ], 201);
     }
-    public function showHistoryTransfer($code){
+    public function showHistoryTransfer($code)
+    {
         $data = DB::table('transfers')
-        ->join('items','items.id','=','transfers.item_id')
-        ->join('users','users.id','=','transfers.created_by')
-        ->select('transfers.*','items.name','users.fullname as fullname')
-        ->where('deleted_at', null)
-        ->where('code', $code)
-        ->get();
+            ->join('items', 'items.id', '=', 'transfers.item_id')
+            ->join('users', 'users.id', '=', 'transfers.created_by')
+            ->select('transfers.*', 'items.name', 'users.fullname as fullname')
+            ->where('deleted_at', null)
+            ->where('code', $code)
+            ->get();
         return response()->json([
             'message' => 'Show transfer data',
             'status' => 'History Transfer',
