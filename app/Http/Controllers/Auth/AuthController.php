@@ -212,16 +212,25 @@ class AuthController extends Controller
             )
             ->get();
 
-        $warehouse_id = DB::table('managers')->where('user_id', $id)->get('warehouse_id');
-
+        $warehouse_id = DB::table('managers')->where('user_id', $id)
+            ->join('warehouses', 'warehouses.id', '=', 'managers.warehouse_id')
+            ->get();
+        $checkRole = DB::table('model_has_roles')->where('model_id', $id)->count();
+        $role = DB::table('model_has_roles')->where('model_id', $id)->get('role_id');
+        $role_id = 0;
+        if ($checkRole > 0) {
+            $role_id = $role[0]->role_id;
+        }
         return response()->json([
             'message' => 'get user',
             'data' => $data,
             'warehouse_id' => $warehouse_id,
+            'role_id' => $role_id
         ], 201);
     }
 
-    public function updateUser(Request $request, $id) {
+    public function updateUser(Request $request, $id)
+    {
         $validator = Validator::make($request->all(), [
             'username' => 'required',
             'email' => 'required|string|email',
@@ -239,7 +248,7 @@ class AuthController extends Controller
         ]);
 
         $checkUser = DB::table('detail_users')->where('user_id', $id)->count();
-        if($checkUser>0){
+        if ($checkUser > 0) {
             DB::table('detail_users')->where('user_id', $id)->update([
                 'birthday' => $request->birthday,
                 'address' => $request->address,
@@ -252,7 +261,6 @@ class AuthController extends Controller
             $data->birthday = $request->birthday;
             $data->gender = $request->gender;
             $data->save();
-
         }
 
         return response()->json([

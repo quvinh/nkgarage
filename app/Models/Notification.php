@@ -15,6 +15,7 @@ class Notification extends Model
         'content',
         'created_by',
         'warehouse_id',
+        'send_to',
         'status',
         // 'type',
     ];

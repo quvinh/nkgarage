@@ -17,6 +17,7 @@ use App\Models\Import;
 use App\Models\Suppliers;
 use App\Http\Controllers\CRUD\Detail_ItemController;
 use App\Http\Controllers\CRUD\InventoryController;
+use App\Http\Controllers\CRUD\ManagerController;
 use App\Http\Controllers\CRUD\NotificationController;
 use App\Http\Controllers\CRUD\StatisticController;
 use App\Http\Controllers\CRUD\TransferController;
@@ -64,13 +65,14 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
 
     // Route::group(['middleware' => ['role:admin|Tổng giám đốc|Giám đốc|Trưởng kế toán|Kế toán|Thủ kho']], function () {
     Route::get('/dashboard/tonKho/{id}', [DashBoardController::class, 'tonKho']);
+    Route::get('/dashboard/listWarehouse/{id}', [DashBoardController::class, 'listInWarehouse']);
     Route::get('/dashboard/tongTonKho', [DashBoardController::class, 'tongTonKho']);
     Route::get('/dashboard/export/{year}', [DashBoardController::class, 'export']);
     Route::get('/dashboard/import/{year}', [DashBoardController::class, 'import']);
     Route::get('/dashboard/importByWarehouse/{id}/{year}', [DashBoardController::class, 'importByWarehouse']);
     Route::get('/dashboard/exportByWarehouse/{id}/{year}', [DashBoardController::class, 'exportByWarehouse']);
 
-    Route::get('/export', [ExportController::class, 'index'])->middleware(['permission:Xem phiếu xuất']);
+    Route::get('/export', [ExportController::class, 'index']);
     Route::get('/export/indexStatus', [ExportController::class, 'indexStatus'])->middleware(['permission:Xem phiếu xuất']);
     Route::get('/export/add', [ExportController::class, 'create'])->middleware(['permission:Xem phiếu xuất']);
     Route::post('/export/store', [ExportController::class, 'store'])->middleware(['permission:Thêm phiếu xuất']);
@@ -104,7 +106,6 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/notification', [NotificationController::class, 'index']);
     Route::get('/notification/showNotification/{id}', [NotificationController::class, 'showNotification']);
     Route::get('/notification/showListItemById/{id}', [NotificationController::class, 'showListItemById']);
-    Route::post('/notification/store', [NotificationController::class, 'store']);
     Route::post('/notification/store', [NotificationController::class, 'store']);
 
     /*************Transfer*************/
@@ -180,7 +181,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/detail_item/add', [DetailitemController::class, 'create'])->middleware(['permission:Thêm chi tiết vật tư']);
     Route::post('/detail_item/store', [DetailitemController::class, 'store'])->middleware(['permission:Thêm chi tiết vật tư']);
     Route::get('/detail_item/show/{id}', [DetailitemController::class, 'edit'])->middleware(['permission:Xem chi tiết vật tư']);
-    Route::put('/detail_item/update/{id}', [DetailitemController::class, 'update'])->middleware(['permission:Sửa chi tiết vật tư']);
+    Route::put('/detail_item/update/{id}', [DetailitemController::class, 'update']);
     Route::delete('/detail_item/delete/{id}', [DetailitemController::class, 'destroy'])->middleware(['permission:Xóa chi tiết vật tư']);
 
 
@@ -198,10 +199,10 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
 
     Route::get('/warehouse/add', [WarehouseController::class, 'create'])->middleware(['permission:Xem kho']);
     Route::post('/warehouse/store', [WarehouseController::class, 'store'])->middleware(['permission:Thêm kho']);
-    Route::get('/warehouse/show/{id}', [WarehouseController::class, 'edit'])->middleware(['permission:Xem kho|Thêm kho']);
+    Route::get('/warehouse/show/{id}', [WarehouseController::class, 'edit']);
     Route::put('/warehouse/update/{id}', [WarehouseController::class, 'update'])->middleware(['permission:Sửa kho']);
     Route::delete('/warehouse/delete/{id}', [WarehouseController::class, 'destroy'])->middleware(['permission:Xoá kho']);
-    Route::get('/warehouse/shelfWarehouse/{id}', [WarehouseController::class, 'shelfWarehouse'])->middleware(['permission:Xem kho|Xem giá/kệ']);
+    Route::get('/warehouse/shelfWarehouse/{id}', [WarehouseController::class, 'shelfWarehouse']);
     Route::get('/warehouse/itemShelf/{id}/{shelf_id}', [WarehouseController::class, 'itemShelf'])->middleware(['permission:Xem kho']);
     Route::get('/warehouse/itemWarehouse/{id}', [WarehouseController::class, 'itemWarehouse'])->middleware(['permission:Xem kho']);
     Route::get('/warehouse/countWarehouse', [WarehouseController::class, 'countWarehouse'])->middleware(['permission:Xem kho']);
@@ -210,10 +211,16 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/warehouse/searchItems/{name}/{id}', [WarehouseController::class, 'searchItems'])->middleware(['permission:Xem kho']);
 
     Route::get('/warehouse/kd/{id}/{w_id}/{s_id}', [WarehouseController::class, 'kd'])->middleware(['permission:Xem kho']);
-    Route::get('/warehouse/amountItemKKD/{id}', [WarehouseController::class, 'amountItemKKD'])->middleware(['permission:Xem kho']);
+    Route::get('/warehouse/amountItemKKD/{id}/{shelfid}/{warehouseid}', [WarehouseController::class, 'amountItemKKD'])->middleware(['permission:Xem kho']);
     Route::get('/warehouse/detailItemId/{id}/{shelfid}/{warehouseid}', [WarehouseController::class, 'detailItemId'])->middleware(['permission:Xem kho']);
     Route::get('/warehouse/listItem/{id}', [WarehouseController::class, 'listItem'])->middleware(['permission:Xem kho']);
+    Route::get('/warehouse/managerShow/{id}', [WarehouseController::class, 'managerShow'])->middleware(['permission:Xem kho']);
+    Route::put('/warehouse/statusWarehouse/{id}', [WarehouseController::class, 'statusWarehouse'])->middleware(['permission:Sửa kho']);
     // Route::get('/warehouse/warehouseShow', [WarehouseController::class, 'warehouseShow']);
+
+
+    /****************Manager*************** */
+
 
 
     /*************Shelf*************/
@@ -233,7 +240,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     // });
 
     /**************Item***************/
-    Route::get('/items', [ItemController::class, 'index'])->middleware(['permission:Xem vật tư']);
+    Route::get('/items', [ItemController::class, 'index']);
     Route::get('/items/add', [ItemController::class, 'create'])->middleware(['permission:Thêm vật tư']);
     Route::post('/items/store', [ItemController::class, 'store'])->middleware(['permission:Thêm vật tư']);
     Route::get('/items/show/{id}', [ItemController::class, 'edit'])->middleware(['permission:Xem vật tư']);
