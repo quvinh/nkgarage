@@ -42,7 +42,7 @@ class ShelvesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,$id)
+    public function store(Request $request)
     {
         //
         $validator = Validator::make($request->all(), [
@@ -57,7 +57,7 @@ class ShelvesController extends Controller
         $data = Shelves::create([
             'name' => $request->name,
             'position' => $request->position,
-            'warehouse_id' => $id,
+            'warehouse_id' => $request->warehouse_id,
             'status' => true,
         ]);
 

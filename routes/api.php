@@ -219,7 +219,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     /*************Shelf*************/
     // Route::get('/shelf', [ShelvesController::class, 'index']);
     Route::get('/shelf/add', [ShelvesController::class, 'create'])->middleware(['permission:Thêm giá/kệ']);
-    Route::post('/shelf/store/{id}', [ShelvesController::class, 'store'])->middleware(['permission:Thêm giá/kệ']);
+    Route::post('/shelf/store', [ShelvesController::class, 'store'])->middleware(['permission:Thêm giá/kệ']);
     Route::get('/shelf/show/{id}', [ShelvesController::class, 'edit'])->middleware(['permission:Xem giá/kệ']);
     Route::put('/shelf/update/{id}', [ShelvesController::class, 'update'])->middleware(['permission:Sửa giá/kệ']);
     Route::delete('/shelf/delete/{id}', [ShelvesController::class, 'destroy'])->middleware(['permission:Xoá giá/kệ']);

@@ -186,7 +186,7 @@ class WarehouseController extends Controller
                 'warehouses.id as warehouse_id',
                 'warehouses.name as name_warehouse',
                 'shelves.id as shelf_id',
-                'shelves.name as shelfname',
+                'shelves.name as shelf_name',
                 'supplier_id',
                 'batch_code',
                 'amount',
