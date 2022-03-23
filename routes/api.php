@@ -105,9 +105,8 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
 
     /**************Notification************/
     Route::get('/notification', [NotificationController::class, 'index']);
-    Route::get('/notification/showNotification/{id}', [NotificationController::class, 'showNotification']);
-    Route::get('/notification/showListItemById/{id}', [NotificationController::class, 'showListItemById']);
     Route::post('/notification/store', [NotificationController::class, 'store']);
+    Route::get('/notification/get-person/{id}', [NotificationController::class, 'getPersonInWarehouse']);
 
     /*************Transfer*************/
     Route::get('/transfer', [TransferController::class, 'index'])->middleware(['permission:Xem phiếu chuyển']);
@@ -149,8 +148,10 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
 
     /**************Notification************/
     Route::get('/notification/{id}', [NotificationController::class, 'index2']);
+    Route::get('/notification/send/{id}', [NotificationController::class, 'send']);
     Route::get('/notification/add', [NotificationController::class, 'create']);
     Route::get('/notification/show/{id}', [NotificationController::class, 'edit']);
+    Route::get('/notification/count/{id}', [NotificationController::class, 'count']);
     Route::put('/notification/update/{id}', [NotificationController::class, 'update']);
     Route::delete('/notification/delete/{id}', [NotificationController::class, 'destroy']);
 
