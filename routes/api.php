@@ -65,7 +65,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
 
     // Route::group(['middleware' => ['role:admin|Tổng giám đốc|Giám đốc|Trưởng kế toán|Kế toán|Thủ kho']], function () {
     Route::get('/dashboard/tonKho/{id}', [DashBoardController::class, 'tonKho']);
-    Route::get('/dashboard/listWarehouse/{id}', [DashBoardController::class, 'listInWarehouse']);
+    Route::get('/dashboard/exportImport/{id}', [DashBoardController::class, 'exportImport']);
     Route::get('/dashboard/tongTonKho', [DashBoardController::class, 'tongTonKho']);
     Route::get('/dashboard/export/{year}', [DashBoardController::class, 'export']);
     Route::get('/dashboard/import/{year}', [DashBoardController::class, 'import']);

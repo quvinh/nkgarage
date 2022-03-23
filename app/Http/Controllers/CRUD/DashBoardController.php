@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+use function PHPUnit\Framework\isNull;
+
 class DashBoardController extends Controller
 {
     /**
@@ -219,12 +221,22 @@ class DashBoardController extends Controller
         $data = DB::table('warehouses')
             ->join('exports', 'exports.warehouse_id', '=', 'warehouses.id')
             ->join('imports', 'imports.warehouse_id', '=', 'warehouses.id')
-            ->select(DB::raw('sum(imports.amount) as importAmount'), DB::raw('sum(exports.amount) as exportAmount'), DB::raw('date_format(created_at, "%M") as month, year(created_at) as year'), 'warehouses.name')
-            // ->where('deleted_at', null)
-            ->orderBy('created_at', 'asc')
-            ->groupBy('month', 'year', 'imports.status', 'exports.status', 'warehouse_id')
-            ->having('status', 2)
+            ->select(
+
+                DB::raw('ifNull(sum(`exports`.`amount`), 0) as exportAmount'),
+                // DB::raw('ifNull(sum(`imports`.`amount`), 0) as importAmount'),
+                DB::raw('year(exports.created_at) as year'),
+                'warehouses.name'
+            )
+            ->where('exports.status',2)
+            ->where('imports.status',2)
+            ->groupBy('year','warehouses.id')
             ->having('year', $year)
             ->get();
+            return response()->json([
+                'message' => 'Data DashBoard',
+                'status' => 'DashBoard',
+                'data' => $data,
+            ], 201);
     }
 }
