@@ -202,7 +202,8 @@ class WarehouseController extends Controller
             ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
             ->select(
-                'items.id as id', //vvuong fix
+                'detail_items.id as id',
+                'items.id as item_id',
                 'items.name as itemname',
                 'categories.id as category_id',
                 'categories.name as categoryname',
@@ -482,12 +483,12 @@ class WarehouseController extends Controller
         ->join('users', 'users.id', '=', 'managers.user_id')
         ->join('warehouses', 'warehouses.id', '=', 'managers.warehouse_id')
         ->select(
-            'managers.user_id as userid',
+            'managers.user_id as user_id',
             'managers.warehouse_id as warehouse_id',
             'fullname',
             'email',
             'phone',
-            'warehouses.name as warehousename'
+            'warehouses.name as warehouse_name'
             )
         ->where('managers.warehouse_id',$id)
         ->get();
