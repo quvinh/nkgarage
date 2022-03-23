@@ -42,6 +42,32 @@ class NotificationController extends Controller
         ], 201);
     }
 
+    public function index2($id)
+    {
+        $data = DB::table('notifications')
+            ->join('warehouses', 'warehouses.id', '=', 'notifications.warehouse_id')
+            ->join('users', 'users.id', '=', 'notifications.created_by')
+            ->select(
+                'notifications.id as id',
+                'title',
+                'content',
+                'notifications.warehouse_id as warehouse_id',
+                'warehouses.name as name',
+                'created_by',
+                'users.fullname as fullname',
+                'notifications.created_at as created_at',
+            )
+            ->where('warehouse_id',$id)
+            ->get();
+        $count = DB::table('notifications')
+            ->get()
+            ->count();
+        return response()->json([
+            'data' => $data,
+            'count' => $count
+        ], 201);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -64,7 +90,7 @@ class NotificationController extends Controller
             'title' => 'required',
             // 'send_to' => 'required',
             'warehouse_id' => 'required',
-            'status' => 'required',
+            // 'status' => 'required',
             'content' => 'required',
             'created_by' => 'required',
         ]);
@@ -115,21 +141,21 @@ class NotificationController extends Controller
      */
     public function edit($id) // id warehouse
     {
-        dd(DB::table('managers')->where('user_id', $id)->get('warehouse_id')->count());
+        // dd(DB::table('managers')->where('user_id', $id)->get('warehouse_id')->count());
         $data = DB::table('notifications')
-            // ->join('users', 'users.id', '=', 'notifications.created_by')
+            ->join('users', 'users.id', '=', 'notifications.created_by')
             // ->join('warehouses', 'warehouses.id', '=' ,'notifications.warehouse_id')
-            // ->select(
-            //     'notifications.id as id',
-            //     'title',
-            //     'content',
-            //     'notifications.created_at as created_at',
-            //     'created_by',
-            //     'users.fullname as fullname',
-            //     // 'warehouses.name as name',
-            //     // 'warehouse_id'
-            // )
-            ->where('warehouse_id', $id)
+            ->select(
+                'notifications.id as id',
+                'title',
+                'content',
+                'notifications.created_at as created_at',
+                'created_by',
+                'users.fullname as fullname',
+                'send_to',
+            )
+            // ->where('warehouse_id', $id)
+            ->where('notifications.id', $id)
             ->orderBy('status', 'DESC')
             ->orderBy('created_at', 'DESC')
             ->get();

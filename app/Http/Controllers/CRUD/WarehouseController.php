@@ -29,6 +29,19 @@ class WarehouseController extends Controller
         ], 201);
     }
 
+    public function index2($id) {
+        $data = DB::table('warehouses')
+        ->join('managers', 'managers.warehouse_id','=','warehouses.id')
+        ->where('managers.user_id',$id)
+        ->select('warehouses.name as name', 'warehouses.location as location', 'warehouses.status as status', 'warehouses.id as id')
+        ->get();
+        return response()->json([
+            'status' => 'Show Warehouse By User_id',
+            'message' => 'Show successfully',
+            'data' => $data,
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -101,6 +114,15 @@ class WarehouseController extends Controller
             'data' => $data,
         ]);
     }
+
+    public function edit2($id){
+        $data = Warehouse::find($id);
+        return response()->json([
+            'message' => 'Data warehouse',
+            'data' => $data,
+        ], 201);
+    }
+
 
     /**
      * Update the specified resource in storage.
@@ -180,7 +202,7 @@ class WarehouseController extends Controller
             ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
             ->select(
-                'items.id as item_id', //vvuong fix
+                'items.id as id', //vvuong fix
                 'items.name as itemname',
                 'categories.id as category_id',
                 'categories.name as categoryname',

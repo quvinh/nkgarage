@@ -142,7 +142,7 @@ class ItemController extends Controller
             ->join('suppliers', 'suppliers.id', '=', 'detail_items.supplier_id')
             // ->join('imports', 'import.id', '=', 'detail_items.category_id')
             ->select(
-                'items.id as item_id',
+                'items.id as id',
                 'items.name as itemname',
                 'categories.id as category_id',
                 'warehouses.id as warehouse_id',
@@ -176,7 +176,7 @@ class ItemController extends Controller
             ->join('categories', 'categories.id', '=', 'detail_items.category_id')
             ->join('suppliers', 'suppliers.id', '=', 'detail_items.supplier_id')
             ->select(
-                'items.id as item_id',
+                'items.id as id',
                 'items.name as itemname',
                 'categories.id as category_id',
                 'warehouses.id as warehouse_id',
