@@ -160,6 +160,11 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/inventory/show/{id}', [InventoryController::class, 'edit'])->middleware(['permission:Xem phiếu kiểm kê']);
     Route::put('/inventory/update/{id}', [InventoryController::class, 'update'])->middleware(['permission:Sửa phiếu kiểm kê']);
     Route::delete('/inventory/delete/{id}', [InventoryController::class, 'destroy'])->middleware(['permission:Xóa phiếu kiểm kê']);
+    Route::put('/inventory/handleInventory/{code}', [InventoryController::class, 'handleInventory'])->middleware(['permission:Duyệt phiếu kiểm kê']);
+    Route::get('/inventory/showCodeInventory', [InventoryController::class, 'showCodeInventory'])->middleware(['permission:Xem phiếu kiểm kê']);
+    Route::get('/inventory/showHistoryInventory/{id}', [InventoryController::class, 'showHistoryInventory'])->middleware(['permission:Xem phiếu kiểm kê']);
+    Route::delete('/inventory/deleteCode/{code}', [InventoryController::class, 'deleteCode'])->middleware(['permission:Xóa phiếu kiểm kê']);
+
 
 
     // Route::get('/item', [ItemController::class, 'index']);
