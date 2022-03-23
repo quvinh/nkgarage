@@ -120,7 +120,6 @@ class DatabaseSeeder extends Seeder
             [
                 'code' => 'CODE001',
                 'name' => 'Cửa hàng vật tư/phụ tùng HP',
-                'supplier_initials' => 'VTHP',
                 'email' => 'Example@gmail.com',
                 'address' => 'Hải Phòng',
                 'contact_person' => 'Nguyễn Văn K',

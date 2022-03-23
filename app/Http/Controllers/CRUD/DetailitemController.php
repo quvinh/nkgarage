@@ -130,7 +130,7 @@ class DetailitemController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
-        
+            
         $data = DetailItem::where('id', $id)->update([
             // 'shelf_id' => $request->shelf_id,
             'amount' => $request->amount,

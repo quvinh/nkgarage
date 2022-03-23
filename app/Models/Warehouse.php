@@ -15,7 +15,7 @@ class Warehouse extends Model
         'name',
         'location',
         'note',
-        'status'
+        'status'    
     ];
     public $timestamps = false;
 }

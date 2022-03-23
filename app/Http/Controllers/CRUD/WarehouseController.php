@@ -29,6 +29,19 @@ class WarehouseController extends Controller
         ], 201);
     }
 
+    public function index2($id) {
+        $data = DB::table('warehouses')
+        ->join('managers', 'managers.warehouse_id','=','warehouses.id')
+        ->where('managers.user_id',$id)
+        ->select('warehouses.name as name', 'warehouses.location as location', 'warehouses.status as status', 'warehouses.id as id')
+        ->get();
+        return response()->json([
+            'status' => 'Show Warehouse By User_id',
+            'message' => 'Show successfully',
+            'data' => $data,
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -101,6 +114,15 @@ class WarehouseController extends Controller
             'data' => $data,
         ]);
     }
+
+    public function edit2($id){
+        $data = Warehouse::find($id);
+        return response()->json([
+            'message' => 'Data warehouse',
+            'data' => $data,
+        ], 201);
+    }
+
 
     /**
      * Update the specified resource in storage.
@@ -180,7 +202,8 @@ class WarehouseController extends Controller
             ->join('shelves', 'shelves.id', '=', 'detail_items.shelf_id')
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
             ->select(
-                'items.id as item_id', //vvuong fix
+                'detail_items.id as id',
+                'items.id as item_id',
                 'items.name as itemname',
                 'categories.id as category_id',
                 'categories.name as categoryname',
@@ -460,12 +483,12 @@ class WarehouseController extends Controller
         ->join('users', 'users.id', '=', 'managers.user_id')
         ->join('warehouses', 'warehouses.id', '=', 'managers.warehouse_id')
         ->select(
-            'managers.user_id as userid',
+            'managers.user_id as user_id',
             'managers.warehouse_id as warehouse_id',
             'fullname',
             'email',
             'phone',
-            'warehouses.name as warehousename'
+            'warehouses.name as warehouse_name'
             )
         ->where('managers.warehouse_id',$id)
         ->get();

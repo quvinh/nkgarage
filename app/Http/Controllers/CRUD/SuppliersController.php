@@ -116,7 +116,6 @@ class SuppliersController extends Controller
         $data = Suppliers::where('id', $id)->update([
             'code' => $request->code,
             'name' => $request->name,
-            'supplier_initials' => $request->supplier_initials,
             'email' => $request->email,
             'address' => $request->address,
             'contact_person' => $request->contact_person,

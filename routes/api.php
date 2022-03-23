@@ -100,6 +100,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/shelf', [ShelvesController::class, 'index'])->middleware(['permission:Xem giá/kệ']);
     Route::get('/items/searchItem/{id}', [ItemController::class, 'searchItem']);
     Route::get('/warehouse', [WarehouseController::class, 'index'])->middleware(['permission:Xem kho']);
+    Route::get('/warehouse/{id}', [WarehouseController::class, 'index2'])->middleware(['permission:Xem kho']);
     Route::get('/suppliers', [SuppliersController::class, 'index'])->middleware(['permission:Xem nhà cung cấp']);
 
     /**************Notification************/
@@ -147,7 +148,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::delete('/detail_user/delete/{id}', [DetailUserController::class, 'destroy'])->middleware(['permission:Xoá tài khoản']);
 
     /**************Notification************/
-    Route::get('/notification', [NotificationController::class, 'index']);
+    Route::get('/notification/{id}', [NotificationController::class, 'index2']);
     Route::get('/notification/add', [NotificationController::class, 'create']);
     Route::get('/notification/show/{id}', [NotificationController::class, 'edit']);
     Route::put('/notification/update/{id}', [NotificationController::class, 'update']);
@@ -200,6 +201,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/warehouse/add', [WarehouseController::class, 'create'])->middleware(['permission:Xem kho']);
     Route::post('/warehouse/store', [WarehouseController::class, 'store'])->middleware(['permission:Thêm kho']);
     Route::get('/warehouse/show/{id}', [WarehouseController::class, 'edit']);
+    Route::get('/warehouse/show2/{id}', [WarehouseController::class, 'edit2']);
     Route::put('/warehouse/update/{id}', [WarehouseController::class, 'update'])->middleware(['permission:Sửa kho']);
     Route::delete('/warehouse/delete/{id}', [WarehouseController::class, 'destroy'])->middleware(['permission:Xoá kho']);
     Route::get('/warehouse/shelfWarehouse/{id}', [WarehouseController::class, 'shelfWarehouse']);

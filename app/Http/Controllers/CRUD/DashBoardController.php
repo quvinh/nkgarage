@@ -86,18 +86,34 @@ class DashBoardController extends Controller
     }
     public function export($year)
     {
+        // $warehouse = DB::table('warehouses')
+        //     ->get('id');
+        // $count = DB::table('warehouses')
+        //     ->get('id')
+        //     ->count();
+
         $export = DB::table('exports')
             ->select(DB::raw('sum(exports.amount) as exportAmount'), DB::raw('date_format(created_at, "%M") as month, year(created_at) as year'))
+            // ->where('exports.warehouse_id',$warehouse)
             // ->where('deleted_at', null)
             ->orderBy('created_at', 'asc')
-            ->groupBy('month', 'year', 'status')
+            ->groupBy('month', 'year', 'exports.status')
             ->having('status', 2)
             ->having('year', $year)
             ->get();
+        // for ($i = 0; $i < count($warehouse); $i++) {
+        //     for ($j = 0; $j < count($export); $j++) {
+        //         if ($export[$j]->warehouse_id != $warehouse[$i]) {
+        //             $export[$j]->exportAmount = 0;
+        //         }
+        //     }
+        // }
         return response()->json([
+            // 'listWarehouse' => $warehouse,
             'message' => 'Data DashBoard',
             // 'status' => 'DashBoard',
             'data' => $export,
+            // 'count' => $count
         ], 201);
     }
 
@@ -107,27 +123,26 @@ class DashBoardController extends Controller
             ->select(DB::raw('sum(imports.amount) as importAmount'), DB::raw('date_format(created_at, "%M") as month, year(created_at) as year'))
             // ->where('deleted_at', null)
             ->orderBy('created_at', 'asc')
-            ->groupBy('month', 'year', 'status')
+            ->groupBy('month', 'year', 'imports.status')
             ->having('status', 2)
             ->having('year', $year)
             ->get();
-        // dd($import = $import->toArray());
         return response()->json([
             'data' => $import,
             'message' => 'Data DashBoard',
             // 'status' => 'DashBoard',
-
         ], 201);
-
     }
 
     public function tonKho($id)
     {
         $tonKho = DB::table('detail_items')
+            ->join('managers', 'managers.warehouse_id', '=', 'detail_items.warehouse_id')
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
             ->select(DB::raw('sum(amount * price) as total,sum(amount) as tonKho'))
-            ->addSelect( 'warehouse_id', 'name', 'warehouses.status as status')
-            ->where('warehouses.id', $id)
+            ->addSelect('managers.warehouse_id', 'name', 'warehouses.status')
+            ->groupBy('warehouse_id', 'name')
+            ->where('managers.user_id', $id)
             ->get();
         return response()->json([
             'message' => 'Data DashBoard',
@@ -140,7 +155,7 @@ class DashBoardController extends Controller
         $tongTonKho = DB::table('detail_items')
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
             ->select(DB::raw('sum(amount * price) as total,sum(amount) as tonKho'))
-            ->addSelect( 'warehouse_id', 'name', 'warehouses.status')
+            ->addSelect('warehouse_id', 'name', 'warehouses.status')
             ->groupBy('warehouse_id', 'name')
             ->get();
         return response()->json([
@@ -149,14 +164,14 @@ class DashBoardController extends Controller
             'data' => $tongTonKho,
         ], 201);
     }
-    public function exportByWarehouse ($id, $year)
+    public function exportByWarehouse($id, $year)
     {
         $export = DB::table('exports')
             ->select(DB::raw('sum(exports.amount) as exportAmount'), DB::raw('date_format(created_at, "%M") as month, year(created_at) as year'),)
             ->orderBy('created_at', 'asc')
             ->groupBy('month', 'year', 'status', 'warehouse_id')
             ->having('status', 2)
-            ->having('warehouse_id',$id)
+            ->having('warehouse_id', $id)
             ->having('year', $year)
             ->get();
         return response()->json([
@@ -165,14 +180,14 @@ class DashBoardController extends Controller
             'data' => $export,
         ], 201);
     }
-    public function importByWarehouse ($id, $year)
+    public function importByWarehouse($id, $year)
     {
         $import = DB::table('imports')
             ->select(DB::raw('sum(imports.amount) as importAmount'), DB::raw('date_format(created_at, "%M") as month, year(created_at) as year'))
             ->orderBy('created_at', 'asc')
             ->groupBy('month', 'year', 'status', 'warehouse_id')
             ->having('status', 2)
-            ->having('warehouse_id',$id)
+            ->having('warehouse_id', $id)
             ->having('year', $year)
             ->get();
         return response()->json([
@@ -187,9 +202,9 @@ class DashBoardController extends Controller
         $tongTonKho = DB::table('detail_items')
             ->join('items', 'items.id', '=', 'detail_items.item_id')
             ->select(DB::raw('sum(amount * price) as total,sum(amount) as tonKho, name, item_id'))
-            ->orderBy('total','desc')
+            ->orderBy('total', 'desc')
             // ->addSelect( 'warehouse_id', 'name', 'warehouses.status')
-            ->where('warehouse_id',$id)
+            ->where('warehouse_id', $id)
             ->groupBy('item_id')
             ->get();
         return response()->json([
@@ -199,4 +214,17 @@ class DashBoardController extends Controller
         ], 201);
     }
 
+    public function exportImport($year)
+    {
+        $data = DB::table('warehouses')
+            ->join('exports', 'exports.warehouse_id', '=', 'warehouses.id')
+            ->join('imports', 'imports.warehouse_id', '=', 'warehouses.id')
+            ->select(DB::raw('sum(imports.amount) as importAmount'), DB::raw('sum(exports.amount) as exportAmount'), DB::raw('date_format(created_at, "%M") as month, year(created_at) as year'), 'warehouses.name')
+            // ->where('deleted_at', null)
+            ->orderBy('created_at', 'asc')
+            ->groupBy('month', 'year', 'imports.status', 'exports.status', 'warehouse_id')
+            ->having('status', 2)
+            ->having('year', $year)
+            ->get();
+    }
 }

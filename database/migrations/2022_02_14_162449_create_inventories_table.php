@@ -15,10 +15,12 @@ class CreateInventoriesTable extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
+            $table->code();
             $table->integer('item_id');
             $table->bigInteger('detail_item_id');
             $table->text('department');
             $table->integer('amount');
+            $table->integer('amount_difference');
             $table->string('unit',10);
             $table->text('description')->nullable();
             $table->bigInteger('created_by');
