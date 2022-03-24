@@ -73,25 +73,20 @@ class ExportController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
-        $count_item = DetailItem::where([
-            ['warehouse_id', '=', $request->warehouse_id],
-            ['shelf_id', '=', $request->shelf_id],
-            ['item_id', '=', $request->item_id],
-        ])
-            ->get()
-            ->count();
-        // dd($count_item);
+
         $detail_item = DB::table('detail_items')
             ->where([
                 ['warehouse_id', '=', $request->warehouse_id],
                 ['shelf_id', '=', $request->shelf_id],
                 ['item_id', '=', $request->item_id],
+                ['batch_code', '=', $request->batch_code],
+                ['supplier_id', '=', $request->supplier_id]
             ])
             ->get();
         $item = DB::table('items')
             ->where('id', $detail_item[0]->item_id)
             ->get();
-        if ($count_item > 0) {
+        if ($detail_item->count() > 0) {
             if ($request->amount <= $detail_item[0]->amount) {
                 $newExport = new Export();
                 $newExport->item_id = $request->item_id;
@@ -101,6 +96,7 @@ class ExportController extends Controller
                 $newExport->warehouse_id = $request->warehouse_id;
                 $newExport->shelf_id = $request->shelf_id;
                 $newExport->supplier_id = $request->supplier_id;
+                $newExport->batch_code = $request->batch_code;
                 $newExport->name = $item[0]->name;
                 $newExport->unit = $request->unit;
                 $newExport->created_by = $request->created_by;
@@ -210,24 +206,26 @@ class ExportController extends Controller
                 ['warehouse_id', '=', $export_item[0]->warehouse_id],
                 ['shelf_id', '=', $export_item[0]->shelf_id],
                 ['item_id', '=', $export_item[0]->item_id],
-                ['supplier_id', '=', $export_item[0]->supplier_id]
+                ['supplier_id', '=', $export_item[0]->supplier_id],
+                ['batch_code', '=', $export_item[0]->batch_code]
             ])
             ->get();
-        if($detail_item[0]->amount >= $export_item[0]->amount) {
+        if ($detail_item[0]->amount >= $export_item[0]->amount) {
             Export::where('id', $id)->update(['status' => '2']);
             DetailItem::where([
                 ['warehouse_id', '=', $export_item[0]->warehouse_id],
                 ['shelf_id', '=', $export_item[0]->shelf_id],
                 ['item_id', '=', $export_item[0]->item_id],
-                ['supplier_id', '=', $export_item[0]->supplier_id]
-            ])->update(['amount' => $detail_item[0]->amount - $export_item[0]->amount]);
+                ['supplier_id', '=', $export_item[0]->supplier_id],
+                ['batch_code', '=', $export_item[0]->batch_code]
+            ])
+                ->update(['amount' => $detail_item[0]->amount - $export_item[0]->amount]);
             return response()->json([
                 'message' => 'Data Export successfully changed',
                 'status' => 'Changed Status',
                 'data' => 1
             ], 201);
-        }
-        else {
+        } else {
             return response()->json([
                 'message' => 'Thiếu vật tư',
                 'status' => 'Không thể duyệt',
@@ -240,24 +238,34 @@ class ExportController extends Controller
         $export_item = DB::table('exports')
             ->where('id', $id)
             ->get();
-
         ///số lượng khả dụng của vật tư
-        $export=DB::table('exports')
-        ->where([['item_id',$export_item[0]->item_id],['warehouse_id', $export_item[0]->warehouse_id],['shelf_id',$export_item[0]->shelf_id],['status',1],['deleted_at', null]])
-        ->selectRaw('sum(amount) as amount')
-        ->get();
+        $export = DB::table('exports')
+            ->where([
+                ['item_id', $export_item[0]->item_id], ['warehouse_id', $export_item[0]->warehouse_id],
+                ['shelf_id', $export_item[0]->shelf_id], ['status', 1], ['deleted_at', null],
+                ['batch_code', $export_item[0]->batch_code], ['supplier_id', $export_item[0]->supplier_id]
+            ])
+            ->selectRaw('sum(amount) as amount')
+            ->get();
         $detail_item = DB::table('detail_items')
-        ->where([['item_id',$export_item[0]->item_id],['warehouse_id', $export_item[0]->warehouse_id],['shelf_id',$export_item[0]->shelf_id]])
-        ->get();
-        $transfer=DB::table('transfers')
-        ->where([['item_id',$export_item[0]->item_id],['from_warehouse', $export_item[0]->warehouse_id],['from_shelf',$export_item[0]->shelf_id],['status',1],['deleted_at', null]])
-        ->selectRaw('sum(amount) as amount')
-        ->get();
+            ->where([
+                ['item_id', $export_item[0]->item_id], ['warehouse_id', $export_item[0]->warehouse_id], ['shelf_id', $export_item[0]->shelf_id],
+                ['batch_code', $export_item[0]->batch_code], ['supplier_id', $export_item[0]->supplier_id]
+            ])
+            ->get();
+        $transfer = DB::table('transfers')
+            ->where([
+                ['item_id', $export_item[0]->item_id], ['from_warehouse', $export_item[0]->warehouse_id],
+                ['from_shelf', $export_item[0]->shelf_id], ['status', 1], ['deleted_at', null],
+                ['batch_code', $export_item[0]->batch_code], ['supplier_id', $export_item[0]->supplier_id]
+            ])
+            ->selectRaw('sum(amount) as amount')
+            ->get();
 
-        if($export->count() >0) $ex = $export[0]->amount;
+        if ($export->count() > 0) $ex = $export[0]->amount;
         else $ex = 0;
 
-        if($transfer->count() >0) $tf = $transfer[0]->amount;
+        if ($transfer->count() > 0) $tf = $transfer[0]->amount;
         else $tf = 0;
 
         $kd = $detail_item[0]->amount - $ex - $tf;
@@ -271,8 +279,7 @@ class ExportController extends Controller
                 'status' => 'Changed Status',
                 'data' => 1
             ], 201);
-        }
-        else {
+        } else {
             return response()->json([
                 'message' => 'Thiếu vật tư',
                 'status' => 'Không thể duyệt',

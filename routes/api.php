@@ -218,7 +218,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/warehouse/sumAmountItem/{id}', [WarehouseController::class, 'sumAmountItem'])->middleware(['permission:Xem kho']);
     Route::get('/warehouse/searchItems/{name}/{id}', [WarehouseController::class, 'searchItems'])->middleware(['permission:Xem kho']);
 
-    Route::get('/warehouse/kd/{id}/{w_id}/{s_id}', [WarehouseController::class, 'kd'])->middleware(['permission:Xem kho']);
+    Route::get('/warehouse/kd/{id}/{w_id}/{sh_id}/{bc}/{sup_id}', [WarehouseController::class, 'kd'])->middleware(['permission:Xem kho']);
     Route::get('/warehouse/amountItemKKD/{id}/{shelfid}/{warehouseid}', [WarehouseController::class, 'amountItemKKD'])->middleware(['permission:Xem kho']);
     Route::get('/warehouse/detailItemId/{id}/{shelfid}/{warehouseid}', [WarehouseController::class, 'detailItemId'])->middleware(['permission:Xem kho']);
     Route::get('/warehouse/listItem/{id}', [WarehouseController::class, 'listItem'])->middleware(['permission:Xem kho']);

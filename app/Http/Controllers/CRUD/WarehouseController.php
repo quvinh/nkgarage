@@ -29,12 +29,13 @@ class WarehouseController extends Controller
         ], 201);
     }
 
-    public function index2($id) {
+    public function index2($id)
+    {
         $data = DB::table('warehouses')
-        ->join('managers', 'managers.warehouse_id','=','warehouses.id')
-        ->where('managers.user_id',$id)
-        ->select('warehouses.name as name', 'warehouses.location as location', 'warehouses.status as status', 'warehouses.id as id')
-        ->get();
+            ->join('managers', 'managers.warehouse_id', '=', 'warehouses.id')
+            ->where('managers.user_id', $id)
+            ->select('warehouses.name as name', 'warehouses.location as location', 'warehouses.status as status', 'warehouses.id as id')
+            ->get();
         return response()->json([
             'status' => 'Show Warehouse By User_id',
             'message' => 'Show successfully',
@@ -104,10 +105,10 @@ class WarehouseController extends Controller
     {
         //
         $data = DB::table('managers')
-        ->join('warehouses', 'warehouses.id','=','managers.warehouse_id')
-        ->where('managers.user_id',$id)
-        ->select('warehouses.name as name', 'warehouses.location as location', 'warehouses.status as status', 'warehouses.id as id')
-        ->get();
+            ->join('warehouses', 'warehouses.id', '=', 'managers.warehouse_id')
+            ->where('managers.user_id', $id)
+            ->select('warehouses.name as name', 'warehouses.location as location', 'warehouses.status as status', 'warehouses.id as id')
+            ->get();
         return response()->json([
             'status' => 'Show Warehouse By User_id',
             'message' => 'Show successfully',
@@ -115,7 +116,8 @@ class WarehouseController extends Controller
         ]);
     }
 
-    public function edit2($id){
+    public function edit2($id)
+    {
         $data = Warehouse::find($id);
         return response()->json([
             'message' => 'Data warehouse',
@@ -336,17 +338,23 @@ class WarehouseController extends Controller
             'data' => $search
         ], 201);
     }
-    public function kd($id, $w_id, $s_id)
+    public function kd($id, $w_id, $sh_id, $bc, $sup_id)
     {
         $export = DB::table('exports')
-            ->where([['item_id', $id], ['warehouse_id', $w_id], ['shelf_id', $s_id], ['status', 1], ['deleted_at', null]])
+            ->where([
+                ['item_id', $id], ['warehouse_id', $w_id], ['shelf_id', $sh_id],
+                ['status', 1], ['deleted_at', null], ['batch_code', '=', $bc], ['supplier_id', '=', $sup_id]
+            ])
             ->selectRaw('sum(amount) as amount')
             ->get();
         $detail_item = DB::table('detail_items')
-            ->where([['item_id', $id], ['warehouse_id', $w_id], ['shelf_id', $s_id]])
+            ->where([['item_id', $id], ['warehouse_id', $w_id], ['shelf_id', $sh_id], ['batch_code', '=', $bc], ['supplier_id', '=', $sup_id]])
             ->get();
         $transfer = DB::table('transfers')
-            ->where([['item_id', $id], ['from_warehouse', $w_id], ['from_shelf', $s_id], ['status', 1], ['deleted_at', null]])
+            ->where([
+                ['item_id', $id], ['from_warehouse', $w_id], ['from_shelf', $sh_id],
+                ['status', 1], ['deleted_at', null], ['batch_code', '=', $bc], ['supplier_id', '=', $sup_id]
+            ])
             ->selectRaw('sum(amount) as amount')
             ->get();
         if ($export->count() > 0) $ex = $export[0]->amount;
@@ -478,20 +486,21 @@ class WarehouseController extends Controller
 
         ], 201);
     }
-    public function managerShow($id) {
+    public function managerShow($id)
+    {
         $data = DB::table('managers')
-        ->join('users', 'users.id', '=', 'managers.user_id')
-        ->join('warehouses', 'warehouses.id', '=', 'managers.warehouse_id')
-        ->select(
-            'managers.user_id as user_id',
-            'managers.warehouse_id as warehouse_id',
-            'fullname',
-            'email',
-            'phone',
-            'warehouses.name as warehouse_name'
+            ->join('users', 'users.id', '=', 'managers.user_id')
+            ->join('warehouses', 'warehouses.id', '=', 'managers.warehouse_id')
+            ->select(
+                'managers.user_id as user_id',
+                'managers.warehouse_id as warehouse_id',
+                'fullname',
+                'email',
+                'phone',
+                'warehouses.name as warehouse_name'
             )
-        ->where('managers.warehouse_id',$id)
-        ->get();
+            ->where('managers.warehouse_id', $id)
+            ->get();
 
         return response()->json([
             'message' => 'Data Item Show',
@@ -500,7 +509,8 @@ class WarehouseController extends Controller
         ], 201);
     }
 
-    public function statusWarehouse(Request $request, $id) {
+    public function statusWarehouse(Request $request, $id)
+    {
         $data = Warehouse::where('id', $id)->update([
             'status' => $request->status,
         ]);

@@ -37,7 +37,7 @@ class StatisticController extends Controller
                 [DB::raw('date_format(imports.created_at, "%d-%m-%Y")'), '<=', $request->endDate]
             ])
             ->get();
-        dd($import);
+        // dd($import);
         return response()->json([
             'message' => 'Statistic By Day',
             'status' => 'Import',

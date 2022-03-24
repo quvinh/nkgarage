@@ -19,6 +19,7 @@ class Transfers extends Model
         'unit',
         'category_id',
         'supplier_id',
+        'batch_code',
         'from_warehouse',
         'to_warehouse',
         'from_shelf',
