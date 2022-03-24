@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CRUD;
 
 use App\Http\Controllers\Controller;
+use App\Models\DetailItem;
 use App\Models\Inventories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -45,17 +46,29 @@ class InventoryController extends Controller
     {
         //
         $validator = Validator::make($request->all(), [
-            'detail_item_id' => 'required',
-            'department' => 'required',
-            'description' => 'required',
-            'created_by' => 'required'
+            'item_id' => 'required',
+            'warehouse_id' => 'required',
+            'shelf_id' => 'required',
+            'created_by' => 'required',
+            'code' => 'required',
+            'difference' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $data = Inventories::create($request->all());
+        $data = Inventories::create([
+            'code' => $request->code,
+            'item_id' => $request->item_id,
+            'warehouse_id' => $request->warehouse_id,
+            'shelf_id' => $request->shelf_id,
+            'amount' => $request->amount,
+            'difference' => $request->difference,
+            'description' => $request->description,
+            'created_by' => $request->created_by,
+            'status' => false,
+        ]);
         return response()->json([
             'message' => 'Data created successfully',
             'status' => 'Add Inventory',
@@ -102,10 +115,12 @@ class InventoryController extends Controller
     {
         //
         $validator = Validator::make($request->all(), [
-            'detail_item_id' => 'required',
-            'department' => 'required',
-            'description' => 'required',
-            'created_by' => 'required'
+            'item_id' => 'required',
+            'warehouse_id' => 'required',
+            'shelf_id' => 'required',
+            'created_by' => 'required',
+            'code' => 'required',
+            'difference' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -283,6 +298,102 @@ class InventoryController extends Controller
             'message' => 'Show transfer data',
             'status' => 'History Transfer',
             'data' => $data
+        ], 201);
+    }
+    public function handleInventory($id)
+    {
+        $data = DB::table('inventories')
+            ->where('id', $id)
+            ->get();
+        $status = Inventories::where('id', $id)->update([
+            'status' => true
+        ]);
+        $amount = DB::table('detail_items')
+            ->where([
+                ['item_id', $data[0]->item_id],
+                ['warehouse_id', $data[0]->warehouse_id],
+                ['shelf_id', $data[0]->shelf_id]
+            ])
+            ->get('amount');
+        $item = DetailItem::where([
+            ['item_id', $data[0]->item_id],
+            ['warehouse_id', $data[0]->warehouse_id],
+            ['shelf_id', $data[0]->shelf_id],
+        ])
+        ->update([
+            'amount' => $amount[0]->amount + $data[0]->difference
+        ]);
+
+        return response()->json([
+            'message' => 'Inventory Success',
+            'data' => $status,
+            'data2' => $item
+        ], 201);
+    }
+
+    public function showHistoryInventory($code)
+    {
+        $history = DB::table('inventories')
+            ->join('warehouses', 'warehouses.id', '=', 'inventories.warehouse_id')
+            ->join('detail_items','detail_items.item_id','=','inventories.item_id')
+            ->join('items','items.id', '=', 'inventories.item_id' )
+            ->join('shelves', 'shelves.id', '=', 'inventories.shelf_id')
+            ->join('users', 'users.id', '=', 'inventories.created_by')
+            ->select(
+                'inventories.item_id',
+                'inventories.id as id',
+                'shelves.name as shelf_name',
+                'warehouses.name as warehouse_name',
+                'inventories.code',
+                'inventories.amount as amount',
+                'detail_items.price',
+                'inventories.created_at',
+                'inventories.status',
+                'items.unit as unit',
+                'items.name as name',
+                'users.fullname as fullname',
+                'difference',
+                'description',
+            )
+            ->where('code', $code)
+            ->where('inventories.deleted_at', null)
+            ->get();
+        return response()->json([
+            'message' => 'Show inventories data',
+            'status' => 'History Inventories',
+            'data' => $history
+        ], 201);
+    }
+
+    public function showCodeInventory()
+    {
+        $history = DB::table('inventories')
+            ->join('warehouses', 'warehouses.id', '=', 'inventories.warehouse_id')
+            ->join('users', 'users.id', '=', 'inventories.created_by')
+            ->select(
+                'warehouses.name as warehouse_name',
+                'inventories.code',
+                DB::raw('date_format(inventories.created_at, "%d/%m/%Y %H:%i") as created_at'),
+                'inventories.created_by',
+                'inventories.status',
+                'users.fullname as fullname'
+            )
+            ->where('inventories.deleted_at', null)
+            ->groupBy('code')
+            ->get();
+        return response()->json([
+            'message' => 'Show inventories data',
+            'status' => 'History inventories',
+            'data' => $history
+        ], 201);
+    }
+
+    public function deleteCode($code)
+    {
+        Inventories::where('code', $code)->delete();
+        return response()->json([
+            'status' => 'Delete data Inventories by code',
+            'message' => 'Delete successfully',
         ], 201);
     }
 }

@@ -16,14 +16,14 @@ class CreateInventoriesTable extends Migration
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
             $table->char('code', 20);
-            $table->integer('item_id');
-            $table->bigInteger('detail_item_id');
-            $table->text('department');
+            $table->char('item_id',20);
+            $table->bigInteger('warehouse_id');
+            $table->bigInteger('shelf_id');
             $table->integer('amount');
-            $table->integer('amount_difference');
-            $table->string('unit',10);
+            $table->integer('difference');
             $table->text('description')->nullable();
             $table->bigInteger('created_by');
+            $table->boolean('status');
             $table->timestamps();
             $table->softDeletes();
         });

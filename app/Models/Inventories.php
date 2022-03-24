@@ -13,10 +13,15 @@ class Inventories extends Model
 
     protected $table = 'inventories';
     protected $fillable = [
-        'detail_item_id',
-        'department',
-        'description',
+        'code',
+        'item_id',
+        'warehouse_id',
+        'shelf_id',
+        'amount',
+        'difference',
+        'decription',
         'created_by',
+        'status',
     ];
 
     public function detail_item() {
