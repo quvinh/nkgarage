@@ -16,6 +16,7 @@ class Export extends Model
         'item_id',
         'name',
         'code',
+        'batch_code',
         'warehouse_id',
         'supplier_id',
         'shelf_id',

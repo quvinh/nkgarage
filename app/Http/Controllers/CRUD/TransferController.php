@@ -201,7 +201,9 @@ class TransferController extends Controller
                 ['item_id', $transfer[0]->item_id],
                 ['warehouse_id', $transfer[0]->from_warehouse],
                 ['shelf_id', $transfer[0]->from_shelf],
+                ['batch_code', '=', $transfer[0]->batch_code],
                 ['supplier_id', $transfer[0]->supplier_id]
+
             ])
             ->get();
 
@@ -210,33 +212,28 @@ class TransferController extends Controller
                 ['item_id', $transfer[0]->item_id],
                 ['warehouse_id', $transfer[0]->to_warehouse],
                 ['shelf_id', $transfer[0]->to_shelf],
+                ['batch_code', '=', $transfer[0]->batch_code],
                 ['supplier_id', $transfer[0]->supplier_id]
             ])
             ->get();
 
-        $count_to = DB::table('detail_items')
-            ->where([
-                ['item_id', $transfer[0]->item_id],
-                ['warehouse_id', $transfer[0]->to_warehouse],
-                ['shelf_id', $transfer[0]->to_shelf],
-                ['supplier_id', $transfer[0]->supplier_id]
-            ])
-            ->get()->count();
         Transfers::where('id', $id)->update(['status' => '2']);
         if ($detail_item_from[0]->amount >= $transfer[0]->amount) {
             DetailItem::where([
                 ['item_id', $transfer[0]->item_id],
                 ['warehouse_id', $transfer[0]->from_warehouse],
                 ['shelf_id', $transfer[0]->from_shelf],
+                ['batch_code', '=', $transfer[0]->batch_code],
                 ['supplier_id', $transfer[0]->supplier_id]
             ])
                 ->update(['amount' => $detail_item_from[0]->amount - $transfer[0]->amount]);
 
-            if ($count_to > 0) {
+            if ($detail_item_to->count() > 0) {
                 DetailItem::where([
                     ['item_id', $transfer[0]->item_id],
                     ['warehouse_id', $transfer[0]->to_warehouse],
                     ['shelf_id', $transfer[0]->to_shelf],
+                    ['batch_code', '=', $transfer[0]->batch_code],
                     ['supplier_id', $transfer[0]->supplier_id]
                 ])
                     ->update(['amount' => ($detail_item_to[0]->amount) + $transfer[0]->amount]);
@@ -272,14 +269,25 @@ class TransferController extends Controller
 
         ///số lượng khả dụng của vật tư
         $export = DB::table('exports')
-            ->where([['item_id', $transfer_item[0]->item_id], ['warehouse_id', $transfer_item[0]->from_warehouse], ['shelf_id', $transfer_item[0]->from_shelf], ['status', 1],['deleted_at', null]])
+            ->where([
+                ['item_id', $transfer_item[0]->item_id], ['warehouse_id', $transfer_item[0]->from_warehouse],
+                ['shelf_id', $transfer_item[0]->from_shelf], ['status', 1], ['deleted_at', null],
+                ['batch_code', '=', $transfer_item[0]->batch_code], ['supplier_id', '=', $transfer_item[0]->supplier_id],
+            ])
             ->selectRaw('sum(amount) as amount')
             ->get();
         $detail_item = DB::table('detail_items')
-            ->where([['item_id', $transfer_item[0]->item_id], ['warehouse_id', $transfer_item[0]->from_warehouse], ['shelf_id', $transfer_item[0]->from_shelf]])
+            ->where([
+                ['item_id', $transfer_item[0]->item_id], ['warehouse_id', $transfer_item[0]->from_warehouse], ['shelf_id', $transfer_item[0]->from_shelf],
+                ['batch_code', '=', $transfer_item[0]->batch_code], ['supplier_id', '=', $transfer_item[0]->supplier_id]
+            ])
             ->get();
         $transfer = DB::table('transfers')
-            ->where([['item_id', $transfer_item[0]->item_id], ['from_warehouse', $transfer_item[0]->from_warehouse], ['from_shelf', $transfer_item[0]->from_shelf], ['status', 1],['deleted_at', null]])
+            ->where([
+                ['item_id', $transfer_item[0]->item_id], ['from_warehouse', $transfer_item[0]->from_warehouse],
+                ['from_shelf', $transfer_item[0]->from_shelf], ['status', 1], ['deleted_at', null],
+                ['batch_code', '=', $transfer_item[0]->batch_code], ['supplier_id', '=', $transfer_item[0]->supplier_id]
+            ])
             ->selectRaw('sum(amount) as amount')
             ->get();
         if ($export->count() > 0) $ex = $export[0]->amount;
