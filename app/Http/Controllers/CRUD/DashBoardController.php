@@ -157,8 +157,8 @@ class DashBoardController extends Controller
         $tongTonKho = DB::table('detail_items')
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
             ->select(DB::raw('sum(detail_items.amount * detail_items.price) as total,sum(detail_items.amount) as tonKho'))
-            ->addSelect('warehouse_id', 'name', 'warehouses.status as status')
-            ->groupBy('warehouse_id', 'name', 'status')
+            ->addSelect('warehouse_id', 'name', 'warehouses.status')
+            ->groupBy('warehouse_id', 'name', 'warehouses.status')
             ->get();
         return response()->json([
             'message' => 'Data DashBoard',
