@@ -18,7 +18,21 @@ class ItemController extends Controller
     public function index()
     {
         //
-        $data = Item::all();
+        // $data = Item::all();
+        // return response()->json([
+        //     'status' => 'get all item',
+        //     'data' => $data
+        // ], 201);
+        $data = DB::table('items')
+        ->join('categories','categories.id','=','items.category_id')
+        ->select('items.id as id',
+        'category_id',
+        'categories.name as category_name',
+        'items.name as name',
+        'unit',
+        'items.note as note'
+        )
+        ->get();
         return response()->json([
             'status' => 'get all item',
             'data' => $data
