@@ -262,7 +262,7 @@ class ImportController extends Controller
 
             if ($checkItem->count() > 0) {
                 DB::table('items')->insert([
-                    'id' => $import[0]->item_id,
+                    'id' => $import[0]->item_id + '' + $import[0]->supplier_id,
                     'name' => $import[0]->name + '' + $import[0]->supplier_id,
                     'unit' => $import[0]->unit,
                     'category_id' => $import[0]->category_id,
