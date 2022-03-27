@@ -256,19 +256,19 @@ class ImportController extends Controller
             $item->save();
 
             $checkItem = DB::table('items')
-                ->where('name', '=', $import[0]->name)
-                ->where('id', '<>', $import[0]->item_id)
+                // ->where('name', '=', $import[0]->name)
+                ->where('id', $import[0]->item_id)
                 ->get();
 
-            if ($checkItem->count() > 0) {
-                DB::table('items')->insert([
-                    'id' => $import[0]->item_id + '' + $import[0]->supplier_id,
-                    'name' => $import[0]->name + '' + $import[0]->supplier_id,
-                    'unit' => $import[0]->unit,
-                    'category_id' => $import[0]->category_id,
-                    'note' => ''
-                ]);
-            } else {
+            if ($checkItem->count() == 0) {
+            //     DB::table('items')->insert([
+            //         'id' => $import[0]->item_id + '' + $import[0]->supplier_id,
+            //         'name' => $import[0]->name + '' + $import[0]->supplier_id,
+            //         'unit' => $import[0]->unit,
+            //         'category_id' => $import[0]->category_id,
+            //         'note' => ''
+            //     ]);
+            // } else {
                 DB::table('items')->insert([
                     'id' => $import[0]->item_id,
                     'name' => $import[0]->name,
