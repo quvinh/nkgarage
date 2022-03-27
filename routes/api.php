@@ -250,13 +250,13 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     /**************Item***************/
     Route::get('/items', [ItemController::class, 'index']);
     Route::get('/items/add', [ItemController::class, 'create'])->middleware(['permission:Thêm vật tư']);
-    Route::post('/items/store', [ItemController::class, 'store']);
-    // Route::post('/items/store', [ItemController::class, 'store'])->middleware(['permission:Thêm vật tư']);
+    // Route::post('/items/store', [ItemController::class, 'store']);
+    Route::post('/items/store', [ItemController::class, 'store'])->middleware(['permission:Thêm vật tư']);
     Route::get('/items/show/{id}', [ItemController::class, 'edit'])->middleware(['permission:Xem vật tư']);
-    Route::put('/items/update/{id}', [ItemController::class, 'update']);
-    // Route::put('/items/update/{id}', [ItemController::class, 'update'])->middleware(['permission:Sửa vật tư']);
-    Route::delete('/items/delete/{id}', [ItemController::class, 'destroy']);
-    // Route::delete('/items/delete/{id}', [ItemController::class, 'destroy'])->middleware(['permission:Xóa vật tư']);
+    // Route::put('/items/update/{id}', [ItemController::class, 'update']);
+    Route::put('/items/update/{id}', [ItemController::class, 'update'])->middleware(['permission:Sửa vật tư']);
+    // Route::delete('/items/delete/{id}', [ItemController::class, 'destroy']);
+    Route::delete('/items/delete/{id}', [ItemController::class, 'destroy'])->middleware(['permission:Xóa vật tư']);
     // Route::get('/items/searchItem/{id}', [ItemController::class, 'searchItem']);
     Route::get('/items/itemInWarehouse', [ItemController::class, 'itemInWarehouse']);
 
