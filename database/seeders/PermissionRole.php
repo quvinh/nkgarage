@@ -180,18 +180,6 @@ class PermissionRole extends Seeder
         ]);
         $admin->assignRole($roleAdmin);
 
-        $ceo = User::create([
-            'username' => 'user',
-            'email' => 'userTest@gmail.com',
-            'password' => bcrypt('123456'),
-            'fullname' => 'Test Văn Tổng',
-            'phone' => '0987654321',
-            'created_at' => now(),
-            'updated_at' => now(),
-            'email_verified_at' => now()
-        ]);
-        $ceo->assignRole($roleCEO);
-
         Manager::create([
             'user_id' => 1,
             'warehouse_id' => 1,
