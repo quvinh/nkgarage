@@ -212,7 +212,7 @@ class ImportController extends Controller
             'status' => '2'
         ]);
 
-        $countItem = DB::table('detail_items')
+        $item = DB::table('detail_items')
             ->where([
                 ['warehouse_id', '=', $import[0]->warehouse_id],
                 ['shelf_id', '=', $import[0]->shelf_id],
@@ -220,25 +220,16 @@ class ImportController extends Controller
                 ['batch_code', '=', $import[0]->batch_code],
                 ['supplier_id', '=', $import[0]->supplier_id]
             ])
-            ->get()
-            ->count();
+            ->get();
 
-        $amountItem = DB::table('detail_items')->where([
-            ['warehouse_id', '=', $import[0]->warehouse_id],
-            ['shelf_id', '=', $import[0]->shelf_id],
-            ['item_id', '=', $import[0]->item_id],
-            ['batch_code', '=', $import[0]->batch_code],
-            ['supplier_id', '=', $import[0]->supplier_id]
-        ])->get('amount');
-
-        if ($countItem > 0) {
+        if ($item->count() > 0) {
             DetailItem::where([
                 ['warehouse_id', '=', $import[0]->warehouse_id],
                 ['shelf_id', '=', $import[0]->shelf_id],
                 ['item_id', '=', $import[0]->item_id],
                 ['batch_code', '=', $import[0]->batch_code],
                 ['supplier_id', '=', $import[0]->supplier_id],
-            ])->update(['amount' => $amountItem[0]->amount + $import[0]->amount]);
+            ])->update(['amount' => $item[0]->amount + $import[0]->amount]);
         } else {
 
             $item = new DetailItem();
@@ -262,7 +253,7 @@ class ImportController extends Controller
 
             if ($checkItem->count() > 0) {
                 DB::table('items')->insert([
-                    'id' => $import[0]->item_id,
+                    'id' => $import[0]->item_id + '' + $import[0]->supplier_id,
                     'name' => $import[0]->name + '' + $import[0]->supplier_id,
                     'unit' => $import[0]->unit,
                     'category_id' => $import[0]->category_id,
