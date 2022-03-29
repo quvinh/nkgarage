@@ -39,7 +39,7 @@ class PermissionRole extends Seeder
         ModelsPermission::create(['name' => 'Thêm vật tư']);
         ModelsPermission::create(['name' => 'Sửa vật tư']);
         ModelsPermission::create(['name' => 'Xoá vật tư']);
-        ModelsPermission::create(['name' => 'Xem vật tư']);
+        // ModelsPermission::create(['name' => 'Xem vật tư']);
 
         //Import
         ModelsPermission::create(['name' => 'Thêm phiếu nhập']);
@@ -122,7 +122,7 @@ class PermissionRole extends Seeder
             'Thêm kho', 'Sửa kho', 'Xoá kho', 'Xem kho',
             'Thêm giá/kệ', 'Sửa giá/kệ', 'Xoá giá/kệ', 'Xem giá/kệ',
             'Thêm loại vật tư', 'Sửa loại vật tư', 'Xoá loại vật tư', 'Xem loại vật tư',
-            'Thêm vật tư', 'Sửa vật tư', 'Xoá vật tư', 'Xem vật tư',
+            'Thêm vật tư', 'Sửa vật tư', 'Xoá vật tư',
             'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
             'Thêm thông báo', 'Sửa thông báo', 'Xoá thông báo', 'Xem thông báo',
             'Thống kê'
@@ -137,6 +137,7 @@ class PermissionRole extends Seeder
             'Thêm kho', 'Sửa kho', 'Xoá kho', 'Xem kho',
             'Thêm giá/kệ', 'Sửa giá/kệ', 'Xoá giá/kệ', 'Xem giá/kệ',
             'Thêm loại vật tư', 'Sửa loại vật tư', 'Xoá loại vật tư', 'Xem loại vật tư',
+            'Thêm vật tư', 'Sửa vật tư', 'Xoá vật tư',
             'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
             'Thêm thông báo', 'Sửa thông báo', 'Xoá thông báo', 'Xem thông báo',
             'Thống kê'
@@ -149,6 +150,7 @@ class PermissionRole extends Seeder
             'Thêm phiếu chuyển', 'Sửa phiếu chuyển', 'Xem phiếu chuyển', 'Xem phiếu chuyển', 'Duyệt phiếu chuyển',
             'Thêm phiếu kiểm kê', 'Sửa phiếu kiểm kê', 'Xem phiếu kiểm kê',
             'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xem nhà cung cấp',
+            'Thêm vật tư', 'Sửa vật tư', 'Xoá vật tư',
             'Thêm thông báo', 'Xem thông báo',
             'Thống kê'
             // 'Thêm báo cáo', 'Sửa báo cáo', 'Xem báo cáo',
@@ -160,6 +162,7 @@ class PermissionRole extends Seeder
             'Thêm phiếu chuyển', 'Sửa phiếu chuyển', 'Xem phiếu chuyển',
             'Thêm phiếu kiểm kê', 'Sửa phiếu kiểm kê', 'Xem phiếu kiểm kê',
             'Thêm nhà cung cấp', 'Sửa nhà cung cấp', 'Xoá nhà cung cấp', 'Xem nhà cung cấp',
+            'Thêm vật tư', 'Sửa vật tư',
             'Thêm thông báo', 'Xem thông báo',
             'Thống kê'
         );
@@ -176,6 +179,18 @@ class PermissionRole extends Seeder
             'email_verified_at' => now()
         ]);
         $admin->assignRole($roleAdmin);
+
+        $ceo = User::create([
+            'username' => 'user',
+            'email' => 'userTest@gmail.com',
+            'password' => bcrypt('123456'),
+            'fullname' => 'Test Văn Tổng',
+            'phone' => '0987654321',
+            'created_at' => now(),
+            'updated_at' => now(),
+            'email_verified_at' => now()
+        ]);
+        $ceo->assignRole($roleCEO);
 
         Manager::create([
             'user_id' => 1,

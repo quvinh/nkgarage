@@ -23,6 +23,7 @@ class PermissionController extends Controller
         $roleWarehouse = ['Thêm kho', 'Sửa kho', 'Xoá kho', 'Xem kho'];
         $roleShelf = ['Thêm giá/kệ', 'Sửa giá/kệ', 'Xoá giá/kệ', 'Xem giá/kệ'];
         $roleCategory = ['Thêm loại vật tư', 'Sửa loại vật tư', 'Xoá loại vật tư', 'Xem loại vật tư'];
+        $roleItem = ['Thêm vật tư', 'Sửa vật tư', 'Xoá vật tư'];
         $roleImport = ['Thêm phiếu nhập', 'Sửa phiếu nhập', 'Xoá phiếu nhập', 'Xem phiếu nhập', 'Duyệt phiếu nhập'];
         $roleExport = ['Thêm phiếu xuất', 'Sửa phiếu xuất', 'Xoá phiếu xuất', 'Xem phiếu xuất', 'Duyệt phiếu xuất'];
         $roleTransfer = ['Thêm phiếu chuyển', 'Sửa phiếu chuyển', 'Xoá phiếu chuyển', 'Xem phiếu chuyển', 'Duyệt phiếu chuyển'];
@@ -36,6 +37,7 @@ class PermissionController extends Controller
             'dataWarehouse' => $roleWarehouse,
             'dataShelf' => $roleShelf,
             'dataCategory' => $roleCategory,
+            'dataItem' => $roleItem,
             'dataImport' => $roleImport,
             'dataExport' => $roleExport,
             'dataTransfer' => $roleTransfer,
