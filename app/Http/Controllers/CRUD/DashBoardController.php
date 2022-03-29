@@ -148,7 +148,8 @@ class DashBoardController extends Controller
         //     ->get();
 
         $tonKho = DB::select('
-            select * from detail_items
+            select managers.warehouse_id, warehouses.name, warehouses.status, sum(amount*price) as total, sum(amount) as tonKho
+            from detail_items
             join managers on managers.warehouse_id = detail_items.warehouse_id
             join warehouses on warehouses.id = detail_items.warehouse_id
             where managers.user_id = ?
