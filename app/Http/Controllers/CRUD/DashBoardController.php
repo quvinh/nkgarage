@@ -141,13 +141,20 @@ class DashBoardController extends Controller
         $tonKho = DB::table('detail_items')
             ->join('managers', 'managers.warehouse_id', '=', 'detail_items.warehouse_id')
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
-            // ->select('managers.warehouse_id', 'warehouses.name', 'warehouses.status')
-            // ->select(DB::raw('sum(amount * price) as total,sum(amount) as tonKho'))
-            // ->addSelect('managers.warehouse_id', 'warehouses.name', 'warehouses.status')
-            ->selectRaw('sum(amount * price) as total,sum(amount) as tonKho')
-            ->groupBy('managers.warehouse_id', 'warehouses.name', 'warehouses.status')
+            ->select(DB::raw('sum(amount * price) as total,sum(amount) as tonKho'))
+            ->addSelect('managers.warehouse_id', 'warehouses.name', 'warehouses.status')
             ->where('managers.user_id', $id)
+            ->groupBy('managers.warehouse_id', 'warehouses.name', 'warehouses.status')
+
             ->get();
+
+        // $tonKho = DB::select('
+        //     select * from detail_items
+        //     join managers on managers.warehouse_id = detail_items.warehouse_id
+        //     join warehouses on warehouses.id = detail_items.warehouse_id
+
+        //     ');
+
         return response()->json([
             'message' => 'Data DashBoard',
             'status' => 'DashBoard',
@@ -230,15 +237,15 @@ class DashBoardController extends Controller
                 DB::raw('year(exports.created_at) as year'),
                 'warehouses.name'
             )
-            ->where('exports.status',2)
-            ->where('imports.status',2)
-            ->groupBy('year','warehouses.id')
+            ->where('exports.status', 2)
+            ->where('imports.status', 2)
+            ->groupBy('year', 'warehouses.id')
             ->having('year', $year)
             ->get();
-            return response()->json([
-                'message' => 'Data DashBoard',
-                'status' => 'DashBoard',
-                'data' => $data,
-            ], 201);
+        return response()->json([
+            'message' => 'Data DashBoard',
+            'status' => 'DashBoard',
+            'data' => $data,
+        ], 201);
     }
 }
