@@ -142,7 +142,7 @@ class DashBoardController extends Controller
             ->join('managers', 'managers.warehouse_id', '=', 'detail_items.warehouse_id')
             ->join('warehouses', 'warehouses.id', '=', 'detail_items.warehouse_id')
             ->select('managers.warehouse_id', 'warehouses.name', 'warehouses.status')
-            // ->addSelect(DB::raw('sum(amount * price) as total,sum(amount) as tonKho'))
+            ->addSelect(DB::raw('sum(amount * price) as total,sum(amount) as tonKho'))
             // ->addSelect('managers.warehouse_id', 'warehouses.name', 'warehouses.status')
             ->groupBy('managers.warehouse_id', 'warehouses.name', 'warehouses.status')
             ->where('managers.user_id', $id)
