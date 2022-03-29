@@ -226,7 +226,7 @@ class InventoryController extends Controller
                 'warehouses.name as tenKho',
                 'imports.code',
                 // DB::raw('date_format(imports.created_at, "%d/%m/%Y %H:%i") as created_at'),
-                'created_at',
+                'imports.created_at',
                 'imports.created_by',
                 'imports.status',
                 'users.fullname as fullname' //
