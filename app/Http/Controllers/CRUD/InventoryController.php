@@ -236,7 +236,7 @@ class InventoryController extends Controller
         //     ->get();
 
         $history = DB::select('
-            SELECT code, MIN(created_at)
+            SELECT code, MIN(created_at),
             (SELECT warehouses.name FROM warehouses JOIN imports ON imports.warehouse_id = warehouses.id WHERE warehouses.id = imports.warehouse_id GROUP BY warehouses.name) "tenKho",
             (SELECT users.fullname FROM users JOIN imports ON
             imports.created_by = users.id WHERE imports.created_by = users.id GROUP BY users.fullname) as fullname
