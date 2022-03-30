@@ -219,21 +219,32 @@ class InventoryController extends Controller
     }
     public function showCodeImport()
     {
-        $history = DB::table('imports')
-            ->join('warehouses', 'warehouses.id', '=', 'imports.warehouse_id')
-            ->join('users', 'users.id', '=', 'imports.created_by') //join user -> get name
-            ->select(
-                'warehouses.name as tenKho',
-                'imports.code',
-                // DB::raw('date_format(imports.created_at, "%d/%m/%Y %H:%i") as created_at'),
-                'imports.created_at',
-                'imports.created_by',
-                'imports.status',
-                'users.fullname as fullname' //
-            )
-            ->where('imports.deleted_at', null)
-            ->groupBy('code')
-            ->get();
+        // $history = DB::table('imports')
+        //     ->join('warehouses', 'warehouses.id', '=', 'imports.warehouse_id')
+        //     ->join('users', 'users.id', '=', 'imports.created_by') //join user -> get name
+        //     ->select(
+        //         'warehouses.name as tenKho',
+        //         'imports.code',
+        //         DB::raw('date_format(imports.created_at, "%d/%m/%Y %H:%i") as created_at'),
+        //         // 'imports.created_at',
+        //         'imports.created_by',
+        //         'imports.status',
+        //         'users.fullname as fullname' //
+        //     )
+        //     ->where('imports.deleted_at', null)
+        //     ->groupBy('code')
+        //     ->get();
+
+        $history = DB::select('
+            SELECT code,
+            (SELECT warehouses.name FROM warehouses JOIN imports ON imports.warehouse_id = warehouses.id WHERE warehouses.id = imports.warehouse_id GROUP BY warehouses.name) as tenKho,
+            (SELECT users.fullname FROM users JOIN imports ON
+            imports.created_by = users.id WHERE imports.created_by = users.id GROUP BY users.fullname) as fullname
+            FROM imports
+            WHERE deleted_at is NULL
+            GROUP BY code
+        ');
+
         return response()->json([
             'message' => 'Show import data',
             'status' => 'History Import',
