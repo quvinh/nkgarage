@@ -219,31 +219,32 @@ class InventoryController extends Controller
     }
     public function showCodeImport()
     {
-        // $history = DB::table('imports')
-        //     ->join('warehouses', 'warehouses.id', '=', 'imports.warehouse_id')
-        //     ->join('users', 'users.id', '=', 'imports.created_by') //join user -> get name
-        //     ->select(
-        //         'warehouses.name as tenKho',
-        //         'imports.code',
-        //         DB::raw('date_format(imports.created_at, "%d/%m/%Y %H:%i") as created_at'),
-        //         // 'imports.created_at',
-        //         'imports.created_by',
-        //         'imports.status',
-        //         'users.fullname as fullname' //
-        //     )
-        //     ->where('imports.deleted_at', null)
-        //     ->groupBy('code')
-        //     ->get();
+        $history = DB::table('imports')
+            ->join('warehouses', 'warehouses.id', '=', 'imports.warehouse_id')
+            ->join('users', 'users.id', '=', 'imports.created_by') //join user -> get name
+            ->select(
+                'warehouses.name as tenKho',
+                'imports.code',
+                DB::raw('date_format(imports.created_at, "%d/%m/%Y %H:%i") as created_at'),
+                // 'imports.created_at',
+                'imports.created_by',
+                'imports.status',
+                'users.fullname as fullname' //
+            )
+            ->where('imports.deleted_at', null)
+            ->groupBy('code')
+            ->get();
 
-        $history = DB::select('
-            SELECT code, MIN(created_at) as created_at,  MAX(status) as status,
-            (SELECT warehouses.name FROM warehouses JOIN imports ON imports.warehouse_id = warehouses.id WHERE warehouses.id = imports.warehouse_id GROUP BY warehouses.name) "tenKho",
-            (SELECT users.fullname FROM users JOIN imports ON
-            imports.created_by = users.id WHERE imports.created_by = users.id GROUP BY users.fullname) as fullname
-            FROM imports
-            WHERE deleted_at is NULL
-            GROUP BY code
-        ');
+        // $history = DB::select('
+        //     SELECT code, MIN(created_at) as created_at,  MAX(status) as status,
+        //     (SELECT warehouses.name FROM warehouses JOIN imports ON imports.warehouse_id = warehouses.id WHERE warehouses.id = imports.warehouse_id GROUP BY warehouses.name) "tenKho",
+        //     (SELECT users.fullname FROM users JOIN imports ON
+        //     imports.created_by = users.id WHERE imports.created_by = users.id GROUP BY users.fullname) as fullname
+        //     FROM imports
+        //     WHERE deleted_at is NULL
+        //     GROUP BY code
+        //     ORDER BY status ASC, created_at DESC
+        // ');
 
         return response()->json([
             'message' => 'Show import data',
@@ -267,6 +268,18 @@ class InventoryController extends Controller
             ->where('exports.deleted_at', null)
             ->groupBy('code')
             ->get();
+
+    // $history = DB::select('
+    //     SELECT code, MIN(created_at) as created_at,  MAX(status) as status,
+    //     (SELECT warehouses.name FROM warehouses JOIN exports ON exports.warehouse_id = warehouses.id WHERE warehouses.id = exports.warehouse_id GROUP BY warehouses.name) "tenKho",
+    //     (SELECT users.fullname FROM users JOIN exports ON
+    //     exports.created_by = users.id WHERE exports.created_by = users.id GROUP BY users.fullname) as fullname
+    //     FROM exports
+    //     WHERE deleted_at is NULL
+    //     GROUP BY code
+    //     ORDER BY status ASC, created_at DESC
+    // ');
+
         return response()->json([
             'message' => 'Show export data',
             'status' => 'History export',
@@ -332,9 +345,9 @@ class InventoryController extends Controller
             ['warehouse_id', $data[0]->warehouse_id],
             ['shelf_id', $data[0]->shelf_id],
         ])
-        ->update([
-            'amount' => $amount[0]->amount + $data[0]->difference
-        ]);
+            ->update([
+                'amount' => $amount[0]->amount + $data[0]->difference
+            ]);
 
         return response()->json([
             'message' => 'Inventory Success',
@@ -347,8 +360,8 @@ class InventoryController extends Controller
     {
         $history = DB::table('inventories')
             ->join('warehouses', 'warehouses.id', '=', 'inventories.warehouse_id')
-            ->join('detail_items','detail_items.item_id','=','inventories.item_id')
-            ->join('items','items.id', '=', 'inventories.item_id' )
+            ->join('detail_items', 'detail_items.item_id', '=', 'inventories.item_id')
+            ->join('items', 'items.id', '=', 'inventories.item_id')
             ->join('shelves', 'shelves.id', '=', 'inventories.shelf_id')
             ->join('users', 'users.id', '=', 'inventories.created_by')
             ->select(
