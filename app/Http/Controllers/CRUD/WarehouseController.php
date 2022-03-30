@@ -505,7 +505,16 @@ class WarehouseController extends Controller
         return response()->json([
             'message' => 'Data Item Show',
             'data' => $data
+        ], 201);
+    }
 
+    public function managerWarehouse($id)
+    {
+        $data = DB::table('managers')->where('user_id', $id)->get('warehouse_id');
+
+        return response()->json([
+            'message' => 'Get id warehouse in managers table',
+            'data' => $data
         ], 201);
     }
 
