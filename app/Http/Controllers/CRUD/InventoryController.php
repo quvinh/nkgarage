@@ -233,6 +233,8 @@ class InventoryController extends Controller
             )
             ->where('imports.deleted_at', null)
             ->groupBy('code')
+            ->orderBy('status', 'ASC')
+            ->orderByDesc('created_at')
             ->get();
 
         // $history = DB::select('
@@ -267,6 +269,8 @@ class InventoryController extends Controller
             )
             ->where('exports.deleted_at', null)
             ->groupBy('code')
+            ->orderBy('status', 'ASC')
+            ->orderByDesc('created_at')
             ->get();
 
     // $history = DB::select('
@@ -303,6 +307,8 @@ class InventoryController extends Controller
             )
             ->where('transfers.deleted_at', null)
             ->groupBy('transfers.code')
+            ->orderBy('status', 'ASC')
+            ->orderByDesc('created_at')
             ->get();
         return response()->json([
             'message' => 'Show transfer data',
