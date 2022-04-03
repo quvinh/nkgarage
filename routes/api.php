@@ -93,8 +93,8 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::put('/import/updateStatus/{id}', [ImportController::class, 'updateStatus'])->middleware(['permission:Sửa phiếu nhập']);
     Route::put('/import/dStatus/{id}', [ImportController::class, 'dStatus'])->middleware(['permission:Sửa phiếu nhập']);
     Route::post('/import/updateAmountItem/{id}', [ImportController::class, 'updateAmountItem'])->middleware(['permission:Sửa phiếu nhập']);
-    Route::delete('/import/delete/{id}', [ImportController::class, 'destroy'])->middleware(['permission:Xóa phiếu nhập']);
-    Route::delete('/import/deleteCode/{code}', [ImportController::class, 'deleteCode'])->middleware(['permission:Xóa phiếu nhập']);
+    Route::delete('/import/delete/{id}', [ImportController::class, 'destroy'])->middleware(['permission:Xoá phiếu nhập']);
+    Route::delete('/import/deleteCode/{code}', [ImportController::class, 'deleteCode'])->middleware(['permission:Xoá phiếu nhập']);
 
     Route::get('/category', [CategoryController::class, 'index']);
     Route::get('/shelf', [ShelvesController::class, 'index']);
@@ -117,7 +117,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::delete('/transfer/delete/{id}', [TransferController::class, 'destroy'])->middleware(['permission:Xoá phiếu chuyển']);
     Route::put('/transfer/updateStatus/{id}', [TransferController::class, 'updateStatus'])->middleware(['permission:Sửa phiếu chuyển|Duyệt phiếu chuyển']);
     Route::put('/transfer/dStatus/{id}', [TransferController::class, 'dStatus'])->middleware(['permission:Sửa phiếu chuyển|Duyệt phiếu chuyển']);
-    Route::delete('/transfer/deleteCode/{id}', [TransferController::class, 'deleteCode'])->middleware(['permission:Xóa phiếu chuyển']);
+    Route::delete('/transfer/deleteCode/{id}', [TransferController::class, 'deleteCode'])->middleware(['permission:Xoá phiếu chuyển']);
 
     Route::get('/inventory/showHistoryExport/{id}', [InventoryController::class, 'showHistoryExport'])->middleware(['permission:Xem phiếu xuất']);
     Route::get('/inventory/showHistoryImport/{id}', [InventoryController::class, 'showHistoryImport'])->middleware(['permission:Xem phiếu nhập']);
@@ -160,11 +160,11 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::post('/inventory/store', [InventoryController::class, 'store'])->middleware(['permission:Thêm phiếu kiểm kê']);
     Route::get('/inventory/show/{id}', [InventoryController::class, 'edit'])->middleware(['permission:Xem phiếu kiểm kê']);
     Route::put('/inventory/update/{id}', [InventoryController::class, 'update'])->middleware(['permission:Sửa phiếu kiểm kê']);
-    Route::delete('/inventory/delete/{id}', [InventoryController::class, 'destroy'])->middleware(['permission:Xóa phiếu kiểm kê']);
+    Route::delete('/inventory/delete/{id}', [InventoryController::class, 'destroy'])->middleware(['permission:Xoá phiếu kiểm kê']);
     Route::put('/inventory/handleInventory/{code}', [InventoryController::class, 'handleInventory'])->middleware(['permission:Duyệt phiếu kiểm kê']);
     Route::get('/inventory/showCodeInventory', [InventoryController::class, 'showCodeInventory'])->middleware(['permission:Xem phiếu kiểm kê']);
     Route::get('/inventory/showHistoryInventory/{id}', [InventoryController::class, 'showHistoryInventory'])->middleware(['permission:Xem phiếu kiểm kê']);
-    Route::delete('/inventory/deleteCode/{code}', [InventoryController::class, 'deleteCode'])->middleware(['permission:Xóa phiếu kiểm kê']);
+    Route::delete('/inventory/deleteCode/{code}', [InventoryController::class, 'deleteCode'])->middleware(['permission:Xoá phiếu kiểm kê']);
 
 
 
@@ -189,7 +189,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::post('/detail_item/store', [DetailitemController::class, 'store'])->middleware(['permission:Thêm chi tiết vật tư']);
     Route::get('/detail_item/show/{id}', [DetailitemController::class, 'edit'])->middleware(['permission:Xem chi tiết vật tư']);
     Route::put('/detail_item/update/{id}', [DetailitemController::class, 'update']);
-    Route::delete('/detail_item/delete/{id}', [DetailitemController::class, 'destroy'])->middleware(['permission:Xóa chi tiết vật tư']);
+    Route::delete('/detail_item/delete/{id}', [DetailitemController::class, 'destroy'])->middleware(['permission:Xoá chi tiết vật tư']);
 
 
     // Route::get('/category', [CategoryController::class, 'index']);
@@ -256,7 +256,7 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     // Route::put('/items/update/{id}', [ItemController::class, 'update']);
     Route::put('/items/update/{id}', [ItemController::class, 'update'])->middleware(['permission:Sửa vật tư']);
     // Route::delete('/items/delete/{id}', [ItemController::class, 'destroy']);
-    Route::delete('/items/delete/{id}', [ItemController::class, 'destroy'])->middleware(['permission:Xóa vật tư']);
+    Route::delete('/items/delete/{id}', [ItemController::class, 'destroy'])->middleware(['permission:Xoá vật tư']);
     // Route::get('/items/searchItem/{id}', [ItemController::class, 'searchItem']);
     Route::get('/items/itemInWarehouse', [ItemController::class, 'itemInWarehouse']);
 

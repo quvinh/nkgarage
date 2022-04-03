@@ -388,6 +388,8 @@ class InventoryController extends Controller
             )
             ->where('code', $code)
             ->where('inventories.deleted_at', null)
+            ->orderBy('status', 'ASC')
+            ->orderBy('created_at', 'DESC')
             ->get();
         return response()->json([
             'message' => 'Show inventories data',
@@ -411,6 +413,8 @@ class InventoryController extends Controller
             )
             ->where('inventories.deleted_at', null)
             ->groupBy('code')
+            ->orderBy('status', 'ASC')
+            ->orderBy('created_at', 'DESC')
             ->get();
         return response()->json([
             'message' => 'Show inventories data',
