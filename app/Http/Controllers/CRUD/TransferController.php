@@ -78,6 +78,7 @@ class TransferController extends Controller
             if ($request->amount <= $detail_item[0]->amount) {
                 $newTransfer = new Transfers();
                 $newTransfer->item_id = $request->item_id;
+                $newTransfer->batch_code = $request->batch_code;
                 $newTransfer->code = $request->code;
                 $newTransfer->name = $request->name;
                 $newTransfer->amount = $request->amount;

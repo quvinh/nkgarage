@@ -105,9 +105,8 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
 
     /**************Notification************/
     Route::get('/notification', [NotificationController::class, 'index']);
-    Route::get('/notification/showNotification/{id}', [NotificationController::class, 'showNotification']);
-    Route::get('/notification/showListItemById/{id}', [NotificationController::class, 'showListItemById']);
     Route::post('/notification/store', [NotificationController::class, 'store']);
+    Route::get('/notification/get-person/{id}', [NotificationController::class, 'getPersonInWarehouse']);
 
     /*************Transfer*************/
     Route::get('/transfer', [TransferController::class, 'index'])->middleware(['permission:Xem phiếu chuyển']);
@@ -149,8 +148,10 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
 
     /**************Notification************/
     Route::get('/notification/{id}', [NotificationController::class, 'index2']);
+    Route::get('/notification/send/{id}', [NotificationController::class, 'send']);
     Route::get('/notification/add', [NotificationController::class, 'create']);
     Route::get('/notification/show/{id}', [NotificationController::class, 'edit']);
+    Route::get('/notification/count/{id}', [NotificationController::class, 'count']);
     Route::put('/notification/update/{id}', [NotificationController::class, 'update']);
     Route::delete('/notification/delete/{id}', [NotificationController::class, 'destroy']);
 
@@ -160,6 +161,11 @@ Route::prefix('admin')->middleware('checklogin')->group(function () {
     Route::get('/inventory/show/{id}', [InventoryController::class, 'edit'])->middleware(['permission:Xem phiếu kiểm kê']);
     Route::put('/inventory/update/{id}', [InventoryController::class, 'update'])->middleware(['permission:Sửa phiếu kiểm kê']);
     Route::delete('/inventory/delete/{id}', [InventoryController::class, 'destroy'])->middleware(['permission:Xóa phiếu kiểm kê']);
+    Route::put('/inventory/handleInventory/{code}', [InventoryController::class, 'handleInventory'])->middleware(['permission:Duyệt phiếu kiểm kê']);
+    Route::get('/inventory/showCodeInventory', [InventoryController::class, 'showCodeInventory'])->middleware(['permission:Xem phiếu kiểm kê']);
+    Route::get('/inventory/showHistoryInventory/{id}', [InventoryController::class, 'showHistoryInventory'])->middleware(['permission:Xem phiếu kiểm kê']);
+    Route::delete('/inventory/deleteCode/{code}', [InventoryController::class, 'deleteCode'])->middleware(['permission:Xóa phiếu kiểm kê']);
+
 
 
     // Route::get('/item', [ItemController::class, 'index']);

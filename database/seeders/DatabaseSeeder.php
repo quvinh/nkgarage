@@ -126,6 +126,15 @@ class DatabaseSeeder extends Seeder
                 'phone' => '03657272919',
                 'note' => 'Example'
             ],
+            [
+                'code' => 'CODE002',
+                'name' => 'Cửa hàng vật tư/phụ tùng HONDA',
+                'email' => 'Example@gmail.com',
+                'address' => 'Hải Phòng',
+                'contact_person' => 'kesuke honda',
+                'phone' => '03657272919',
+                'note' => 'Example'
+            ],
         ]);
     }
 }

@@ -29,7 +29,7 @@ class StatisticController extends Controller
                 'imports.created_at'
             )
             ->orderBy('imports.created_at', 'asc')
-            ->groupBy('imports.shelf_id')
+            // ->groupBy('imports.shelf_id')
             ->where([
                 ['imports.status', 2],
                 ['imports.warehouse_id', $request->warehouse_id],
@@ -60,7 +60,7 @@ class StatisticController extends Controller
                 'imports.created_at'
             )
             ->orderBy('imports.created_at', 'asc')
-            ->groupBy('imports.shelf_id')
+            // ->groupBy('imports.shelf_id')
             ->where([
                 ['imports.status', 2],
                 [DB::raw('year(imports.created_at)'), $request->year],
